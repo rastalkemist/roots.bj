@@ -31,21 +31,12 @@ body.p-site.sur-fond .chrome-titre{color:var(--roots-noir)}
 body.p-site.sur-fond .site-nom{color:var(--encre)}
 body.p-site.sur-fond .chrome-burger{background-image:var(--jauge);-webkit-background-clip:text;background-clip:text;color:transparent}
 body.p-site.sur-fond .site-nom.actif{background-image:var(--jauge);-webkit-background-clip:text;background-clip:text;color:transparent}
-/* Le tronc borde la pastille d'un liseré de son univers et l'assoit sur une
-   ombre de la même teinte : sur un disque qui se remplit, ce liseré resterait
-   rouge dans la zone verte. Il tombe — un dégradé ne se borde pas d'une seule
-   couleur —, et l'ombre suit la jauge par deux couches dont les opacités
-   s'échangent sur la même grandeur. */
-/* Le voile que le tiroir jette sur l'ecran prend la teinte d'ombre de
-   l'univers du corps — le rouge — alors que le haut de page parle vert. Il
-   suit la meme grandeur que le reste de la barre : deux couches, l'une
-   s'efface pendant que l'autre parait. */
-body.p-site .voile{background:
-  linear-gradient(rgba(var(--rouge-e1-rgb),calc(.5 * var(--part-rouge,0))),rgba(var(--rouge-e1-rgb),calc(.5 * var(--part-rouge,0)))),
-  linear-gradient(rgba(var(--vert-e1-rgb),calc(.5 * (1 - var(--part-rouge,0)))),rgba(var(--vert-e1-rgb),calc(.5 * (1 - var(--part-rouge,0)))))}
-body.p-site #marque{background:var(--jauge);
-  box-shadow:0 3px 10px rgba(var(--vert-e1-rgb),calc(.30 * (1 - var(--part-rouge,0)))),
-             0 3px 10px rgba(var(--rouge-e1-rgb),calc(.30 * var(--part-rouge,0)))}
+/* La pastille appartient à Space : elle porte le noir Roots, toujours, et ne
+   suit aucun univers. Le tronc la borde d'un liseré de l'univers courant et
+   l'assoit sur une ombre de la même teinte ; les deux prennent ici la couleur
+   de la pastille, faute de quoi un cerne rouge l'entourerait dans le vert. */
+body.p-site #marque{background:var(--roots-noir);
+  box-shadow:inset 0 0 0 1.5px var(--roots-noir),0 3px 10px rgba(var(--noir-rgb),.30)}
 
 /* ---- LA BARRE DU SITE. Trois zones sur grand écran : la marque à gauche —
    l'ankh et son nom —, la quête au centre, les cinq noms et la pastille à
