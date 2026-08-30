@@ -51,7 +51,17 @@ body.p-site #marque{background:var(--roots-noir);
    cela, un nom sorti de sa portée retomberait à la police du navigateur. */
 .site-nom{font-family:var(--font-corps);font-weight:var(--w-bold);font-size:var(--t-body);color:var(--encre)}
 .site-noms{display:none}
-@media(max-width:1023.98px){body.p-site .chrome-inner>.chrome-titre{display:none}}
+/* Sous le seuil du rang, le logotype et la quete SE RELAIENT DANS LA MEME
+   COLONNE : la barre est une grille de trois colonnes, un quatrieme enfant
+   y ouvrirait une seconde rangee. Ils se posent donc tous deux au centre,
+   et celui qui n'a pas la parole quitte le flux — sans quoi il tiendrait la
+   place de l'autre. */
+@media(max-width:1023.98px){
+  body.p-site .chrome-inner>.chrome-titre{grid-column:2;justify-self:start}
+  body.p-site .chrome-inner>.fab.quete,body.p-site .chrome-inner>.quete-groupe{grid-column:2}
+  body.p-site .chrome-inner>[data-retire]{display:none}
+  body.p-site.sur-fond .chrome-inner>.chrome-titre{display:none}
+}
 @media(min-width:1024px){
   /* Le nom de la maison et le logotype de la pastille disent la même chose
      au même barreau : ils descendent ensemble d'un cran sur grand écran. Le
@@ -75,16 +85,6 @@ body.p-site #marque{background:var(--roots-noir);
      univers —, le deroulant et la pastille. Le rang ne se redeploie qu'au
      survol ou au clavier ; remonter ne suffit pas. Le pliage reprend la
      recette du tiret : largeur et encre s'effacent ensemble. */
-  /* Le deroulant des sections porte le nom de celle qui est en vue ; les
-     quatre autres vivent dans son panneau, comme celles d'A propos. */
-  .site-apropos-menu a.site-apropos-ligne{text-decoration:none}
-  /* Chaque nom du déroulant s'éclaire dans l'univers vers lequel il mène :
-     l'accueil appartient au Roots, le reste de la page au Roam. */
-  .site-apropos-menu a[data-cible="connecter"]:hover{color:var(--vert-e3)}
-  .site-apropos-menu a[data-cible="sejourner"]:hover,
-  .site-apropos-menu a[data-cible="decouvrir"]:hover,
-  .site-apropos-menu a[data-cible="infos"]:hover{color:var(--rouge-e3)}
-  .site-apropos-menu a.site-apropos-ligne.actif{font-weight:var(--w-bold)}
 }
 /* Le mot du bouton porte la jauge par un fond decoupe au texte, ce qui rend
    l'encre transparente : le chevron, qui suit l'encre courante, disparaitrait
@@ -153,7 +153,7 @@ body.p-site.sur-fond .chrome-haut::after{opacity:0}
    l'image tant que le film n'a pas le droit de partir. ---- */
 /* La scene est la premiere piece du corps et colle sous la barre : elle rend
    le cran d'air que le corps Roam pose au-dessus de sa matiere. */
-.site-accueil{position:relative;min-height:85svh;display:grid;place-items:center;overflow:hidden;margin:calc(-1 * var(--entete-h-rendue,64px) - var(--air-i3)) calc(50% - 50vw) var(--air-i6)}
+.site-accueil{position:relative;min-height:80svh;display:grid;place-items:center;overflow:hidden;margin:calc(-1 * var(--entete-h-rendue,64px) - var(--air-i3)) calc(50% - 50vw) var(--air-i6)}
 .site-scene,.site-film{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .site-film{opacity:0;transition:opacity var(--mvt-long) var(--courbe-etat)}
 .site-film.joue{opacity:1}
@@ -179,8 +179,8 @@ body.p-site.sur-fond .chrome-haut::after{opacity:0}
    utilitaire, les noms, le pied. Les filets tiennent la largeur du contenu,
    jamais celle du feuillet. */
 body.p-site #sections{display:flex;flex-direction:column}
-body.p-site #sections .tiroir-radio{order:1}
-body.p-site #sections .site-tiroir{order:2}
+body.p-site #sections .site-tiroir{order:1}
+body.p-site #sections .tiroir-radio{order:2}
 body.p-site #sections .pied-politique{order:3}
 .site-tiroir{display:flex;flex-direction:column;align-items:flex-end;margin-inline:var(--esp-5);padding:var(--esp-4) 0;border-bottom:1px solid var(--gris-service)}
 /* Le pas des lignes dit leur parente : un pas unique pour les cinq noms, et
@@ -189,15 +189,10 @@ body.p-site #sections .pied-politique{order:3}
    demi-cran pour un lien, plus un quart de cran — la moitie — pour une
    ligne inerte. Les liens gardent toute la largeur du feuillet pour surface
    de toucher. */
-.site-tiroir a,.site-tiroir .site-tiroir-apropos,.site-tiroir .site-apropos-ligne{color:var(--encre);text-decoration:none;font-weight:var(--w-bold);min-height:calc(var(--air-i4) + var(--esp-2));display:flex;align-items:center;justify-content:flex-end;text-align:right;white-space:normal;padding:0}
-.site-tiroir a{width:100%}
-.site-tiroir a.actif{color:var(--univers-e3)}
-/* Dans le feuillet, le déroulant se replie derrière son chevron comme dans la
-   barre : le sous-menu ne paraît qu'ouvert, et le chevron dit l'état. */
-.site-tiroir .site-tiroir-apropos{border:none;background:none;padding:0;cursor:pointer;font-family:inherit;font-size:inherit;gap:var(--esp-1)}
-.site-tiroir .site-sous{max-height:0;overflow:hidden;transition:max-height var(--mvt-parcours) var(--courbe-entree)}
-.site-tiroir[data-ouvert] .site-sous{max-height:280px}
-.site-tiroir[data-ouvert] .site-chevron{transform:rotate(-90deg)}
+.site-tiroir .site-tiroir-apropos,.site-tiroir .site-apropos-ligne{color:var(--encre);text-decoration:none;font-weight:var(--w-bold);min-height:calc(var(--air-i4) + var(--esp-2));display:flex;align-items:center;justify-content:flex-end;text-align:right;white-space:normal;padding:0}
+/* Le feuillet ne porte qu'un bloc : il se lit d'entree, sans repli ni
+   chevron. Son titre nomme ce qui suit et ne se touche pas. */
+.site-tiroir .site-tiroir-apropos{font-family:inherit;font-size:inherit}
 /* Le retrait du sous-menu est un demi-cran : la parente se lit deja a la
    graisse, la tabulation n'a pas a la redire. */
 .site-tiroir .site-sous{margin:0 var(--esp-2) 0 0;display:flex;flex-direction:column;align-items:flex-end}
@@ -210,6 +205,17 @@ body.p-site #sections .pied-politique{order:3}
 body.p-site #sections .tiroir-radio .centre{order:2}
 body.p-site #sections .tiroir-radio #marque{order:2}
 body.p-site #sections .tiroir-radio .languette-radio{order:1}
-body.p-site #sections .tiroir-radio{position:static;margin:0 var(--esp-5);padding-bottom:var(--esp-4);border-bottom:1px solid var(--gris-service)}
+body.p-site #sections .tiroir-radio{position:static;margin:0 var(--esp-5);padding:var(--esp-4) 0;border-bottom:1px solid var(--gris-service)}
 /* Un cran plein separe les noms du pied. */
 body.p-site #sections .pied-politique{border-top:none;margin-top:0;padding-top:var(--esp-4)}
+
+/* ---- LE RETOUR AU HAUT DE PAGE. Un chevron nu au coin bas droit : ni aplat,
+   ni limite, ni mot — le geste le plus discret que la page puisse offrir. Son
+   nom se lit a l'oreille, faute de texte a l'oeil. La zone atteinte tient le
+   plancher tactile alors que le dessin ne l'occupe pas : c'est la cible qui se
+   touche, pas le trait. Pose, il ne bouge plus ; seule son encre s'allume. ---- */
+.site-haut{position:fixed;right:var(--esp-5);bottom:calc(var(--esp-5) + var(--safe-bas,0px));z-index:8;width:var(--cible-min);height:var(--cible-min);padding:0;border:none;background:none;color:var(--roots-vert);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity var(--mvt-apparition) var(--courbe-etat),color var(--mvt-etat) var(--courbe-etat)}
+.site-haut.vu{opacity:1}
+.site-haut svg{width:24px;height:24px;transform:rotate(-90deg)}
+.site-haut:hover{color:var(--vert-e1)}
+.site-haut:active{color:var(--vert-e1)}

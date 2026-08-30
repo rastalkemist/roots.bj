@@ -7,9 +7,9 @@
    film de la scène. La langue, la quête, la radio et les feuilles restent au
    tronc : le site les déplace, il ne les refait pas.
 
-   Exige : un corps portant p-site, un nav .site-noms dont les ancres portent
-   data-cible, les sections d'ancrage correspondantes, et une scène d'accueil
-   portant le film, son affiche et sa commande. */
+   Exige : un corps portant p-site, un nav .site-noms, la scène d'accueil
+   portant le film, son affiche et sa commande, et le bac du tiroir que le
+   tronc ancre. */
 (function () {
   'use strict';
 
@@ -22,11 +22,13 @@
           navRevenir: 'Revenir', navAPropos: 'À propos',
           apProjet: 'Le projet', apEquipe: 'L’équipe', apCommunaute: 'La communauté',
           apVision: 'La vision',
+          hautDePage: 'Haut de page',
           titrePage: 'Roots Benin - Retour à la terre-mère' },
     en: { navConnecter: 'Connect', navVisiter: 'Visit', navDecouvrir: 'Discover',
           navRevenir: 'Return', navAPropos: 'About',
           apProjet: 'The project', apEquipe: 'The team', apCommunaute: 'The community',
           apVision: 'The vision',
+          hautDePage: 'Back to top',
           titrePage: 'Roots Benin - Connect to the motherland' }
   };
   /* La langue se lit comme le tronc la lit : la clé si elle existe, sinon la
@@ -41,6 +43,11 @@
   function poserDits() {
     var d = DITS[langue()];
     if (d.titrePage) document.title = d.titrePage;
+    /* Un libelle qui ne se lit qu'a l'oreille se traduit comme les autres. */
+    Array.prototype.forEach.call(document.querySelectorAll('[data-als]'), function (el) {
+      var m = d[el.getAttribute('data-als')];
+      if (typeof m === 'string') el.setAttribute('aria-label', m);
+    });
     Array.prototype.forEach.call(document.querySelectorAll('[data-ts]'), function (el) {
       if (d[el.dataset.ts]) el.textContent = d[el.dataset.ts];
     });
@@ -52,24 +59,17 @@
      qu'elle l'a dépassé, et elle se rejoue dans les deux sens du défilement.
      Elle seule mène la couleur de la barre ; le corps de la page appartient
      au monde rouge du bout à l'autre, sans état ni bascule. */
-  var ANCRES = ['connecter', 'sejourner', 'decouvrir', 'infos'];
   function surveiller() {
     var scene = document.getElementById('connecter');
     function poserCourante() {
-      var ligne = window.innerHeight / 3, courante = ANCRES[0], i, r;
-      for (i = 0; i < ANCRES.length; i++) {
-        var el = document.getElementById(ANCRES[i]);
-        if (!el) continue;
-        r = el.getBoundingClientRect();
-        if (r.top <= ligne) courante = ANCRES[i];
-      }
-      Array.prototype.forEach.call(document.querySelectorAll('[data-cible]'), function (a) {
-        var sienne = a.dataset.cible === courante;
-        a.classList.toggle('actif', sienne);
-        if (sienne) a.setAttribute('aria-current', 'true');
-        else a.removeAttribute('aria-current');
-      });
+      /* Le seuil se lit sur le disque de la quete : la part de son cercle que
+         la ligne de fin de scene a depassee. Quand la quete est retiree, ce
+         disque n'a plus de boite — l'ankh prend le relais : meme cercle, meme
+         rangee, toujours present. Sans repere, la mesure resterait a zero et
+         la barre ne reprendrait jamais son fond. */
       var loupe = document.querySelector('.quete-loupe');
+      if (loupe && !loupe.getClientRects().length) loupe = null;
+      if (!loupe) loupe = document.querySelector('.chrome-inner .ankh-home');
       if (loupe && scene) {
         var fin = scene.getBoundingClientRect().bottom;
         var c = loupe.getBoundingClientRect();
@@ -102,7 +102,73 @@
       requestAnimationFrame(function () { calme = false; poserCourante(); });
     }, { passive: true });
     window.addEventListener('resize', poserCourante);
+    /* La barre est composee par le tronc APRES ce script : sans cette veille,
+       la quete parait le temps d'une image avant d'etre jugee. Toute
+       recomposition de la barre repose l'arbitrage dans le meme tour. */
+    var barreHaut = document.querySelector('.chrome-inner');
+    if (barreHaut) new MutationObserver(poserCourante).observe(barreHaut, { childList: true });
     poserCourante();
+  }
+
+  /* ---- LE RETOUR AU HAUT DE PAGE. Il ne s'offre qu'a qui remonte : descendre
+     ne demande rien, revenir en arriere si — c'est le seul moment ou le haut
+     de page est ce qu'on cherche. Deux conditions, et les deux tiennent :
+     avoir passe le seuil, et remonter. Une fois pose il ne bouge plus ; le
+     defilement qu'il declenche est demande, jamais impose, et il respecte le
+     mouvement reduit. */
+  var SEUIL_HAUT = 2;               /* en hauteurs d'ecran */
+  function tenirRetourHaut() {
+    var bouton = document.getElementById('btnHaut');
+    if (!bouton) return;
+    var dernier = window.scrollY, pose = false;
+    function juger() {
+      var y = window.scrollY;
+      var remonte = y < dernier - 2;
+      var descend = y > dernier + 2;
+      dernier = y;
+      if (!pose && remonte && y > window.innerHeight * SEUIL_HAUT) {
+        bouton.hidden = false;
+        requestAnimationFrame(function () { bouton.classList.add('vu'); });
+        pose = true;
+      } else if (pose && (descend || y <= window.innerHeight * SEUIL_HAUT)) {
+        bouton.classList.remove('vu');
+        pose = false;
+      }
+    }
+    var calme = false;
+    window.addEventListener('scroll', function () {
+      if (calme) return;
+      calme = true;
+      requestAnimationFrame(function () { calme = false; juger(); });
+    }, { passive: true });
+    /* La sortie porte son mouvement : la piece quitte le flux une fois le
+       fondu termine, jamais avant. */
+    bouton.addEventListener('transitionend', function (e) {
+      if (e.propertyName === 'opacity' && !bouton.classList.contains('vu')) bouton.hidden = true;
+    });
+    bouton.addEventListener('click', function () {
+      var brusque = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: 0, behavior: brusque ? 'auto' : 'smooth' });
+      var ancre = document.querySelector('.chrome-inner .ankh-home');
+      if (ancre) ancre.focus({ preventScroll: true });
+    });
+  }
+
+  /* ---- L'ADRESSE RESTE PROPRE. Le retour au haut de page se fait par une
+     ancre, qui laisse son suffixe dans la barre d'adresse une fois le geste
+     consomme. Le suffixe est retire aussitot : il ne designe plus rien a
+     rejoindre, et le defilement a deja eu lieu. */
+  function nettoyerAdresse() {
+    function retirer() {
+      if (!location.hash) return;
+      history.replaceState(null, '', location.pathname + location.search);
+    }
+    retirer();
+    window.addEventListener('hashchange', function () { setTimeout(retirer, 0); });
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('a[href^="#"]');
+      if (a) setTimeout(retirer, 0);
+    });
   }
 
   /* ---- LE DÉROULANT DU NAV. Il s'ouvre au survol comme au clic, dit son
@@ -162,33 +228,14 @@
       var d = DITS[langue()];
       var rang = document.createElement('nav');
       rang.className = 'site-tiroir';
-      [['#connecter', 'navConnecter', 'connecter'],
-       ['#sejourner', 'navVisiter', 'sejourner'],
-       ['#decouvrir', 'navDecouvrir', 'decouvrir'],
-       ['#infos', 'navRevenir', 'infos']].forEach(function (e) {
-        var a = document.createElement('a');
-        a.href = e[0];
-        a.dataset.ts = e[1];
-        a.dataset.cible = e[2];
-        a.textContent = d[e[1]];
-        rang.appendChild(a);
-      });
-      var titreAp = document.createElement('button');
-      titreAp.type = 'button';
+      /* Le feuillet ne porte qu'un bloc : son titre le nomme et ne se touche
+         pas. Un repli n'aurait rien a cacher. */
+      var titreAp = document.createElement('p');
       titreAp.className = 'site-tiroir-apropos';
-      titreAp.setAttribute('aria-expanded', 'false');
       var motAp = document.createElement('span');
       motAp.dataset.ts = 'navAPropos';
       motAp.textContent = d.navAPropos;
       titreAp.appendChild(motAp);
-      titreAp.insertAdjacentHTML('beforeend',
-        '<svg class="i site-chevron" aria-hidden="true"><use href="#i-chevron"/></svg>');
-      titreAp.addEventListener('click', function () {
-        var ouvert = rang.hasAttribute('data-ouvert');
-        if (ouvert) rang.removeAttribute('data-ouvert');
-        else rang.setAttribute('data-ouvert', '');
-        titreAp.setAttribute('aria-expanded', ouvert ? 'false' : 'true');
-      });
       rang.appendChild(titreAp);
       var sous = document.createElement('div');
       sous.className = 'site-sous';
@@ -314,7 +361,9 @@
 
   document.addEventListener('DOMContentLoaded', function () {
     poserDits();
-    surveiller();
+    tenirRetourHaut();
+  nettoyerAdresse();
+  surveiller();
     tenirAPropos();
     poserMenu();
     poserBarre();

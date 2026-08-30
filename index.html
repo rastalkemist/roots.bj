@@ -85,6 +85,12 @@
        l'affiche tient la scene dans tous les autres cas. La commande d'arret
        reprend la pose de l'ecran d'accueil de l'application — hors champ, elle
        ne parait qu'au foyer du clavier. -->
+  <!-- Le retour au haut de page. Il ne parait qu'au-dela du seuil et pendant
+       une remontee : lire vers le bas ne demande rien, revenir en arriere si.
+       Un chevron nu, sans aplat : son nom se lit a l'oreille, sa cible tient
+       le plancher tactile, et il ne bouge plus une fois pose. -->
+  <button type="button" class="site-haut" id="btnHaut" hidden aria-label="Haut de page" data-als="hautDePage"><svg class="i" aria-hidden="true"><use href="#i-chevron"/></svg></button>
+
   <section class="site-accueil" id="connecter">
     <img class="site-scene" src="media/hero.jpg" alt="" width="1600" height="900" fetchpriority="high" decoding="async">
     <video class="site-film" id="filmAccueil" muted loop playsinline preload="none" poster="media/hero.jpg" aria-hidden="true"></video>
