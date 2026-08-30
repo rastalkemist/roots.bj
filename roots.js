@@ -11,6 +11,39 @@
 (function (global) {
   'use strict';
 
+  /* Le document sait des le chargement qu'un script gouverne le chrome : la
+     feuille de style peut retenir un element que la promotion deplacera, au
+     lieu de le peindre a une place puis a l'autre. Sans script, la classe
+     manque et rien n'est retenu. */
+  if (global.document && document.documentElement) {
+    document.documentElement.classList.add('js');
+  }
+
+  /* LE MODE CLAVIER. `html.au-clavier` marque que le foyer a ete deplace par
+     une TOUCHE. `:focus-visible` ne suffit pas a ce marquage : il correspond
+     aussi au CLIC sur un champ de texte.
+
+     Arme : les touches qui deplacent le foyer, elles seules.
+     Desarme : tout geste de pointage, doigt compris.
+     Exige : la feuille de style ne peint le foyer que sous cette classe.
+     Casse si retire : le foyer ne se peint plus nulle part. Casse si la classe
+     est posee autrement : le foyer se peint au clic et au doigt. */
+  (function () {
+    if (!global.document || !document.documentElement) { return; }
+    var DEPLACENT = {
+      Tab: 1, ArrowUp: 1, ArrowDown: 1, ArrowLeft: 1, ArrowRight: 1,
+      Home: 1, End: 1, PageUp: 1, PageDown: 1
+    };
+    var racine = document.documentElement;
+    global.addEventListener('keydown', function (e) {
+      if (DEPLACENT[e.key]) { racine.classList.add('au-clavier'); }
+    }, true);
+    function desarmer() { racine.classList.remove('au-clavier'); }
+    global.addEventListener('pointerdown', desarmer, true);
+    global.addEventListener('mousedown', desarmer, true);
+    global.addEventListener('touchstart', desarmer, true);
+  }());
+
   var PAYS_EPINGLES = ['bj', 'ng', 'tg', 'gh', 'ci', 'ne', 'bf', 'sn', 'fr', 'be', 'us', 'ca', 'gb', 'de'];
   var PREFIXE_BJ = '01';
 
@@ -199,9 +232,12 @@
      autres si la place y est. Ce qui ne peut pas monter se range aux coins
      bas, dans la gouttiere du site.
 
-     La seule valeur declaree est l'ecart minimal. Tout le reste est mesure.
+     Deux valeurs declarees : l'ecart minimal du super-nav, et le souffle
+     qui met en valeur le groupe de marque de part et d'autre. Tout le reste
+     est mesure.
      ------------------------------------------------------------------ */
   var ECART_NAV = 24;
+  var SOUFFLE_MARQUE = 40;
 
   /* LA HAUTEUR RENDUE DE LA BARRE, PUBLIEE A LA FEUILLE DE STYLE.
      Ce qui doit s'arreter sous la barre — une feuille qui monte du bas, un
@@ -226,6 +262,13 @@
     if (!barre || !droite || !haut) return;
     promouvoirNav(radio, barre, droite, haut, superNav);
     publierHauteur(barre, haut);
+    /* La barre annonce qu'elle est posee : un ecran qui compose autour d'une
+       piece promue — l'habiller, la completer — se cale sur cette annonce,
+       jamais sur une observation du document. */
+    document.dispatchEvent(new Event('chrome:barre'));
+    /* L'habillage d'une piece par l'ecran (a l'annonce ci-dessus) peut
+       changer la hauteur rendue : elle se re-publie apres lui. */
+    publierHauteur(barre, haut);
   }
 
   function promouvoirNav(radio, barre, droite, haut, superNav) {
@@ -245,12 +288,84 @@
     if (superNav && superNav.parentNode !== haut.parentNode) {
       haut.parentNode.insertBefore(superNav, haut.nextSibling);
     }
-    if (gauche && logo) { barre.insertBefore(logo, gauche); gauche.parentNode.removeChild(gauche); gauche = null; }
+    if (gauche && logo) {
+      barre.insertBefore(logo, gauche);
+      /* Le logotype sort du groupe AVANT que le groupe ne soit retire : un
+         conteneur detruit emporte ses enfants avec lui. */
+      var centreG = gauche.querySelector('.centre');
+      if (centreG) barre.insertBefore(centreG, gauche);
+      gauche.parentNode.removeChild(gauche); gauche = null;
+    }
     if (ilot) { ilot.style.maxWidth = ''; ilot.classList.remove('replie'); }
     if (ilot && rangee && ilot.parentNode !== rangee) rangee.appendChild(ilot);
     if (antenne && antenne.parentNode !== droite) droite.insertBefore(antenne, droite.firstChild);
     if (lecture && ilot && lecture.parentNode !== ilot) ilot.appendChild(lecture);
+    /* La quete se defait avant de se refaire : le geste focal retourne a sa
+       place dans la page, devant son voile, et la feuille reprend le bas. */
+    var fabQ = document.querySelector('.fab[aria-controls]');
+    var feuilleQ = fabQ ? document.getElementById(fabQ.getAttribute('aria-controls')) : null;
+    var voileQ = feuilleQ && feuilleQ.previousElementSibling
+      && feuilleQ.previousElementSibling.classList.contains('voile')
+      ? feuilleQ.previousElementSibling : null;
+    corps.classList.remove('nav-quete');
+    /* Une pilule fabriquee par la barre n'a pas d'adresse dans la page : elle
+       se retire, et se refabrique si la promotion la redemande. */
+    var fabFabrique = document.querySelector('.fab[data-fabrique]');
+    if (fabFabrique && fabFabrique.parentNode) fabFabrique.parentNode.removeChild(fabFabrique);
+    if (fabQ) {
+      fabQ.classList.remove('quete');
+      if (voileQ && fabQ.nextElementSibling !== voileQ) voileQ.parentNode.insertBefore(fabQ, voileQ);
+      if (feuilleQ) feuilleQ.removeAttribute('data-pose');
+      if (voileQ) voileQ.removeAttribute('data-pose');
+    }
+    var centreQ = document.querySelector('.centre');
+    if (centreQ && centreQ.parentNode !== barre) barre.insertBefore(centreQ, droite);
+    var rangOrphelin = document.querySelector('.tiroir-radio');
+    if (rangOrphelin && !rangOrphelin.children.length) rangOrphelin.parentNode.removeChild(rangOrphelin);
 
+
+    /* L'ECRAN DE SEJOUR PORTE SA QUETE DANS LA BARRE, A TOUTE TAILLE. La
+       pilule prend le centre ; le groupe Mi + verbe passe a droite, devant le
+       menu ; l'ilot de la radio descend au bas du tiroir, l'antenne en bout
+       de rangee. Le geste focal ne vit plus jamais au bas de ces ecrans. Le
+       bouton reste LE MEME element : ses ecouteurs voyagent avec lui. Un
+       ecran de l'univers sans geste de quete propre recoit une pilule qui
+       MENE a la quete : un lien vers l'ecran qui la porte, ouverte a
+       l'arrivee, au libelle de la langue declaree du document. */
+    if (corps.classList.contains('p-roam')) {
+      corps.classList.add('nav-quete');
+      if (!fabQ) {
+        fabQ = document.createElement('a');
+        fabQ.className = 'fab';
+        fabQ.setAttribute('data-fabrique', '');
+        fabQ.setAttribute('href', 'roam.html#quete');
+        fabQ.textContent = ((document.documentElement.lang || 'fr').slice(0, 2) === 'en')
+          ? 'Discover Benin' : 'Je découvre le Bénin';
+      }
+      fabQ.classList.add('quete');
+      barre.insertBefore(fabQ, droite);
+      if (feuilleQ) feuilleQ.setAttribute('data-pose', 'barre');
+      if (voileQ) voileQ.setAttribute('data-pose', 'barre');
+      /* La marque Mi | NU et le lecteur tiennent la meme rangee COLLANTE au
+         bas du tiroir — la marque a gauche, le lecteur a droite, l'antenne
+         DANS le lecteur a la place du bouton de lecture. */
+      var bacSections = document.getElementById('sections');
+      if (bacSections) {
+        var rangTiroir = bacSections.querySelector('.tiroir-radio');
+        if (!rangTiroir) {
+          rangTiroir = document.createElement('div');
+          rangTiroir.className = 'tiroir-radio';
+        }
+        bacSections.insertBefore(rangTiroir, bacSections.querySelector('.pied-politique'));
+        var marqueQ = document.querySelector('.centre');
+        if (marqueQ) rangTiroir.appendChild(marqueQ);
+        if (ilot) {
+          rangTiroir.appendChild(ilot);
+          ilot.classList.remove('cache');
+          if (antenne) ilot.appendChild(antenne);
+        }
+      }
+    }
 
     /* La barre est une grille dont deux colonnes s'etirent : la largeur RENDUE
        de ses enfants remplit toujours le contenant, et ne dit donc rien de la
@@ -259,15 +374,39 @@
     function librePresDe() {
       var pris = 0;
       Array.prototype.forEach.call(barre.children, function (el) {
+        /* La pilule de quete CEDE : sa colonne se comprime jusqu'a son
+           plancher — c'est donc son plancher qui se compte, jamais sa largeur
+           naturelle, qui interdirait une promotion que l'ecran porte. */
+        if (el.classList.contains('quete-groupe') || el.classList.contains('fab')) {
+          var garde = el.style.width;
+          el.style.width = 'min-content';
+          pris += el.getBoundingClientRect().width;
+          el.style.width = garde;
+          return;
+        }
         pris += el.scrollWidth;
       });
       return barre.getBoundingClientRect().width - pris;
     }
 
-    /* Palier 1 */
+    /* Palier 1. La barre montee ne montre du super-nav que les icones et la
+       legende du verbe courant : c'est CETTE forme qui se mesure — la forme
+       du bas, legendes depliees, dirait une largeur qui n'existera pas. Le
+       souffle exige de part et d'autre depend de ce que le centre met en
+       valeur : la quete se contente de l'ecart minimal, le groupe de marque
+       demande le sien. */
     if (!superNav) { if (radio) radio.rendre(); return; }
-    var largeurNav = superNav.scrollWidth;
-    if (librePresDe() < largeurNav + ECART_NAV * 2) { if (radio) radio.rendre(); return; }
+    var largeurNav = 0;
+    Array.prototype.forEach.call(superNav.querySelectorAll('.verbe'), function (v) {
+      var ic = v.querySelector('.ico-rond');
+      largeurNav += ic ? ic.offsetWidth : v.offsetWidth;
+      if (v.classList.contains('actif')) {
+        var lg = v.querySelector('.verbe-dit');
+        if (lg) largeurNav += lg.scrollWidth;
+      }
+    });
+    var souffle = corps.classList.contains('nav-quete') ? ECART_NAV : SOUFFLE_MARQUE;
+    if (librePresDe() < largeurNav + souffle * 2) { if (radio) radio.rendre(); return; }
     corps.classList.add('nav-haut');
     /* Le logo et les verbes forment un groupe : sans lui, la barre passerait a
        quatre colonnes et le logotype central cesserait d'etre central. */
@@ -277,8 +416,17 @@
     gauche.appendChild(logo);
     gauche.appendChild(superNav);
 
-    /* Palier 2 */
-    if (ilot) {
+    /* L'ecran de sejour au chrome monte : la pilule de quete prend la droite
+       devant le hamburger, a la place de la radio, dont l'ilot entier descend
+       au bas du tiroir du menu, l'antenne en bout de rangee. Le logotype
+       garde le centre. Le bouton de quete reste LE MEME element : ses
+       ecouteurs, son etat et son nom voyagent avec lui — un second bouton
+       divergerait. La feuille s'ancre a la barre. PARTOUT AILLEURS, la radio
+       garde la barre : sa rangee, son ancrage et son geste long sont ceux
+       d'origine. */
+
+    /* Palier 2 — sans objet sur une barre a quete : l'ilot vit au tiroir. */
+    if (ilot && !corps.classList.contains('nav-quete')) {
       /* Deplie dans sa rangee, l'ilot s'etire sur toute la largeur : sa boite
          ne dit rien de ce qu'il lui faut. On lit donc sa largeur de contenu,
          le temps d'une mesure.
@@ -309,7 +457,9 @@
       }
       ilot.style.maxWidth = gardeMax; ilot.style.width = '';
       if (etaitCache) ilot.classList.add('cache');
-      if (librePresDe() >= plancher + ECART_NAV) {
+      /* Le voisin de l'ilot ancre est le groupe de marque : c'est donc le
+         souffle de la marque qui borne l'entree, pas l'ecart minimal. */
+      if (librePresDe() >= plancher + SOUFFLE_MARQUE) {
         corps.classList.add('nav-ilot-ancre');
         droite.insertBefore(ilot, droite.firstChild);
         ilot.classList.remove('cache');
@@ -326,7 +476,7 @@
         var centre = barre.querySelector('.centre');
         if (centre) {
           var libre = ilot.getBoundingClientRect().right
-            - (centre.getBoundingClientRect().right + ECART_NAV);
+            - (centre.getBoundingClientRect().right + SOUFFLE_MARQUE);
           ilot.style.maxWidth = Math.max(0, Math.round(libre)) + 'px';
         }
       }
@@ -623,16 +773,47 @@
      ------------------------------------------------------------------ */
   /* Le tiroir ne liste que les ecrans de l'univers courant : changer
      d'univers passe par le super-nav, jamais par le tiroir. */
+  /* Le tiroir parle la langue de son univers : un menu ne renvoie jamais vers
+     les pages d'un autre monde. Une entree sans adresse est un titre pose en
+     attendant sa destination — elle se rend eteinte, sans promesse de geste. */
   var NAV = {
     fr: [
       { ico: 'i-carte',      t: 'La carte',           s: 'Toute la carte, en détail', href: 'carte.html' },
       { ico: 'i-calendrier', t: 'Réserver un espace', s: 'Le jardin, le bureau',      href: 'index.html?ouvrir=reserver' },
-      { ico: 'i-ticket',     t: 'Retrouver',          s: 'Réservation ou commande, avec ton code', href: 'retrouver.html' }
+      { ico: 'i-ticket',     t: 'Retrouver ma résa',  s: 'Réservation ou commande, avec ton code', href: 'retrouver.html' }
     ],
     en: [
       { ico: 'i-carte',      t: 'Menu',         s: 'The full menu, in detail',   href: 'carte.html' },
       { ico: 'i-calendrier', t: 'Book a space', s: 'The garden, the office',     href: 'index.html?ouvrir=reserver' },
       { ico: 'i-ticket',     t: 'Find a booking', s: 'A booking or an order, with your code', href: 'retrouver.html' }
+    ]
+  };
+  var NAV_ROAM = {
+    fr: [
+      { ico: 'i-sac',    t: 'Séjourner',       s: 'Les lieux et les Roots Roamer', href: '#sejourner' },
+      { ico: 'i-ticket', t: 'Découvrir',       s: 'Sorties, pépites et événements', href: '#decouvrir' },
+      { ico: 'i-carte',  t: 'Infos pratiques', s: 'Numéros utiles et repères',      href: '#infos' }
+    ],
+    en: [
+      { ico: 'i-sac',    t: 'Stay',           s: 'The places and the Roots Roamers', href: '#sejourner' },
+      { ico: 'i-ticket', t: 'Discover',       s: 'Outings, gems and events',         href: '#decouvrir' },
+      { ico: 'i-carte',  t: 'Practical info', s: 'Useful numbers and landmarks',     href: '#infos' }
+    ]
+  };
+  var NAV_SPACE = {
+    fr: [
+      { ico: 'i-plan',       t: 'Dashboard', s: '' },
+      { ico: 'i-calendrier', t: 'Sprints',   s: '' },
+      { ico: 'i-table',      t: 'Projets',   s: '' },
+      { ico: 'i-check',      t: 'Missions',  s: '' },
+      { ico: 'i-ticket',     t: 'Finances',  s: '' }
+    ],
+    en: [
+      { ico: 'i-plan',       t: 'Dashboard', s: '' },
+      { ico: 'i-calendrier', t: 'Sprints',   s: '' },
+      { ico: 'i-table',      t: 'Projects',  s: '' },
+      { ico: 'i-check',      t: 'Missions',  s: '' },
+      { ico: 'i-ticket',     t: 'Finances',  s: '' }
     ]
   };
 
@@ -689,12 +870,15 @@
 
   function nav(langue) {
     var page = ici();
-    return (NAV[langue] || NAV.fr).map(function (e) {
+    var table = NAV;
+    if (/(?:^|\s)p-roam(?:\s|$)/.test(document.body.className)) table = NAV_ROAM;
+    else if (/(?:^|\s)p-space(?:\s|$)/.test(document.body.className)) table = NAV_SPACE;
+    return (table[langue] || table.fr).map(function (e) {
       var copie = { ico: e.ico, t: e.t, s: e.s, href: e.href };
       /* Un lien vers soi AVEC parametre est une action et non une navigation :
          « Reserver un espace » ouvre la feuille depuis l'accueil, il ne s'y
          marque donc pas comme page courante. */
-      copie.courant = e.href.indexOf('?') === -1 && e.href === page;
+      copie.courant = !!e.href && e.href.indexOf('?') === -1 && e.href === page;
       return copie;
     });
   }
@@ -705,10 +889,12 @@
     var getSections = opts.getSections || function () { return []; };
     var toastNu = opts.toastNu || function () { return ''; };
     var toastVerbe = opts.toastVerbe || function (l, v) { return v; };
-    var verbes = opts.verbes || { plan: 'Plan', roots: 'Roots', roam: 'Roam' };
+    var verbes = opts.verbes || { space: 'Space', roots: 'Roots', roam: 'Roam' };
     var onVerbe = opts.onVerbe || null;
 
     var toastTimer = null;
+    var toastArme = false;
+    var TOAST_TENUE = 2600;
     function toast(msg) {
       var el = document.getElementById('toast');
       if (!el) return;
@@ -719,18 +905,34 @@
       if (!msg) return;
       el.textContent = msg;
       el.classList.add('visible');
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(function () { el.classList.remove('visible'); }, 2600);
+      /* Le decompte se suspend tant que le pointeur tient l'annonce et repart
+         ENTIER au depart : ce qu'on est en train de lire ne se retire pas sous
+         les yeux. Le pointeur seul — l'annonce ne prend pas le foyer et
+         n'entre pas dans le parcours au clavier ; sur une surface sans survol
+         la feuille ne lui rend pas le pointeur, et le decompte court.
+         Les ecouteurs se posent une fois : l'element est unique et permanent,
+         en reposer a chaque annonce en empilerait autant que d'annonces. */
+      if (!toastArme) {
+        toastArme = true;
+        el.addEventListener('pointerenter', function () { clearTimeout(toastTimer); });
+        el.addEventListener('pointerleave', function () { armerToast(el); });
+      }
+      armerToast(el);
     }
 
-    /* Pastille Mi/NU : elle s'étire à l'ouverture et la barre passe en
-       « deploie », ce qui efface le reste du chrome le temps du choix.
-       À la fermeture, le reste du chrome ne revient qu'une fois la pastille
-       repliée — rendu ensemble, les deux se chevauchent le temps de la
-       transition. */
+    function armerToast(el) {
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(function () { el.classList.remove('visible'); }, TOAST_TENUE);
+    }
+
+    /* Pastille Mi/NU : elle s'étire à l'ouverture et, quand elle VIT DANS LA
+       BARRE, la barre passe en « deploie », ce qui efface le reste du chrome
+       le temps du choix ; à la fermeture, le reste ne revient qu'une fois la
+       pastille repliée. Déplacée hors de la barre — au tiroir —, elle ne
+       parle plus qu'à sa propre rangée : son porteur se relit à CHAQUE geste,
+       jamais retenu d'un état ancien. */
     var marque = document.getElementById('marque');
     if (marque) {
-      var inner = marque.closest('.chrome-inner');
       var sw = document.getElementById('switchMode');
       var nu = marque.querySelector('.nu');
       var repli = null;
@@ -738,6 +940,7 @@
         && matchMedia('(prefers-reduced-motion: reduce)').matches;
       var ouvrir = function (v) {
         marque.classList.toggle('ouvert', v);
+        var inner = marque.closest('.chrome-inner');
         if (!inner) return;
         clearTimeout(repli);
         if (v || calme) {
@@ -751,6 +954,7 @@
       marque.addEventListener('transitionend', function (e) {
         if (e.propertyName !== 'max-width') return;
         clearTimeout(repli);
+        var inner = marque.closest('.chrome-inner');
         if (inner && !marque.classList.contains('ouvert')) inner.classList.remove('deploie');
       });
       marque.addEventListener('click', function (e) {
@@ -764,20 +968,83 @@
     }
 
     var superNav = document.getElementById('superNav');
+    /* Chaque verbe porte sa legende : sous l'icone quand la barre tient le
+       bas, a droite quand elle est montee. Le nom du bouton devient son texte
+       visible — une etiquette cachee qui dirait autre chose ferait diverger
+       ce qu'on lit de ce qu'on entend. La legende suit la langue. */
+    var LEGENDES = {
+      space: { fr: 'Organiser', en: 'Plan' },
+      roots: { fr: 'Connecter', en: 'Connect' },
+      roam:  { fr: 'Voyager',   en: 'Discover' }
+    };
+    function poserLegendes() {
+      if (!superNav) return;
+      Array.prototype.forEach.call(superNav.querySelectorAll('.verbe'), function (b) {
+        var l = LEGENDES[b.dataset.verbe];
+        if (!l) return;
+        var dit = b.querySelector('.verbe-dit');
+        if (!dit) {
+          dit = document.createElement('span');
+          dit.className = 'verbe-dit';
+          b.appendChild(dit);
+          b.removeAttribute('aria-label');
+        }
+        dit.textContent = l[getLangue()] || l.fr;
+      });
+    }
+    poserLegendes();
+    /* Un univers qui a son ecran est une destination, pas une promesse. Un
+       bouton marque dormant reste une annonce : c'est le balisage de la page,
+       et lui seul, qui decide si la destination existe pour elle. */
+    var DESTINATION = { roots: 'index.html', roam: 'roam.html', space: 'space.html' };
+    /* Le verbe Organiser a DEUX ecrans, et l'arbitrage se rend ICI, une
+       fois : l'outil pour qui porte une session, la couverture pour qui n'en
+       porte pas. Chaque appel relit l'etat au moment du geste — un etat lu
+       une fois au chargement mentirait des la premiere connexion — et tous
+       les porteurs du verbe en heritent sans en savoir un mot. */
+    function destinationDe(v) {
+      if (v === 'space'
+          && !(global.Roots.db && global.Roots.db.estConnecte && global.Roots.db.estConnecte())) {
+        return 'onboard.html';
+      }
+      return DESTINATION[v];
+    }
+    /* L'univers d'un ecran est celui de sa classe de corps — une page
+       satellite peut le recevoir a l'ouverture. Le chrome suit cette classe,
+       et elle seule : le verbe de l'univers porte l'etat actif, le logotype
+       central dit le meme univers et mene a son ecran. L'etat de page courante
+       ne se pose pas ici : il appartient au balisage de l'ecran qui EST la
+       destination ; il se retire seulement d'un verbe d'un AUTRE univers,
+       sans quoi ce verbe remonterait la page au lieu d'y mener. */
+    function poserUnivers() {
+      var u = (document.body.className.match(/\bp-(roam|space)\b/) || [null, 'roots'])[1];
+      var titre = document.querySelector('.chrome-titre');
+      if (titre && DESTINATION[u]) {
+        /* Un ecran qui EST un module de son univers nomme ce module sur le
+           corps ; le nom de surface le porte alors, et le lien continue de
+           mener a l'ecran d'accueil de l'univers. Sans cette lecture, tout
+           ecran voulant son propre nom devrait le reecrire APRES le chrome —
+           et le perdrait a chaque repose du nav. */
+        titre.textContent = document.body.dataset.module || verbes[u];
+        titre.setAttribute('href', destinationDe(u));
+      }
+      if (superNav) Array.prototype.forEach.call(superNav.querySelectorAll('.verbe'), function (b) {
+        var sien = b.dataset.verbe === u;
+        b.classList.toggle('actif', sien);
+        if (!sien) b.removeAttribute('aria-current');
+      });
+    }
+    poserUnivers();
     if (superNav) superNav.addEventListener('click', function (e) {
       var b = e.target.closest('.verbe'); if (!b) return;
       var v = b.dataset.verbe;
       if (onVerbe && onVerbe(v, b)) return;
 
-      /* Un univers qui a son ecran est une destination, pas une promesse : le
-         verbe y mene, sauf quand on y est deja — le bouton porte alors
-         aria-current et remonte la page. Un bouton marque dormant reste une
-         annonce : c'est le balisage de la page, et lui seul, qui decide si la
-         destination existe pour elle. */
-      var DESTINATION = { roots: 'index.html', roam: 'roam.html', plan: 'plan.html' };
+      /* Le verbe mene a son ecran, sauf quand on y est deja — le bouton porte
+         alors aria-current et remonte la page. */
       if (DESTINATION[v] && b.getAttribute('aria-disabled') !== 'true') {
         if (b.getAttribute('aria-current') === 'true') { global.scrollTo({ top: 0, behavior: 'smooth' }); return; }
-        global.location.assign(DESTINATION[v]);
+        global.location.assign(destinationDe(v));
         return;
       }
       toast(toastVerbe(getLangue(), verbes[v]));
@@ -808,34 +1075,97 @@
     var minuteurNav = null;
     function replacerNav() {
       clearTimeout(minuteurNav);
-      minuteurNav = setTimeout(function () { ajusterNav(radio); }, 120);
+      minuteurNav = setTimeout(function () {
+        /* Le clavier qui se leve EST un redimensionnement : rearbitrer la
+           barre pendant qu'on ecrit dedans defait et refait le champ, le
+           foyer tombe et le clavier se referme aussitot. Tant que le foyer
+           vit dans la barre, l'arbitrage attend ; il repart au
+           redimensionnement suivant, que la fermeture du clavier declenche. */
+        var foyer = document.activeElement;
+        if (foyer && (foyer.tagName === 'INPUT' || foyer.tagName === 'TEXTAREA')
+            && foyer.closest('.chrome-inner')) return;
+        ajusterNav(radio);
+      }, 120);
     }
     window.addEventListener('resize', replacerNav);
     window.addEventListener('orientationchange', replacerNav);
     ajusterNav(radio);
+    /* La barre ne se montre qu'ARBITREE SUR LES BONNES FONTES : mesuree sur
+       les fontes de substitution, la promotion se refuse a tort — le nav
+       parait au bas puis saute en haut, et la traversee d'univers fond vers
+       un chrome faux. Fontes deja la (navigation chaude) : le rideau se leve
+       dans le meme tour. Sinon : a leur arrivee, borne court — un rideau qui
+       attend le reseau retiendrait la page entiere. */
+    function leverLeRideau() {
+      if (document.body.classList.contains('nav-pret')) return;
+      ajusterNav(radio);
+      document.body.classList.add('nav-pret');
+    }
+    if (document.fonts && document.fonts.status !== 'loaded') {
+      document.fonts.ready.then(leverLeRideau);
+      setTimeout(leverLeRideau, 600);
+    } else {
+      document.body.classList.add('nav-pret');
+    }
 
     function dessinerSections() {
       /* Les libelles du chrome suivent la meme bascule que la liste : chaque
          ecran rappelle deja cette fonction au changement de langue. */
       poserLibelles(getLangue());
+      poserLegendes();
       if (radio) radio.dire();
       ajusterNav(radio);
       var cont = document.getElementById('sections');
       if (!cont) return;
       var liste = getSections(getLangue()) || [];
+      /* Ce que la barre a pose dans le tiroir se retire avant que la liste ne
+         se redessine, et se repose avant le pied — un element detruit perd ses
+         ecouteurs, un element deplace les garde. La rangee du bas voyage
+         ENTIERE : la vider de ses occupants les detacherait du document. */
+      var rangRadio = cont.querySelector('.tiroir-radio');
+      if (rangRadio) rangRadio.parentNode.removeChild(rangRadio);
+      var ilotRadio = document.getElementById('languetteRadio');
+      if (ilotRadio && !ilotRadio.closest('.menu-pop')) ilotRadio = null;
       cont.innerHTML = '';
       liste.forEach(function (s) {
-        var a = document.createElement('a');
-        a.className = 'lien-section';
-        a.href = s.href;
+        var a = document.createElement(s.href ? 'a' : 'span');
+        a.className = 'lien-section' + (s.href ? '' : ' dormant');
+        if (s.href) a.href = s.href;
+        /* Une entree du tiroir ne porte que son titre : la description
+           redirait ce que la section dit elle-meme en arrivant. */
         a.innerHTML = '<span class="ico"><svg class="i"><use href="#' + s.ico + '"/></svg></span>' +
-          '<span class="txt"><span class="t"></span><small></small></span>' +
-          '<svg class="i fleche"><use href="#i-chevron"/></svg>';
+          '<span class="txt"><span class="t"></span></span>' +
+          (s.href ? '<svg class="i fleche"><use href="#i-chevron"/></svg>' : '');
         a.querySelector('.t').textContent = s.t;
-        a.querySelector('small').textContent = s.s;
         if (s.courant) { a.classList.add('courant'); a.setAttribute('aria-current', 'page'); }
+        /* Une ancre reste sur la page : le tiroir se referme, puis le geste
+           va lui-meme a sa section. Laisser l'ancre naviguer d'elle-meme la
+           met en course avec le retour que la fermeture du tiroir consomme —
+           quand ce retour gagne, la page ne bouge pas. */
+        if (s.href && s.href.charAt(0) === '#') a.addEventListener('click', function (e) {
+          e.preventDefault();
+          var but = document.getElementById(s.href.slice(1));
+          /* Le retour d'historique de la fermeture RESTAURE le defilement de
+             l'entree precedente : aller au but avant qu'il n'aboutisse serait
+             aussitot defait. On y va donc apres lui — et a defaut d'entree a
+             consommer, apres une courte pose. */
+          var fait = false;
+          var aller = function () {
+            if (fait || !but) return;
+            fait = true;
+            but.scrollIntoView({ block: 'start' });
+          };
+          window.addEventListener('popstate', function une() {
+            window.removeEventListener('popstate', une);
+            setTimeout(aller, 0);
+          });
+          setTimeout(aller, 250);
+          fermerMenu();
+        });
         cont.appendChild(a);
       });
+      if (rangRadio) cont.appendChild(rangRadio);
+      else if (ilotRadio) cont.appendChild(ilotRadio);
       /* La politique ferme le menu, en second niveau : une ligne soulignee,
          pas une entree de navigation. Son etiquette reprend mot pour mot celle
          que les notices de consentement emploient pour la designer ; s'en
@@ -865,7 +1195,7 @@
         pied.appendChild(point);
       }
       var lien = document.createElement('a');
-      lien.href = 'confidentialite.html';
+      lien.href = adresseConfidentialite();
       lien.textContent = POLITIQUE[getLangue()] || POLITIQUE.fr;
       if (ici() === 'confidentialite.html') {
         lien.classList.add('courant');
@@ -874,6 +1204,17 @@
       pied.appendChild(lien);
       cont.appendChild(pied);
     }
+
+    /* La politique s'ouvre dans l'univers d'ou l'on vient : l'adresse porte le
+       monde, et la page le lit. Le tronc adresse aussi les liens ecrits dans
+       les pages — aucun ecran n'a a le savoir. */
+    function adresseConfidentialite() {
+      var m = document.body.className.match(/(?:^|\s)p-(roam|space)(?:\s|$)/);
+      return 'confidentialite.html' + (m ? '?monde=' + m[1] : '');
+    }
+    Array.prototype.forEach.call(
+      document.querySelectorAll('a[href="confidentialite.html"]'),
+      function (a) { a.setAttribute('href', adresseConfidentialite()); });
     dessinerSections();
 
     return { toast: toast, dessinerSections: dessinerSections, fermerMenu: fermerMenu };
@@ -1127,6 +1468,45 @@
              element: enveloppe, estOuvert: function () { return ouvert; } };
   }
 
+  /* LE RETOUR, CLAVIER LEVE, NE FERME QUE LE CLAVIER. Quand la saisie a le
+     foyer et que la fenetre visible est rognee — le clavier virtuel occupe le
+     bas —, un retour qui demonterait la couche jetterait ce qui est tape.
+     On rend donc le foyer, on repose l'entree d'historique consommee, et la
+     couche ne bouge pas ; le retour suivant suit la logique des couches.
+     Sur un ecran sans clavier virtuel, la fenetre n'est pas rognee et ce
+     garde-fou ne prend jamais la main. */
+  function retourAuClavier() {
+    var e = document.activeElement;
+    if (!e || (e.tagName !== 'INPUT' && e.tagName !== 'TEXTAREA')) return false;
+    var vv = window.visualViewport;
+    if (!vv || vv.height >= window.innerHeight - 80) return false;
+    e.blur();
+    try { history.pushState(history.state, ''); } catch (er) {}
+    return true;
+  }
+
+  /* UNE MODALE FIGE LA PAGE SOUS ELLE. Sans verrou, un geste pose sur le
+     voile ou sur une marge fait defiler le document sous la feuille : la
+     scene derriere bouge, la feuille non — deux mondes glissent l'un sur
+     l'autre. Le verrou se compte : deux couches ouvertes ne se rendent la
+     page qu'une fois toutes deux fermees. La compensation de gouttiere
+     retient la largeur que la barre de defilement occupait : sans elle, la
+     page saute d'un cran a chaque ouverture sur les ecrans a barre. */
+  var verrousDePage = 0;
+  function figerLaPage() {
+    verrousDePage++;
+    if (verrousDePage > 1) return;
+    var gouttiere = window.innerWidth - document.documentElement.clientWidth;
+    if (gouttiere > 0) document.body.style.paddingRight = gouttiere + 'px';
+    document.body.classList.add('page-figee');
+  }
+  function rendreLaPage() {
+    verrousDePage = Math.max(0, verrousDePage - 1);
+    if (verrousDePage) return;
+    document.body.style.paddingRight = '';
+    document.body.classList.remove('page-figee');
+  }
+
   function modale(hote, opts) {
     opts = opts || {};
     var cle = opts.cle || (hote.id || 'modale');
@@ -1142,6 +1522,7 @@
       if (ouverte) return;
       ouverte = true;
       precedent = document.activeElement;
+      figerLaPage();
       if (opts.montrer) opts.montrer();
       /* pushState echoue sur un fichier ouvert depuis le disque : on degrade
          sans bruit, le reste du comportement tient. */
@@ -1153,6 +1534,7 @@
     function fermer(parHistorique) {
       if (!ouverte) return;
       ouverte = false;
+      rendreLaPage();
       if (opts.cacher) opts.cacher();
       if (pousse && !parHistorique) { try { history.back(); } catch (e) {} }
       pousse = false;
@@ -1179,6 +1561,7 @@
     window.addEventListener('popstate', function () {
       if (!ouverte) return;
       if (popConsommeParCouche()) return;
+      if (retourAuClavier()) return;
       fermer(true);
     });
 
@@ -1262,6 +1645,27 @@
      sous le bandeau lit --chrome-haut-h ; sans elle, l'element passe
      DERRIERE le bandeau, qui est collant et d'un rang superieur.
      ------------------------------------------------------------------ */
+  /* La barre BASSE publie sa hauteur rendue, comme la haute. Ce qui se cale
+     au-dessus d'elle en depend, et cette hauteur n'est pas ecrivable : elle
+     varie avec le retrait du systeme et avec la forme que prend la barre.
+     Elle vaut zero quand la barre monte dans l'en-tete. */
+  function publierHauteurBasse() {
+    var b = document.querySelector('.chrome-bas');
+    if (!b) return;
+    function poser() {
+      var monte = document.body.classList.contains('nav-haut');
+      document.documentElement.style.setProperty('--chrome-bas-h',
+        (monte ? 0 : Math.ceil(b.getBoundingClientRect().height)) + 'px');
+    }
+    poser();
+    if (window.ResizeObserver) new ResizeObserver(poser).observe(b);
+    window.addEventListener('resize', poser);
+    if (window.MutationObserver) {
+      new MutationObserver(poser).observe(document.body,
+        { attributes: true, attributeFilter: ['class'] });
+    }
+  }
+
   function publierHauteurChrome() {
     var h = document.querySelector('.chrome-haut');
     if (!h) return;
@@ -1395,6 +1799,7 @@
 
   window.addEventListener('load', function () {
     publierHauteurChrome();
+  publierHauteurBasse();
     feuilleGlissante();
     accrocherGestesDuCode();
   });
@@ -1488,7 +1893,20 @@
   global.Roots.poserLibelles = poserLibelles;
   global.Roots.copier = copier;
   global.Roots.cartel = cartel;
+  /* La hauteur rendue de la barre, re-publiable par l'ecran : habiller une
+     piece de la barre hors du cycle d'arbitrage change ce que la feuille de
+     style doit lire. */
+  global.Roots.mesurerChrome = function () {
+    var barre = document.querySelector('.chrome-inner');
+    var haut = document.querySelector('.chrome-haut');
+    if (barre && haut) publierHauteur(barre, haut);
+  };
   global.Roots.modale = modale;
+  global.Roots.retourAuClavier = retourAuClavier;
+  /* Le verrou de page s'exporte pour les feuilles qu'un ecran ouvre par son
+     propre appareil : meme verrou, meme compte, jamais un second mecanisme. */
+  global.Roots.figerLaPage = figerLaPage;
+  global.Roots.rendreLaPage = rendreLaPage;
   global.Roots.blocFacturation = blocFacturation;
   global.Roots.langueRetenue = langueRetenue;
   global.Roots.retenirLangue = retenirLangue;
@@ -1823,8 +2241,22 @@
   function accorderInerte(feuille) {
     var ouverte = feuille.classList.contains(CLASSE_OUVERTE);
     if (ouverte === !feuille.hasAttribute('inert')) return;
-    if (ouverte) feuille.removeAttribute('inert');
-    else feuille.setAttribute('inert', '');
+    if (ouverte) {
+      feuille.removeAttribute('inert');
+      /* Le foyer entre dans la feuille A L'OUVERTURE. Un script qui ouvre et
+         focalise dans le meme geste echoue : l'inertie ne tombe qu'apres son
+         tour. La garantie se pose donc ici, une fois l'inertie levee — et
+         seulement si le foyer n'est pas deja dedans. */
+      var actif = document.activeElement;
+      var saisitDeja = actif && (actif.tagName === 'INPUT' || actif.tagName === 'TEXTAREA');
+      /* Une saisie active hors de la feuille n'est jamais un foyer perdu :
+         un appareil peut ouvrir la feuille depuis son propre champ — la
+         garantie ne le lui arrache pas. */
+      if (!feuille.contains(actif) && !saisitDeja) {
+        var premier = feuille.querySelector('input:not([hidden]),select,textarea,button:not(.fermer),[tabindex]');
+        if (premier && premier.focus) { try { premier.focus(); } catch (e) {} }
+      }
+    } else feuille.setAttribute('inert', '');
   }
 
   function poserInerte() {
