@@ -155,10 +155,22 @@
         a.textContent = d[e[1]];
         rang.appendChild(a);
       });
-      var titreAp = document.createElement('span');
+      var titreAp = document.createElement('button');
+      titreAp.type = 'button';
       titreAp.className = 'site-tiroir-apropos';
-      titreAp.dataset.ts = 'navAPropos';
-      titreAp.textContent = d.navAPropos;
+      titreAp.setAttribute('aria-expanded', 'false');
+      var motAp = document.createElement('span');
+      motAp.dataset.ts = 'navAPropos';
+      motAp.textContent = d.navAPropos;
+      titreAp.appendChild(motAp);
+      titreAp.insertAdjacentHTML('beforeend',
+        '<svg class="i site-chevron" aria-hidden="true"><use href="#i-chevron"/></svg>');
+      titreAp.addEventListener('click', function () {
+        var ouvert = rang.hasAttribute('data-ouvert');
+        if (ouvert) rang.removeAttribute('data-ouvert');
+        else rang.setAttribute('data-ouvert', '');
+        titreAp.setAttribute('aria-expanded', ouvert ? 'false' : 'true');
+      });
       rang.appendChild(titreAp);
       var sous = document.createElement('div');
       sous.className = 'site-sous';

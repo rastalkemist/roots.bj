@@ -18,7 +18,21 @@
 body.p-site{--part:calc(var(--part-rouge,0) * 100%);
   --jauge:linear-gradient(to top,var(--rouge-e2) var(--part),var(--roots-vert) var(--part))}
 body.p-site .chrome-titre,body.p-site .site-nom.actif{background-image:var(--jauge);-webkit-background-clip:text;background-clip:text;color:transparent}
-body.p-site #marque{background:var(--jauge)}
+/* Le tronc borde la pastille d'un liseré de son univers et l'assoit sur une
+   ombre de la même teinte : sur un disque qui se remplit, ce liseré resterait
+   rouge dans la zone verte. Il tombe — un dégradé ne se borde pas d'une seule
+   couleur —, et l'ombre suit la jauge par deux couches dont les opacités
+   s'échangent sur la même grandeur. */
+/* Le voile que le tiroir jette sur l'ecran prend la teinte d'ombre de
+   l'univers du corps — le rouge — alors que le haut de page parle vert. Il
+   suit la meme grandeur que le reste de la barre : deux couches, l'une
+   s'efface pendant que l'autre parait. */
+body.p-site .voile{background:
+  rgba(var(--vert-e1-rgb),calc(.5 * (1 - var(--part-rouge,0)))),
+  rgba(var(--rouge-e1-rgb),calc(.5 * var(--part-rouge,0)))}
+body.p-site #marque{background:var(--jauge);
+  box-shadow:0 3px 10px rgba(var(--vert-e1-rgb),calc(.30 * (1 - var(--part-rouge,0)))),
+             0 3px 10px rgba(var(--rouge-e1-rgb),calc(.30 * var(--part-rouge,0)))}
 
 /* ---- LA BARRE DU SITE. Trois zones sur grand écran : la marque à gauche —
    l'ankh et son nom —, la quête au centre, les cinq noms et la pastille à
@@ -75,12 +89,12 @@ body.p-site #marque .reste{display:none}
 body.p-site #marque{cursor:pointer}
 @media(max-width:1023.98px){body.p-site .chrome-droite #marque{display:none}}
 
-/* ---- L'ACCUEIL FILMÉ. Barre comprise, la scène tient neuf dixièmes de la
+/* ---- L'ACCUEIL FILMÉ. Barre comprise, la scène tient 85 % de la
    fenêtre : le dixième restant montre qu'il y a une suite. L'affiche porte
    l'image tant que le film n'a pas le droit de partir. ---- */
 /* La scene est la premiere piece du corps et colle sous la barre : elle rend
    le cran d'air que le corps Roam pose au-dessus de sa matiere. */
-.site-accueil{position:relative;min-height:calc(90svh - var(--entete-h-rendue,64px));display:grid;place-items:center;overflow:hidden;margin:calc(-1 * var(--air-i3)) calc(50% - 50vw) var(--air-i6)}
+.site-accueil{position:relative;min-height:calc(85svh - var(--entete-h-rendue,64px));display:grid;place-items:center;overflow:hidden;margin:calc(-1 * var(--air-i3)) calc(50% - 50vw) var(--air-i6)}
 .site-scene,.site-film{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .site-film{opacity:0;transition:opacity var(--mvt-long) var(--courbe-etat)}
 .site-film.joue{opacity:1}
@@ -127,6 +141,12 @@ body.p-site #sections .pied-politique{order:3}
 .site-tiroir a,.site-tiroir .site-tiroir-apropos,.site-tiroir .site-apropos-ligne{color:var(--encre);text-decoration:none;font-weight:var(--w-bold);min-height:calc(var(--air-i4) + var(--esp-2));display:flex;align-items:center;justify-content:flex-end;text-align:right;white-space:normal;padding:0}
 .site-tiroir a{width:100%}
 .site-tiroir a.actif{color:var(--univers-e3)}
+/* Dans le feuillet, le déroulant se replie derrière son chevron comme dans la
+   barre : le sous-menu ne paraît qu'ouvert, et le chevron dit l'état. */
+.site-tiroir .site-tiroir-apropos{border:none;background:none;padding:0;cursor:pointer;font-family:inherit;font-size:inherit;gap:var(--esp-1)}
+.site-tiroir .site-sous{max-height:0;overflow:hidden;transition:max-height var(--mvt-parcours) var(--courbe-entree)}
+.site-tiroir[data-ouvert] .site-sous{max-height:280px}
+.site-tiroir[data-ouvert] .site-chevron{transform:rotate(-90deg)}
 /* Le retrait du sous-menu est un demi-cran : la parente se lit deja a la
    graisse, la tabulation n'a pas a la redire. */
 .site-tiroir .site-sous{margin:0 var(--esp-2) 0 0;display:flex;flex-direction:column;align-items:flex-end}
