@@ -17,12 +17,18 @@
 :root{--part-rouge:0}
 body.p-site{--part:calc(var(--part-rouge,0) * 100%);
   --jauge:linear-gradient(to top,var(--rouge-e2) var(--part),var(--roots-vert) var(--part));
-  --jauge-e4:linear-gradient(to top,var(--rouge-e4) var(--part),var(--vert-e4) var(--part));
+  --jauge-e3:linear-gradient(to top,var(--rouge-e3) var(--part),var(--vert-e3) var(--part));
   --jauge-e1:linear-gradient(to top,var(--rouge-e1) var(--part),var(--vert-e1) var(--part))}
 /* Le nom de la maison ne suit aucun univers : il est noir Roots, toujours.
    Seul le mot de la section en vue se remplit avec la jauge. */
-body.p-site .chrome-titre{color:var(--roots-noir)}
-body.p-site .site-nom.actif{background-image:var(--jauge);-webkit-background-clip:text;background-clip:text;color:transparent}
+/* Sur la scène, la barre entière parle blanc : rien n'a de fond derrière soi,
+   et une encre unique tient l'ensemble. Revenue sur son fond plein, elle
+   reprend le noir de la maison et la jauge du mot de section. */
+body.p-site .chrome-titre,body.p-site .site-nom,body.p-site .chrome-burger,body.p-site .ankh-home{color:var(--blanc)}
+body.p-site.sur-fond .chrome-titre{color:var(--roots-noir)}
+body.p-site.sur-fond .site-nom{color:var(--encre)}
+body.p-site.sur-fond .chrome-burger{background-image:var(--jauge);-webkit-background-clip:text;background-clip:text;color:transparent}
+body.p-site.sur-fond .site-nom.actif{background-image:var(--jauge);-webkit-background-clip:text;background-clip:text;color:transparent}
 /* Le tronc borde la pastille d'un liseré de son univers et l'assoit sur une
    ombre de la même teinte : sur un disque qui se remplit, ce liseré resterait
    rouge dans la zone verte. Il tombe — un dégradé ne se borde pas d'une seule
@@ -33,8 +39,8 @@ body.p-site .site-nom.actif{background-image:var(--jauge);-webkit-background-cli
    suit la meme grandeur que le reste de la barre : deux couches, l'une
    s'efface pendant que l'autre parait. */
 body.p-site .voile{background:
-  rgba(var(--vert-e1-rgb),calc(.5 * (1 - var(--part-rouge,0)))),
-  rgba(var(--rouge-e1-rgb),calc(.5 * var(--part-rouge,0)))}
+  linear-gradient(rgba(var(--rouge-e1-rgb),calc(.5 * var(--part-rouge,0))),rgba(var(--rouge-e1-rgb),calc(.5 * var(--part-rouge,0)))),
+  linear-gradient(rgba(var(--vert-e1-rgb),calc(.5 * (1 - var(--part-rouge,0)))),rgba(var(--vert-e1-rgb),calc(.5 * (1 - var(--part-rouge,0)))))}
 body.p-site #marque{background:var(--jauge);
   box-shadow:0 3px 10px rgba(var(--vert-e1-rgb),calc(.30 * (1 - var(--part-rouge,0)))),
              0 3px 10px rgba(var(--rouge-e1-rgb),calc(.30 * var(--part-rouge,0)))}
@@ -49,6 +55,7 @@ body.p-site #marque{background:var(--jauge);
 .site-noms{display:none}
 @media(max-width:1023.98px){body.p-site .chrome-inner>.chrome-titre{display:none}}
 @media(min-width:1024px){
+  body.p-site .chrome-titre{font-size:var(--t-16)}
   body.p-site .chrome-inner{display:flex;align-items:center;gap:var(--esp-4);width:min(92%,1200px)}
   body.p-site .chrome-inner>.quete-groupe{margin-inline:auto}
   body.p-site .chrome-inner>.site-noms{order:1}
@@ -60,7 +67,7 @@ body.p-site #marque{background:var(--jauge);
   .site-nom{display:inline-flex;align-items:center;gap:var(--esp-1);min-height:var(--cible-min);max-width:220px;border:none;background:none;padding:0;cursor:pointer;font-family:var(--font-corps);font-weight:var(--w-bold);font-size:var(--t-body);color:var(--encre);text-decoration:none;transition:color var(--mvt-ample) var(--courbe-etat),max-width var(--mvt-ample) var(--courbe-etat),margin var(--mvt-ample) var(--courbe-etat),opacity var(--mvt-ample) var(--courbe-etat)}
   /* Le survol et l'appui prennent la meme jauge, aux echelons voisins : aucun
      etat du nav ne parle un univers que le haut de page ne porte pas. */
-  .site-nom:hover{background-image:var(--jauge-e4);-webkit-background-clip:text;background-clip:text;color:transparent}
+  body.p-site.sur-fond .site-nom:hover{background-image:var(--jauge-e3);-webkit-background-clip:text;background-clip:text;color:transparent}
   .site-nom:active{background-image:var(--jauge-e1);-webkit-background-clip:text;background-clip:text;color:transparent}
   /* Des le premier defilement, les quatre mots d'ancre se rangent : seuls
      demeurent celui de la section en vue — au troisieme echelon de son
@@ -70,6 +77,12 @@ body.p-site #marque{background:var(--jauge);
   /* Le deroulant des sections porte le nom de celle qui est en vue ; les
      quatre autres vivent dans son panneau, comme celles d'A propos. */
   .site-apropos-menu a.site-apropos-ligne{text-decoration:none}
+  /* Chaque nom du déroulant s'éclaire dans l'univers vers lequel il mène :
+     l'accueil appartient au Roots, le reste de la page au Roam. */
+  .site-apropos-menu a[data-cible="connecter"]:hover{color:var(--vert-e3)}
+  .site-apropos-menu a[data-cible="sejourner"]:hover,
+  .site-apropos-menu a[data-cible="decouvrir"]:hover,
+  .site-apropos-menu a[data-cible="infos"]:hover{color:var(--rouge-e3)}
   .site-apropos-menu a.site-apropos-ligne.actif{font-weight:var(--w-bold)}
 }
 /* Le mot du bouton porte la jauge par un fond decoupe au texte, ce qui rend
@@ -95,11 +108,11 @@ body.p-site #marque{background:var(--jauge);
 /* Chaque maison paraît dans sa propre couleur, au deuxième échelon de sa rampe.
    La famille jaune ne porte jamais d'encre claire seule : elle se cerne de noir,
    comme le veut la rampe. */
-.site-apropos-ligne .tiret-mot{opacity:0;max-width:0;overflow:hidden;white-space:nowrap;margin-inline-start:var(--esp-1);transition:opacity var(--mvt-ample) var(--courbe-entree),max-width var(--mvt-ample) var(--courbe-entree)}
-.site-apropos-ligne[data-maison="roots"] .tiret-mot{color:var(--vert-e2)}
-.site-apropos-ligne[data-maison="cafe"] .tiret-mot{color:var(--terre-e2)}
-.site-apropos-ligne[data-maison="nu"] .tiret-mot{color:var(--jaune-e2);text-shadow:1px 0 0 var(--roots-noir),-1px 0 0 var(--roots-noir),0 1px 0 var(--roots-noir),0 -1px 0 var(--roots-noir),.7px .7px 0 var(--roots-noir),-.7px .7px 0 var(--roots-noir),.7px -.7px 0 var(--roots-noir),-.7px -.7px 0 var(--roots-noir)}
-.site-apropos-ligne[data-maison="reseau"] .tiret-mot{color:var(--rouge-e2)}
+.site-apropos-ligne .tiret-mot{opacity:0;max-width:0;overflow:hidden;white-space:nowrap;margin-inline-end:var(--esp-1);transition:opacity var(--mvt-ample) var(--courbe-entree),max-width var(--mvt-ample) var(--courbe-entree)}
+.site-apropos-ligne[data-maison="roots"] .tiret-mot{color:var(--vert-e3)}
+.site-apropos-ligne[data-maison="cafe"] .tiret-mot{color:var(--terre-e3)}
+.site-apropos-ligne[data-maison="nu"] .tiret-mot{color:var(--jaune-e3);text-shadow:1px 0 0 var(--roots-noir),-1px 0 0 var(--roots-noir),0 1px 0 var(--roots-noir),0 -1px 0 var(--roots-noir),.7px .7px 0 var(--roots-noir),-.7px .7px 0 var(--roots-noir),.7px -.7px 0 var(--roots-noir),-.7px -.7px 0 var(--roots-noir)}
+.site-apropos-ligne[data-maison="reseau"] .tiret-mot{color:var(--rouge-e3)}
 .site-apropos-ligne:hover .tiret-mot,.site-apropos-ligne:focus-within .tiret-mot{opacity:1;max-width:220px}
 @media(prefers-reduced-motion:reduce){.site-apropos-ligne .tiret-mot{opacity:1;max-width:220px}}
 
@@ -119,8 +132,8 @@ body.p-site #marque{cursor:pointer}
    tronc et la buée s'efface. ---- */
 body.p-site .chrome-haut{background:transparent;backdrop-filter:none;border-bottom-color:transparent;transition:background var(--mvt-ample) var(--courbe-etat),border-color var(--mvt-ample) var(--courbe-etat)}
 body.p-site .chrome-haut::after{content:'';position:absolute;inset:0 0 auto 0;z-index:-1;pointer-events:none;
-  height:calc(var(--entete-h-rendue,64px) * 2.6);
-  backdrop-filter:blur(16px);
+  height:calc(var(--entete-h-rendue,64px) * 1.3);
+  backdrop-filter:blur(26px) saturate(1.5) brightness(1.06);
   -webkit-mask-image:linear-gradient(to bottom,var(--noir) 0%,var(--noir) 34%,transparent 100%);
   mask-image:linear-gradient(to bottom,var(--noir) 0%,var(--noir) 34%,transparent 100%);
   transition:opacity var(--mvt-ample) var(--courbe-etat)}

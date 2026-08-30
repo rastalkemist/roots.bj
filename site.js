@@ -29,9 +29,14 @@
           apVision: 'The vision',
           titrePage: 'Roots Benin - Connect to the motherland' }
   };
+  /* La langue se lit comme le tronc la lit : la clé si elle existe, sinon la
+     langue du navigateur. Sans ce repli, la barre parlerait français pendant
+     que le reste de la page parle anglais. */
   function langue() {
-    try { return localStorage.getItem('roots.langue') === 'en' ? 'en' : 'fr'; }
-    catch (e) { return 'fr'; }
+    var pose = null;
+    try { pose = localStorage.getItem('roots.langue'); } catch (e) { pose = null; }
+    if (pose === 'en' || pose === 'fr') return pose;
+    return (navigator.language || 'fr').toLowerCase().indexOf('en') === 0 ? 'en' : 'fr';
   }
   function poserDits() {
     var d = DITS[langue()];
@@ -190,19 +195,19 @@
       rang.appendChild(titreAp);
       var sous = document.createElement('div');
       sous.className = 'site-sous';
-      [['apProjet', ' — Roots', 'roots'], ['apEquipe', ' — Roots Café', 'cafe'],
-       ['apCommunaute', ' — NU', 'nu'], ['apVision', ' — Roots Network', 'reseau']].forEach(function (e) {
+      [['apProjet', 'Roots — ', 'roots'], ['apEquipe', 'Roots Café — ', 'cafe'],
+       ['apCommunaute', 'NU — ', 'nu'], ['apVision', 'Roots Network — ', 'reseau']].forEach(function (e) {
         var l = document.createElement('span');
         l.className = 'site-apropos-ligne';
         l.dataset.maison = e[2];
         l.setAttribute('aria-disabled', 'true');
+        var maison = document.createElement('span');
+        maison.className = 'tiret-mot';
+        maison.textContent = e[1];
         var q = document.createElement('span');
         q.dataset.ts = e[0];
         q.textContent = d[e[0]];
-        var t = document.createElement('span');
-        t.className = 'tiret-mot';
-        t.textContent = e[1];
-        l.appendChild(q); l.appendChild(t);
+        l.appendChild(maison); l.appendChild(q);
         sous.appendChild(l);
       });
       rang.appendChild(sous);
@@ -254,6 +259,8 @@
         window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
       });
     }
+    var langueBtn = document.querySelector('.pied-politique .lien-langue');
+    var pied = langueBtn ? langueBtn.parentNode : null;
     var seuil = matchMedia('(min-width:1024px)');
     /* Une piece ne se deplace que si elle n'est pas deja chez son hote : sans
        cette garde, l'observateur qui surveille le bac se reveillerait sur son
@@ -267,8 +274,10 @@
       var centre = rangee ? rangee.querySelector('.centre') : null;
       if (!centre) return;
       if (seuil.matches) {
+        loger(langueBtn, droite, droite.firstChild);
         loger(marque, droite, burger);
       } else {
+        loger(langueBtn, pied, pied ? pied.firstChild : null);
         loger(marque, centre, centre ? centre.firstChild : null);
       }
     }
