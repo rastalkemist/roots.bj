@@ -78,7 +78,21 @@
         document.documentElement.style.setProperty('--part-rouge', part.toFixed(3));
         /* La barre quitte la buee et reprend son fond des que la scene a
            passe le cercle de la quete : un seul seuil, la meme grandeur. */
-        document.body.classList.toggle('sur-fond', part >= 1);
+        var surFond = part >= 1;
+        document.body.classList.toggle('sur-fond', surFond);
+        /* La quete appartient au monde du voyage : elle n'ouvre qu'une fois la
+           scene d'accueil passee, au meme seuil. Sur la scene, le geste focal
+           est seul a appeler — deux appels y compteraient l'un contre l'autre.
+           L'etat est celui du tronc ; la surface ne fait que le poser. */
+        var barre = document.querySelector('.chrome-inner');
+        if (barre) {
+          Array.prototype.forEach.call(
+            barre.querySelectorAll(':scope > .fab.quete, :scope > .quete-groupe'),
+            function (piece) {
+              if (surFond) piece.removeAttribute('data-retire');
+              else piece.setAttribute('data-retire', '');
+            });
+        }
       }
     }
     var calme = false;

@@ -2075,6 +2075,17 @@ body[data-surface="ambiante"].nav-haut .verbe{color:var(--blanc-casse)}
    un second bouton — deux portes vers une meme feuille divergent. */
 body.nav-quete .fab.quete{position:static;left:auto;bottom:auto;transform:none;z-index:auto;flex:1 1 auto;max-width:288px;min-width:44px;min-width:0;min-height:48px;padding:var(--esp-1) var(--esp-1) var(--esp-1) var(--esp-4);display:flex;align-items:center;justify-content:space-between;gap:var(--esp-3);background:var(--blanc);color:var(--encre-discrete);border:var(--limite-ep) solid var(--gris-service);border-radius:var(--rayon-pilule);font-family:var(--font-corps);font-weight:var(--w-medium);font-size:var(--t-sm);white-space:nowrap;overflow:hidden;box-shadow:0 2px 10px rgba(var(--ombre-teinte),.18);cursor:pointer}
 body.nav-quete .fab.quete:hover{box-shadow:0 4px 16px rgba(var(--ombre-teinte),.28)}
+/* La quete montee peut etre RETIREE par la surface qui la porte : un ecran peut
+   n'ouvrir le voyage qu'a partir d'un point de son parcours. La marque se pose
+   sur la piece que la barre tient — la pilule ou le groupe deploye, selon
+   l'etat —, et l'etat vaut pour les deux formes.
+
+   Retiree, elle s'efface et cesse d'etre atteinte, au doigt comme au clavier,
+   SANS quitter sa colonne : la barre garde sa composition, et le retour ne
+   deplace ni le logotype ni le groupe de droite. La visibilite attend la fin du
+   fondu pour tomber, et repart avec lui. */
+body.nav-quete .chrome-inner>.fab.quete,body.nav-quete .chrome-inner>.quete-groupe{transition:opacity var(--mvt-apparition) var(--courbe-etat)}
+body.nav-quete .chrome-inner>[data-retire]{opacity:0;visibility:hidden;pointer-events:none;transition:opacity var(--mvt-apparition) var(--courbe-etat),visibility 0s linear var(--mvt-apparition)}
 /* LE GROUPE DE QUETE. L'ecran qui porte l'appareil de quete habille sa pilule
    en groupe : le geste (le meme bouton, toujours), un champ de saisie qui ne
    parait qu'a la demande, et le disque a loupe devenu un bouton propre —
