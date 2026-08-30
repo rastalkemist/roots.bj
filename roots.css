@@ -1110,68 +1110,68 @@ body.page-figee{overflow:hidden}
 
 :where(body.p-accueil) main{position:relative;z-index:2;min-height:100vh}
 
-:where(body.p-accueil) .selecteur-espaces{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--esp-2)}
-:where(body.p-accueil) .option-espace{background:var(--gris-ilot);border:2px solid transparent;border-radius:var(--rayon-module);padding:var(--esp-3) var(--esp-1) var(--esp-2);text-align:center;cursor:pointer;font-family:var(--font-corps)}
-:where(body.p-accueil) .option-espace .ico{display:block;height:34px;margin-bottom:var(--air-i1)}
-:where(body.p-accueil) .option-espace .ico svg{height:34px;width:100%}
-:where(body.p-accueil) .option-espace .nom{font-size:var(--t-sm);font-weight:700;color:var(--encre);line-height:1.25}
-:where(body.p-accueil) .option-espace.actif{border-color:var(--univers);background:var(--univers-selection)}
-:where(body.p-accueil) .rangee-chips{display:flex;gap:var(--esp-2);flex-wrap:wrap}
-:where(body.p-accueil) .rangee-choix{display:flex;gap:var(--esp-3);align-items:flex-start}
-:where(body.p-accueil) .rangee-choix .col-creneaux{flex:0 0 65%;min-width:0}
-:where(body.p-accueil) .rangee-choix .col-personnes{flex:1 1 auto;min-width:0}
-:where(body.p-accueil) .rangee-choix .stepper{gap:var(--esp-3);flex-wrap:wrap}
+:where(#dialogue) .selecteur-espaces{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--esp-2)}
+:where(#dialogue) .option-espace{background:var(--gris-ilot);border:2px solid transparent;border-radius:var(--rayon-module);padding:var(--esp-3) var(--esp-1) var(--esp-2);text-align:center;cursor:pointer;font-family:var(--font-corps)}
+:where(#dialogue) .option-espace .ico{display:block;height:34px;margin-bottom:var(--air-i1)}
+:where(#dialogue) .option-espace .ico svg{height:34px;width:100%}
+:where(#dialogue) .option-espace .nom{font-size:var(--t-sm);font-weight:700;color:var(--encre);line-height:1.25}
+:where(#dialogue) .option-espace.actif{border-color:var(--univers);background:var(--univers-selection)}
+:where(#dialogue) .rangee-chips{display:flex;gap:var(--esp-2);flex-wrap:wrap}
+:where(#dialogue) .rangee-choix{display:flex;gap:var(--esp-3);align-items:flex-start}
+:where(#dialogue) .rangee-choix .col-creneaux{flex:0 0 65%;min-width:0}
+:where(#dialogue) .rangee-choix .col-personnes{flex:1 1 auto;min-width:0}
+:where(#dialogue) .rangee-choix .stepper{gap:var(--esp-3);flex-wrap:wrap}
 
-@media(max-width:380px){:where(body.p-accueil) .rangee-choix{display:block}
-:where(body.p-accueil) .rangee-choix .col-creneaux{width:auto}
-:where(body.p-accueil) .rangee-choix .col-personnes{width:auto}
+@media(max-width:380px){:where(#dialogue) .rangee-choix{display:block}
+:where(#dialogue) .rangee-choix .col-creneaux{width:auto}
+:where(#dialogue) .rangee-choix .col-personnes{width:auto}
 
-}:where(body.p-accueil) .chip{background:var(--gris-ilot);border:2px solid transparent;border-radius:var(--rayon-pilule);padding:var(--esp-2) var(--esp-4);min-height:44px;font-family:var(--font-corps);font-size:var(--t-sm);color:var(--encre);cursor:pointer;line-height:1.25}
-:where(body.p-accueil) .chip .sous{display:block;font-size:var(--t-sm);color:var(--encre-discrete);text-align:center;font-family:var(--font-chiffres)}
-:where(body.p-accueil) .chip.actif{border-color:var(--univers);background:var(--univers-selection)}
-:where(body.p-accueil) .chip.indispo{opacity:.4;cursor:not-allowed}
+}:where(#dialogue) .chip{background:var(--gris-ilot);border:2px solid transparent;border-radius:var(--rayon-pilule);padding:var(--esp-2) var(--esp-4);min-height:44px;font-family:var(--font-corps);font-size:var(--t-sm);color:var(--encre);cursor:pointer;line-height:1.25}
+:where(#dialogue) .chip .sous{display:block;font-size:var(--t-sm);color:var(--encre-discrete);text-align:center;font-family:var(--font-chiffres)}
+:where(#dialogue) .chip.actif{border-color:var(--univers);background:var(--univers-selection)}
+:where(#dialogue) .chip.indispo{opacity:.4;cursor:not-allowed}
 :where(body.p-accueil, body.p-roam) .stepper{gap:var(--esp-3)}
 :where(body.p-accueil, body.p-roam) .stepper button{border:1.5px solid var(--gris-service)}
 :where(body.p-accueil, body.p-roam) .stepper .max{font-size:var(--t-sm);font-weight:500;color:var(--encre-discrete);min-width:0;font-family:var(--font-chiffres)}
-:where(body.p-accueil) .art-compact .btn-plus::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px}
-:where(body.p-accueil) .art-compact .stepper-c button::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:34px;height:44px}
-:where(body.p-accueil) .champ-jour{margin-bottom:0}
-:where(body.p-accueil) .groupe-prenom{margin-bottom:var(--air-i3)}
-:where(body.p-accueil) .groupe-service{margin-top:var(--air-i3)}
-:where(body.p-accueil) .iti--container{z-index:10000}
+:where(#dialogue) .art-compact .btn-plus::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px}
+:where(#dialogue) .art-compact .stepper-c button::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:34px;height:44px}
+:where(#dialogue) .champ-jour{margin-bottom:0}
+:where(#dialogue) .groupe-prenom{margin-bottom:var(--air-i3)}
+:where(#dialogue) .groupe-service{margin-top:var(--air-i3)}
+:where(body.p-accueil, body.p-site) .iti--container{z-index:10000}
 :where(body.p-accueil, body.p-roam) .message-ferme{background:var(--rouge-lavure);border:1.5px solid rgba(var(--rouge-e2-rgb),.25);border-radius:var(--rayon-champ);padding:var(--esp-2) var(--esp-3);font-size:var(--t-sm);color:var(--rouge-e2);margin-bottom:var(--air-i3);display:none}
 :where(body.p-accueil, body.p-roam) .message-ferme.visible{display:block}
-:where(body.p-accueil) .jauge{font-size:var(--t-sm);color:var(--encre-discrete);margin:0 2px 0}
-:where(body.p-accueil) .jauge strong{color:var(--encre)}
+:where(#dialogue) .jauge{font-size:var(--t-sm);color:var(--encre-discrete);margin:0 2px 0}
+:where(#dialogue) .jauge strong{color:var(--encre)}
 /* L'ilot du total suit le motif de toute donnee chiffree du site — intitule et
    description a gauche, montant a droite, sur une seule pastille. L'ilot
    retablit trois paliers de l'echelle d'interface que la feuille basse rabaisse
    pour son propre chrome. */
-:where(body.p-accueil) .recap{background:var(--blanc);border:1.5px solid var(--univers);border-radius:15px;padding:var(--esp-3) var(--esp-4);margin-bottom:var(--air-i3);display:none;grid-template-columns:1fr auto;align-items:end;column-gap:var(--esp-3);row-gap:var(--air-i1)}
-:where(body.p-accueil) .recap.visible{display:grid}
-:where(body.p-accueil) .recap .titre{grid-column:1;grid-row:2;align-self:end;font-size:var(--t-sm);line-height:var(--lh-14);font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--univers)}
-:where(body.p-accueil) .recap #recapTexte{grid-column:1 / -1;grid-row:1;font-size:var(--t-label);color:var(--encre-discrete);line-height:var(--lh-12)}
-:where(body.p-accueil) .recap .total{grid-column:2;grid-row:1 / span 2;justify-self:end;align-self:end;font-size:var(--t-h3);line-height:var(--lh-chiffre);font-weight:700;color:var(--encre);font-family:var(--font-chiffres);white-space:nowrap}
+:where(#dialogue) .recap{background:var(--blanc);border:1.5px solid var(--univers);border-radius:15px;padding:var(--esp-3) var(--esp-4);margin-bottom:var(--air-i3);display:none;grid-template-columns:1fr auto;align-items:end;column-gap:var(--esp-3);row-gap:var(--air-i1)}
+:where(#dialogue) .recap.visible{display:grid}
+:where(#dialogue) .recap .titre{grid-column:1;grid-row:2;align-self:end;font-size:var(--t-sm);line-height:var(--lh-14);font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--univers)}
+:where(#dialogue) .recap #recapTexte{grid-column:1 / -1;grid-row:1;font-size:var(--t-label);color:var(--encre-discrete);line-height:var(--lh-12)}
+:where(#dialogue) .recap .total{grid-column:2;grid-row:1 / span 2;justify-self:end;align-self:end;font-size:var(--t-h3);line-height:var(--lh-chiffre);font-weight:700;color:var(--encre);font-family:var(--font-chiffres);white-space:nowrap}
 /* L'ilot de commande n'a pas de description : ses deux elements tiennent la
    meme ligne, et s'y alignent sur le meme axe plutot que sur leur bas. */
-:where(body.p-accueil) #recapCmd .titre,:where(body.p-accueil) #recapCmd .total{grid-row:1;align-self:center}
+:where(#dialogue) #recapCmd .titre,:where(#dialogue) #recapCmd .total{grid-row:1;align-self:center}
 :where(body.p-accueil, body.p-roam) .consent-lien{display:flex;justify-content:center;line-height:1}
 :where(body.p-accueil, body.p-roam) .consent-lien a{line-height:1;position:relative;display:inline-block}
 :where(body.p-accueil, body.p-roam) .consent-lien a::after{content:'';position:absolute;top:50%;left:0;right:0;transform:translateY(-50%);height:44px}
 :where(body.p-accueil, body.p-roam,body.p-carte) .erreur{display:none;margin:var(--air-i2) 2px 0}
-:where(body.p-accueil) #menuCompact{max-height:34vh;overflow-y:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;border-bottom:1px solid var(--gris-ilot)}
-:where(body.p-accueil) #menuCompact::-webkit-scrollbar{display:none}
-:where(body.p-accueil) #menuCompact .cat-compacte:first-child{margin-top:var(--air-i1)}
-:where(body.p-accueil) .cat-compacte{font-size:var(--t-label);font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--gris-500);margin:var(--air-i3) 2px var(--air-i2);padding-left:var(--esp-2);border-left:3px solid var(--vert-e3)}
-:where(body.p-accueil) .art-compact{display:flex;justify-content:space-between;align-items:center;gap:var(--esp-2);padding:var(--esp-2) var(--esp-1);border-bottom:1px solid var(--gris-ilot)}
-:where(body.p-accueil) .art-compact .n{font-size:var(--t-sm);font-weight:700}
-:where(body.p-accueil) .art-compact .p{font-size:var(--t-sm);color:var(--encre-discrete);font-family:var(--font-chiffres)}
-:where(body.p-accueil) .art-compact .btn-plus{width:32px;height:32px;border-radius:50%;border:none;background:var(--univers);color:var(--blanc);font-size:var(--t-body);cursor:pointer;flex-shrink:0;position:relative}
-:where(body.p-accueil) .art-compact .stepper-c{display:flex;align-items:center;gap:var(--esp-2);background:var(--univers-selection);border:2px solid var(--univers);border-radius:var(--rayon-pilule);padding:2px;flex-shrink:0}
-:where(body.p-accueil) .art-compact .stepper-c button{width:27px;height:27px;border-radius:50%;border:none;background:var(--blanc);color:var(--encre);font-size:var(--t-sm);cursor:pointer;position:relative}
-:where(body.p-accueil) .art-compact .stepper-c span{font-weight:700;font-size:var(--t-sm);min-width:14px;text-align:center}
-:where(body.p-accueil) .vide-menu{padding:var(--esp-3) var(--esp-1)}
-:where(body.p-accueil) .lien-detail{display:block;text-align:center;margin-top:var(--air-i3);padding:var(--esp-3) 0;font-size:var(--t-sm);color:var(--univers);font-weight:700;text-decoration:none}
+:where(#dialogue) #menuCompact{max-height:34vh;overflow-y:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;border-bottom:1px solid var(--gris-ilot)}
+:where(#dialogue) #menuCompact::-webkit-scrollbar{display:none}
+:where(#dialogue) #menuCompact .cat-compacte:first-child{margin-top:var(--air-i1)}
+:where(#dialogue) .cat-compacte{font-size:var(--t-label);font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--gris-500);margin:var(--air-i3) 2px var(--air-i2);padding-left:var(--esp-2);border-left:3px solid var(--vert-e3)}
+:where(#dialogue) .art-compact{display:flex;justify-content:space-between;align-items:center;gap:var(--esp-2);padding:var(--esp-2) var(--esp-1);border-bottom:1px solid var(--gris-ilot)}
+:where(#dialogue) .art-compact .n{font-size:var(--t-sm);font-weight:700}
+:where(#dialogue) .art-compact .p{font-size:var(--t-sm);color:var(--encre-discrete);font-family:var(--font-chiffres)}
+:where(#dialogue) .art-compact .btn-plus{width:32px;height:32px;border-radius:50%;border:none;background:var(--univers);color:var(--blanc);font-size:var(--t-body);cursor:pointer;flex-shrink:0;position:relative}
+:where(#dialogue) .art-compact .stepper-c{display:flex;align-items:center;gap:var(--esp-2);background:var(--univers-selection);border:2px solid var(--univers);border-radius:var(--rayon-pilule);padding:2px;flex-shrink:0}
+:where(#dialogue) .art-compact .stepper-c button{width:27px;height:27px;border-radius:50%;border:none;background:var(--blanc);color:var(--encre);font-size:var(--t-sm);cursor:pointer;position:relative}
+:where(#dialogue) .art-compact .stepper-c span{font-weight:700;font-size:var(--t-sm);min-width:14px;text-align:center}
+:where(#dialogue) .vide-menu{padding:var(--esp-3) var(--esp-1)}
+:where(#dialogue) .lien-detail{display:block;text-align:center;margin-top:var(--air-i3);padding:var(--esp-3) 0;font-size:var(--t-sm);color:var(--univers);font-weight:700;text-decoration:none}
 :where(body.p-accueil, body.p-roam) .confirmation{display:none;text-align:center;padding:var(--esp-3) var(--esp-2) var(--esp-2)}
 :where(body.p-accueil, body.p-roam) .confirmation.visible{display:block}
 :where(body.p-accueil, body.p-roam) .confirmation .soleil-ok{height:46px;margin:0 auto var(--air-i2);display:flex;justify-content:center}
@@ -1185,8 +1185,8 @@ body.page-figee{overflow:hidden}
 :where(body.p-accueil, body.p-roam) .confirmation .apres{margin-top:var(--air-i2)}
 :where(body.p-accueil) .voile-doux{background:rgba(var(--ombre-teinte),.22)}
 :where(body.p-accueil) .drawer-pied{display:flex;align-items:center;justify-content:flex-end;margin-top:var(--air-i3);padding:0 var(--esp-1)}
-:where(body.p-accueil) .mini-btn{display:flex;align-items:center;gap:var(--esp-2);background:var(--gris-ilot);border:none;border-radius:var(--rayon-pilule);padding:var(--esp-2) var(--esp-3);font-family:var(--font-corps);font-weight:700;font-size:var(--t-sm);color:var(--encre);cursor:pointer}
-:where(body.p-accueil) .mini-btn svg{width:15px;height:15px}
+:where(#dialogue) .mini-btn{display:flex;align-items:center;gap:var(--esp-2);background:var(--gris-ilot);border:none;border-radius:var(--rayon-pilule);padding:var(--esp-2) var(--esp-3);font-family:var(--font-corps);font-weight:700;font-size:var(--t-sm);color:var(--encre);cursor:pointer}
+:where(#dialogue) .mini-btn svg{width:15px;height:15px}
 html:where(:has(body.p-accueil)){background:var(--vert-nuit)}
 :where(body.p-accueil) .marque-wrap{display:flex;align-items:center;gap:var(--esp-2)}
 /* ======================================================================== ECRAN — carte ======================================================================== */ :where(body.p-carte) .iti--container{z-index:10000}
