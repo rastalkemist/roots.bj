@@ -78,21 +78,10 @@
         document.documentElement.style.setProperty('--part-rouge', part.toFixed(3));
         /* La barre quitte la buee et reprend son fond des que la scene a
            passe le cercle de la quete : un seul seuil, la meme grandeur. */
-        var surFond = part >= 1;
-        document.body.classList.toggle('sur-fond', surFond);
-        /* La quete appartient au monde du voyage : elle n'ouvre qu'une fois la
-           scene d'accueil passee, au meme seuil. Sur la scene, le geste focal
-           est seul a appeler — deux appels y compteraient l'un contre l'autre.
-           L'etat est celui du tronc ; la surface ne fait que le poser. */
-        var barre = document.querySelector('.chrome-inner');
-        if (barre) {
-          Array.prototype.forEach.call(
-            barre.querySelectorAll(':scope > .fab.quete, :scope > .quete-groupe'),
-            function (piece) {
-              if (surFond) piece.removeAttribute('data-retire');
-              else piece.setAttribute('data-retire', '');
-            });
-        }
+        /* La quete appartient au monde du voyage : elle n'ouvre qu'une fois
+           la scene passee. Sa retenue est portee par la feuille, sur cette
+           meme classe — des la premiere image, sans course avec le tronc. */
+        document.body.classList.toggle('sur-fond', part >= 1);
       }
     }
     var calme = false;
@@ -102,11 +91,6 @@
       requestAnimationFrame(function () { calme = false; poserCourante(); });
     }, { passive: true });
     window.addEventListener('resize', poserCourante);
-    /* La barre est composee par le tronc APRES ce script : sans cette veille,
-       la quete parait le temps d'une image avant d'etre jugee. Toute
-       recomposition de la barre repose l'arbitrage dans le meme tour. */
-    var barreHaut = document.querySelector('.chrome-inner');
-    if (barreHaut) new MutationObserver(poserCourante).observe(barreHaut, { childList: true });
     poserCourante();
   }
 
@@ -187,12 +171,11 @@
     var repli = null;
     function ouvrir(v) {
       clearTimeout(repli);
-      menu.hidden = !v;
       btn.setAttribute('aria-expanded', v ? 'true' : 'false');
       if (v) boite.setAttribute('data-ouvert', '');
       else boite.removeAttribute('data-ouvert');
     }
-    btn.addEventListener('click', function () { ouvrir(menu.hidden); });
+    btn.addEventListener('click', function () { ouvrir(!boite.hasAttribute('data-ouvert')); });
     boite.addEventListener('pointerenter', function () { ouvrir(true); });
     boite.addEventListener('pointerleave', function () {
       repli = setTimeout(function () { ouvrir(false); }, 300);
@@ -203,6 +186,47 @@
     document.addEventListener('click', function (e) {
       if (!boite.contains(e.target)) ouvrir(false);
     });
+  }
+
+  /* ---- LA BASCULE DE LANGUE SUIT LA LARGEUR. Elle vit dans le chrome OU
+     dans le pied du tiroir, jamais aux deux : sous le seuil du rang, le chrome
+     n'a plus de place pour elle et le pied la loge, comme sur les ecrans de
+     l'application. C'est LE MEME bouton qui voyage — ses ecouteurs et son
+     etat avec lui — et le point qui le separe du lien legal ne parait que
+     lorsqu'il est la. */
+  /* Le bouton se tient une fois pour toutes : le tronc reconstruit le pied a
+     chaque redessin, et un element detache ne se retrouve plus par le
+     document — la reference, elle, survit et se repose. */
+  var boutonLangue = null;
+  function logerLangue() {
+    if (!boutonLangue) boutonLangue = document.getElementById('btnLangue');
+    var btn = boutonLangue;
+    if (!btn) return;
+    var etroit = window.matchMedia('(max-width: 1023.98px)').matches;
+    var pied = document.querySelector('#sections .pied-politique');
+    var chrome = document.querySelector('.chrome-droite');
+    var point = document.getElementById('pointLangue');
+    /* Un redessin du bac peut avoir pose une seconde bascule dans le pied,
+       le bouton du chrome etant alors hors du document. Une seule commande de
+       langue vit sur l'ecran : la posee cede la place, son point avec elle. */
+    if (pied) {
+      Array.prototype.forEach.call(pied.querySelectorAll('.lien-langue'), function (v) { v.parentNode.removeChild(v); });
+      Array.prototype.forEach.call(pied.querySelectorAll('.point-pied:not(#pointLangue)'), function (v) { v.parentNode.removeChild(v); });
+    }
+    if (etroit && pied) {
+      if (btn.parentNode !== pied) pied.insertBefore(btn, pied.firstChild);
+      if (!point) {
+        point = document.createElement('span');
+        point.id = 'pointLangue';
+        point.className = 'point-pied';
+        point.setAttribute('aria-hidden', 'true');
+        point.textContent = '\u00b7';
+      }
+      if (point.parentNode !== pied) pied.insertBefore(point, btn.nextSibling);
+    } else if (!etroit && chrome) {
+      if (point && point.parentNode) point.parentNode.removeChild(point);
+      if (btn.parentNode !== chrome) chrome.insertBefore(btn, chrome.firstChild);
+    }
   }
 
   /* ---- LE MENU DU SITE. Le tiroir porte les cinq noms et le déroulant à la
@@ -264,6 +288,8 @@
       bac.insertBefore(rang, bac.firstChild);
     }
     remplir();
+    logerLangue();
+    window.addEventListener('resize', logerLangue);
     /* Le tronc redessine le bac au changement de langue et aux reposes du
        nav : la garde evite que la repose du menu se redeclenche elle-meme. */
     var occupe = false;
@@ -272,6 +298,7 @@
       occupe = true;
       if (bac.querySelector('.site-tiroir')) balayer();
       else remplir();
+      logerLangue();
       occupe = false;
     }).observe(bac, { childList: true });
   }

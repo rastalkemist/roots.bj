@@ -24,9 +24,8 @@ body.p-site{--part:calc(var(--part-rouge,0) * 100%);
 /* Sur la scène, la barre entière parle blanc : rien n'a de fond derrière soi,
    et une encre unique tient l'ensemble. Revenue sur son fond plein, elle
    reprend le noir de la maison et la jauge du mot de section. */
-body.p-site .chrome-titre,body.p-site .site-nom,body.p-site .chrome-burger,body.p-site .ankh-home,body.p-site .lang-btn{color:var(--blanc)}
-body.p-site.sur-fond .lang-btn{color:var(--roots-noir)}
-@media(max-width:1023.98px){body.p-site .chrome-droite .lang-btn{display:none}}
+body.p-site .chrome-titre,body.p-site .site-nom,body.p-site .chrome-burger,body.p-site .ankh-home,body.p-site .chrome-droite .lang-btn{color:var(--blanc)}
+body.p-site.sur-fond .chrome-droite .lang-btn{color:var(--roots-noir)}
 body.p-site.sur-fond .chrome-titre{color:var(--roots-noir)}
 body.p-site.sur-fond .site-nom{color:var(--encre)}
 body.p-site.sur-fond .chrome-burger{background-image:var(--jauge);-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -57,7 +56,7 @@ body.p-site #marque{background:var(--roots-noir);
    et celui qui n'a pas la parole quitte le flux — sans quoi il tiendrait la
    place de l'autre. */
 @media(max-width:1023.98px){
-  body.p-site .chrome-inner>.chrome-titre{grid-column:2;justify-self:start}
+  body.p-site .chrome-inner>.chrome-titre{grid-column:2;justify-self:start;margin-inline-start:var(--esp-3)}
   body.p-site .chrome-inner>.fab.quete,body.p-site .chrome-inner>.quete-groupe{grid-column:2}
   body.p-site .chrome-inner>[data-retire]{display:none}
   body.p-site.sur-fond .chrome-inner>.chrome-titre{display:none}
@@ -93,12 +92,16 @@ body.p-site .site-nom .site-chevron{color:var(--blanc)}
 body.p-site.sur-fond .site-nom .site-chevron{color:var(--encre)}
 .site-chevron{width:16px;height:16px;transform:rotate(90deg);transition:transform var(--mvt-court) var(--courbe-etat)}
 .site-apropos{position:relative}
-.site-apropos[data-ouvert] .site-chevron{transform:rotate(-90deg)}
-.site-apropos-menu[hidden]{display:none}
 /* Un déroulant de nav n'est pas un tiroir : il ne porte que des mots, il se
    taille sur eux et se pose sous son déclencheur. Largeur au contenu, pas de
    plancher ; lignes serrées ; ombre courte ; rayon de tuile, pas de carte. */
-.site-apropos-menu{position:absolute;top:calc(100% + var(--esp-1));right:0;width:max-content;background:var(--blanc);border:1px solid var(--gris-service);border-radius:var(--rayon-tuile);box-shadow:0 4px 14px rgba(var(--ombre-teinte),.14);padding:var(--esp-2) 0;display:flex;flex-direction:column;z-index:20}
+/* Le feuillet reprend la grammaire du panneau du tronc — papier, rayon de
+   carte, ombre portee, naissance a son angle d'ancrage — et son mouvement :
+   l'echelle et la translation sur la duree d'apparition, l'encre sur la duree
+   d'etat. Ferme, il ne se voit ni ne s'atteint ; la visibilite attend la fin
+   du fondu pour tomber, et repart avec lui. */
+.site-apropos-menu{position:absolute;top:calc(100% + var(--esp-1));right:0;width:max-content;background:var(--blanc);border-radius:var(--rayon-carte);box-shadow:0 18px 44px rgba(var(--ombre-teinte),.28);padding:var(--esp-3) var(--esp-2);display:flex;flex-direction:column;z-index:20;transform-origin:top right;transform:scale(.9) translateY(-8px);opacity:0;visibility:hidden;pointer-events:none;transition:transform var(--mvt-apparition) var(--courbe-entree),opacity var(--mvt-etat) var(--courbe-etat),visibility 0s linear var(--mvt-apparition)}
+.site-apropos[data-ouvert] .site-apropos-menu{transform:scale(1) translateY(0);opacity:1;visibility:visible;pointer-events:auto;transition:transform var(--mvt-apparition) var(--courbe-entree),opacity var(--mvt-etat) var(--courbe-etat)}
 /* Les lignes du panneau s'alignent a droite, comme celles du feuillet : le
    meme bord d'ancrage sur les deux ecrans. */
 .site-apropos-ligne{display:flex;align-items:center;justify-content:flex-end;text-align:right;min-height:calc(var(--air-i4) + var(--esp-3));padding:0 var(--esp-4);color:var(--encre);white-space:nowrap}
@@ -153,7 +156,7 @@ body.p-site.sur-fond .chrome-haut::after{opacity:0}
    l'image tant que le film n'a pas le droit de partir. ---- */
 /* La scene est la premiere piece du corps et colle sous la barre : elle rend
    le cran d'air que le corps Roam pose au-dessus de sa matiere. */
-.site-accueil{position:relative;min-height:80svh;display:grid;place-items:center;overflow:hidden;margin:calc(-1 * var(--entete-h-rendue,64px) - var(--air-i3)) calc(50% - 50vw) var(--air-i6)}
+.site-accueil{position:relative;min-height:85svh;display:grid;place-items:center;overflow:hidden;margin:calc(-1 * var(--entete-h-rendue,64px) - var(--air-i3)) calc(50% - 50vw) var(--air-i6)}
 .site-scene,.site-film{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .site-film{opacity:0;transition:opacity var(--mvt-long) var(--courbe-etat)}
 .site-film.joue{opacity:1}
@@ -171,6 +174,14 @@ body.p-site.sur-fond .chrome-haut::after{opacity:0}
    Seuls sa boite et son rang de pile se posent ici — son dessin est celui du
    tronc. ---- */
 .site-accueil .fab{position:absolute;bottom:var(--air-i4);z-index:6}
+
+/* ---- LA QUETE N'OUVRE QU'AU SEUIL, DES LA PREMIERE IMAGE. L'etat retire du
+   tronc est pose ici par la feuille, pas par un script : un script court APRES
+   la composition de la barre, et la quete paraissait le temps d'une image
+   avant d'etre jugee. La feuille, elle, vaut avant le premier rendu — aucun
+   ordre d'arrivee ne peut la prendre de vitesse. Le seuil est le meme que
+   celui du fond de barre : la classe sur-fond. */
+body.p-site:not(.sur-fond) .chrome-inner>.fab.quete,body.p-site:not(.sur-fond) .chrome-inner>.quete-groupe{opacity:0;visibility:hidden;pointer-events:none}
 
 /* ---- LE MENU DU SITE. Les cinq noms et le déroulant, dans le tiroir, à la
    place des sections d'univers que le tronc y verse. Le feuillet s'ancre à
@@ -192,7 +203,7 @@ body.p-site #sections .pied-politique{order:3}
 .site-tiroir .site-tiroir-apropos,.site-tiroir .site-apropos-ligne{color:var(--encre);text-decoration:none;font-weight:var(--w-bold);min-height:calc(var(--air-i4) + var(--esp-2));display:flex;align-items:center;justify-content:flex-end;text-align:right;white-space:normal;padding:0}
 /* Le feuillet ne porte qu'un bloc : il se lit d'entree, sans repli ni
    chevron. Son titre nomme ce qui suit et ne se touche pas. */
-.site-tiroir .site-tiroir-apropos{font-family:inherit;font-size:inherit}
+.site-tiroir .site-tiroir-apropos{margin:0;font-family:inherit;font-size:inherit}
 /* Le retrait du sous-menu est un demi-cran : la parente se lit deja a la
    graisse, la tabulation n'a pas a la redire. */
 .site-tiroir .site-sous{margin:0 var(--esp-2) 0 0;display:flex;flex-direction:column;align-items:flex-end}
@@ -214,8 +225,7 @@ body.p-site #sections .pied-politique{border-top:none;margin-top:0;padding-top:v
    nom se lit a l'oreille, faute de texte a l'oeil. La zone atteinte tient le
    plancher tactile alors que le dessin ne l'occupe pas : c'est la cible qui se
    touche, pas le trait. Pose, il ne bouge plus ; seule son encre s'allume. ---- */
-.site-haut{position:fixed;right:var(--esp-5);bottom:calc(var(--esp-5) + var(--safe-bas,0px));z-index:8;width:var(--cible-min);height:var(--cible-min);padding:0;border:none;background:none;color:var(--roots-vert);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity var(--mvt-apparition) var(--courbe-etat),color var(--mvt-etat) var(--courbe-etat)}
+.site-haut{position:fixed;right:var(--esp-5);bottom:calc(var(--esp-5) + var(--safe-bas,0px));z-index:8;width:var(--cible-min);height:var(--cible-min);padding:0;border:none;border-radius:50%;background:var(--blanc);color:var(--roots-vert);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 16px rgba(var(--ombre-teinte),.18);opacity:0;transition:opacity var(--mvt-apparition) var(--courbe-etat),box-shadow var(--mvt-etat) var(--courbe-etat)}
 .site-haut.vu{opacity:1}
-.site-haut svg{width:24px;height:24px;transform:rotate(-90deg)}
-.site-haut:hover{color:var(--vert-e1)}
-.site-haut:active{color:var(--vert-e1)}
+.site-haut svg{width:20px;height:20px;transform:rotate(-90deg)}
+.site-haut:hover{box-shadow:0 6px 20px rgba(var(--ombre-teinte),.28)}
