@@ -242,6 +242,13 @@ h6{font-size:var(--t-h5);line-height:var(--lh-16);font-family:var(--font-lecture
    interieure ne la deplace pas. Toute pleine largeur doit en outre etre
    NOMMEE et motivee au registre des pleines largeurs, sans quoi elle est
    refusee au depot. */
+/* La page ne defile jamais de cote. Les pieces en pleine largeur se mesurent
+   sur la fenetre ENTIERE ; la ou la barre de defilement verticale prend sa
+   place dans la mise en page, elles depassent la page d'une demi-barre de
+   chaque cote — un defilement lateral et une bande de fond apparaissent a
+   droite. La racine rogne ce depassement : le rognage ne cree pas de zone de
+   defilement, les pieces collantes et les rails gardent leur mecanique. */
+html{overflow-x:hidden;overflow-x:clip}
 .hors-piste{margin-inline:calc(50% - 50vw);width:auto}
 
 /* ① Deux blocs qui se partagent l'ecran, gouttiere au milieu. Sous le palier
