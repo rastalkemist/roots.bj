@@ -16,8 +16,13 @@
 /* La part rouge : publiee par le script entre 0 et 1, nulle au chargement. */
 :root{--part-rouge:0}
 body.p-site{--part:calc(var(--part-rouge,0) * 100%);
-  --jauge:linear-gradient(to top,var(--rouge-e2) var(--part),var(--roots-vert) var(--part))}
-body.p-site .chrome-titre,body.p-site .site-nom.actif{background-image:var(--jauge);-webkit-background-clip:text;background-clip:text;color:transparent}
+  --jauge:linear-gradient(to top,var(--rouge-e2) var(--part),var(--roots-vert) var(--part));
+  --jauge-e4:linear-gradient(to top,var(--rouge-e4) var(--part),var(--vert-e4) var(--part));
+  --jauge-e1:linear-gradient(to top,var(--rouge-e1) var(--part),var(--vert-e1) var(--part))}
+/* Le nom de la maison ne suit aucun univers : il est noir Roots, toujours.
+   Seul le mot de la section en vue se remplit avec la jauge. */
+body.p-site .chrome-titre{color:var(--roots-noir)}
+body.p-site .site-nom.actif{background-image:var(--jauge);-webkit-background-clip:text;background-clip:text;color:transparent}
 /* Le tronc borde la pastille d'un liseré de son univers et l'assoit sur une
    ombre de la même teinte : sur un disque qui se remplit, ce liseré resterait
    rouge dans la zone verte. Il tombe — un dégradé ne se borde pas d'une seule
@@ -54,8 +59,10 @@ body.p-site #marque{background:var(--jauge);
      barres des tenors — et il se plie avec le mot au rangement. */
   .site-nom{display:inline-flex;align-items:center;gap:var(--esp-1);min-height:var(--cible-min);max-width:220px;margin-inline-end:var(--esp-6);border:none;background:none;padding:0;cursor:pointer;font-family:var(--font-corps);font-weight:var(--w-bold);font-size:var(--t-body);color:var(--encre);text-decoration:none;transition:color var(--mvt-ample) var(--courbe-etat),max-width var(--mvt-ample) var(--courbe-etat),margin var(--mvt-ample) var(--courbe-etat),opacity var(--mvt-ample) var(--courbe-etat)}
   .site-noms .site-apropos .site-nom{margin-inline-end:0}
-  .site-nom:hover{color:var(--univers-e4)}
-  .site-nom:active{color:var(--univers-e1)}
+  /* Le survol et l'appui prennent la meme jauge, aux echelons voisins : aucun
+     etat du nav ne parle un univers que le haut de page ne porte pas. */
+  .site-nom:hover{background-image:var(--jauge-e4);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .site-nom:active{background-image:var(--jauge-e1);-webkit-background-clip:text;background-clip:text;color:transparent}
   /* Des le premier defilement, les quatre mots d'ancre se rangent : seuls
      demeurent celui de la section en vue — au troisieme echelon de son
      univers —, le deroulant et la pastille. Le rang ne se redeploie qu'au
@@ -76,7 +83,14 @@ body.p-site #marque{background:var(--jauge);
    le nom reste pose. */
 /* Replie, le tiret garde sa ligne unique : sans cela le texte cache
    s'empile dans la largeur nulle et gonfle la hauteur de sa ligne. */
-.site-apropos-ligne .tiret-mot{opacity:0;max-width:0;overflow:hidden;white-space:nowrap;margin-inline-start:var(--esp-1);transition:opacity var(--mvt-ample) var(--courbe-entree),max-width var(--mvt-ample) var(--courbe-entree);color:var(--univers-e3)}
+/* Chaque maison paraît dans sa propre couleur, au deuxième échelon de sa rampe.
+   La famille jaune ne porte jamais d'encre claire seule : elle se cerne de noir,
+   comme le veut la rampe. */
+.site-apropos-ligne .tiret-mot{opacity:0;max-width:0;overflow:hidden;white-space:nowrap;margin-inline-start:var(--esp-1);transition:opacity var(--mvt-ample) var(--courbe-entree),max-width var(--mvt-ample) var(--courbe-entree)}
+.site-apropos-ligne[data-maison="roots"] .tiret-mot{color:var(--vert-e2)}
+.site-apropos-ligne[data-maison="cafe"] .tiret-mot{color:var(--terre-e2)}
+.site-apropos-ligne[data-maison="nu"] .tiret-mot{color:var(--jaune-e2);text-shadow:1px 0 0 var(--roots-noir),-1px 0 0 var(--roots-noir),0 1px 0 var(--roots-noir),0 -1px 0 var(--roots-noir),.7px .7px 0 var(--roots-noir),-.7px .7px 0 var(--roots-noir),.7px -.7px 0 var(--roots-noir),-.7px -.7px 0 var(--roots-noir)}
+.site-apropos-ligne[data-maison="reseau"] .tiret-mot{color:var(--rouge-e2)}
 .site-apropos-ligne:hover .tiret-mot,.site-apropos-ligne:focus-within .tiret-mot{opacity:1;max-width:220px}
 @media(prefers-reduced-motion:reduce){.site-apropos-ligne .tiret-mot{opacity:1;max-width:220px}}
 
