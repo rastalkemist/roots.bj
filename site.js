@@ -63,14 +63,6 @@
         r = el.getBoundingClientRect();
         if (r.top <= ligne) courante = ANCRES[i];
       }
-      var mot = document.getElementById('motSection');
-      if (mot) {
-        var d = DITS[langue()];
-        var cle = { connecter: 'navConnecter', sejourner: 'navVisiter',
-                    decouvrir: 'navDecouvrir', infos: 'navRevenir' }[courante];
-        mot.dataset.ts = cle;
-        mot.textContent = d[cle];
-      }
       Array.prototype.forEach.call(document.querySelectorAll('[data-cible]'), function (a) {
         var sienne = a.dataset.cible === courante;
         a.classList.toggle('actif', sienne);
@@ -95,24 +87,15 @@
       calme = true;
       requestAnimationFrame(function () { calme = false; poserCourante(); });
     }, { passive: true });
-    /* Le premier defilement range les noms de la barre pour de bon : la
-       classe se pose une fois et ne se retire pas, remonter ne la leve
-       pas — seul le survol ou le clavier redeploie le rang. */
-    window.addEventListener('scroll', function ranger() {
-      if (window.scrollY > 0) {
-        document.body.classList.add('noms-ranges');
-        window.removeEventListener('scroll', ranger);
-      }
-    }, { passive: true });
     window.addEventListener('resize', poserCourante);
     poserCourante();
   }
 
-  /* ---- LE DÉROULANT DES CINQ NOMS. Il s'ouvre au survol comme au clic,
-     dit son état, et se referme à l'échappement, au clic dehors et au départ
-     du pointeur. */
+  /* ---- LE DÉROULANT DU NAV. Il s'ouvre au survol comme au clic, dit son
+     état, et se referme à l'échappement, au clic dehors et au départ du
+     pointeur. Les sections de la page ne se rangent pas derrière un
+     déroulant : leurs ancres vivent dans le tiroir. */
   function tenirAPropos() {
-    tenirDeroulant('btnSections', 'menuSections');
     tenirDeroulant('btnAPropos', 'menuAPropos');
   }
 

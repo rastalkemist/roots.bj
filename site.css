@@ -113,7 +113,7 @@ body.p-site.sur-fond .site-nom .site-chevron{color:var(--encre)}
 .site-apropos-ligne .tiret-mot{opacity:0;max-width:0;overflow:hidden;white-space:nowrap;margin-inline-end:var(--esp-1);transition:opacity var(--mvt-ample) var(--courbe-entree),max-width var(--mvt-ample) var(--courbe-entree)}
 .site-apropos-ligne[data-maison="roots"] .tiret-mot{color:var(--vert-e3)}
 .site-apropos-ligne[data-maison="cafe"] .tiret-mot{color:var(--terre-e3)}
-.site-apropos-ligne[data-maison="nu"] .tiret-mot{color:var(--jaune-e3);text-shadow:1px 0 0 var(--roots-noir),-1px 0 0 var(--roots-noir),0 1px 0 var(--roots-noir),0 -1px 0 var(--roots-noir),.7px .7px 0 var(--roots-noir),-.7px .7px 0 var(--roots-noir),.7px -.7px 0 var(--roots-noir),-.7px -.7px 0 var(--roots-noir)}
+.site-apropos-ligne[data-maison="nu"] .tiret-mot{color:var(--jaune-e2)}
 .site-apropos-ligne[data-maison="reseau"] .tiret-mot{color:var(--rouge-e3)}
 .site-apropos-ligne:hover .tiret-mot,.site-apropos-ligne:focus-within .tiret-mot{opacity:1;max-width:220px}
 @media(prefers-reduced-motion:reduce){.site-apropos-ligne .tiret-mot{opacity:1;max-width:220px}}
