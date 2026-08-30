@@ -55,8 +55,8 @@ body.p-site #marque{background:var(--jauge);
   body.p-site .chrome-inner>.chrome-droite{order:2}
   body.p-site .chrome-burger{display:none}
   .site-noms{display:flex;align-items:center}
-  /* L'ecart entre les noms est la ligne d'interface pleine — le cran des
-     barres des tenors — et il se plie avec le mot au rangement. */
+  /* L'ecart entre les deux deroulants est la ligne d'interface pleine — le
+     cran des barres des tenors. */
   .site-nom{display:inline-flex;align-items:center;gap:var(--esp-1);min-height:var(--cible-min);max-width:220px;margin-inline-end:var(--esp-6);border:none;background:none;padding:0;cursor:pointer;font-family:var(--font-corps);font-weight:var(--w-bold);font-size:var(--t-body);color:var(--encre);text-decoration:none;transition:color var(--mvt-ample) var(--courbe-etat),max-width var(--mvt-ample) var(--courbe-etat),margin var(--mvt-ample) var(--courbe-etat),opacity var(--mvt-ample) var(--courbe-etat)}
   .site-noms .site-apropos .site-nom{margin-inline-end:0}
   /* Le survol et l'appui prennent la meme jauge, aux echelons voisins : aucun
@@ -68,8 +68,15 @@ body.p-site #marque{background:var(--jauge);
      univers —, le deroulant et la pastille. Le rang ne se redeploie qu'au
      survol ou au clavier ; remonter ne suffit pas. Le pliage reprend la
      recette du tiret : largeur et encre s'effacent ensemble. */
-  body.noms-ranges .site-noms:not(:hover):not(:focus-within) .site-nom[data-cible]:not(.actif){max-width:0;margin-inline-end:0;opacity:0;overflow:hidden}
+  /* Le deroulant des sections porte le nom de celle qui est en vue ; les
+     quatre autres vivent dans son panneau, comme celles d'A propos. */
+  .site-apropos-menu a.site-apropos-ligne{text-decoration:none}
+  .site-apropos-menu a.site-apropos-ligne.actif{font-weight:var(--w-bold)}
 }
+/* Le mot du bouton porte la jauge par un fond decoupe au texte, ce qui rend
+   l'encre transparente : le chevron, qui suit l'encre courante, disparaitrait
+   avec elle. Il reprend donc l'encre du texte courant. */
+.site-nom .site-chevron{color:var(--encre)}
 .site-chevron{width:16px;height:16px;transform:rotate(90deg);transition:transform var(--mvt-court) var(--courbe-etat)}
 .site-apropos{position:relative}
 .site-apropos[data-ouvert] .site-chevron{transform:rotate(-90deg)}

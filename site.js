@@ -58,6 +58,14 @@
         r = el.getBoundingClientRect();
         if (r.top <= ligne) courante = ANCRES[i];
       }
+      var mot = document.getElementById('motSection');
+      if (mot) {
+        var d = DITS[langue()];
+        var cle = { connecter: 'navConnecter', sejourner: 'navVisiter',
+                    decouvrir: 'navDecouvrir', infos: 'navRevenir' }[courante];
+        mot.dataset.ts = cle;
+        mot.textContent = d[cle];
+      }
       Array.prototype.forEach.call(document.querySelectorAll('[data-cible]'), function (a) {
         var sienne = a.dataset.cible === courante;
         a.classList.toggle('actif', sienne);
@@ -96,9 +104,14 @@
      dit son état, et se referme à l'échappement, au clic dehors et au départ
      du pointeur. */
   function tenirAPropos() {
-    var boite = document.querySelector('.site-apropos');
-    var btn = document.getElementById('btnAPropos');
-    var menu = document.getElementById('menuAPropos');
+    tenirDeroulant('btnSections', 'menuSections');
+    tenirDeroulant('btnAPropos', 'menuAPropos');
+  }
+
+  function tenirDeroulant(nomBouton, nomMenu) {
+    var btn = document.getElementById(nomBouton);
+    var menu = document.getElementById(nomMenu);
+    var boite = btn ? btn.closest('.site-apropos') : null;
     if (!boite || !btn || !menu) return;
     var repli = null;
     function ouvrir(v) {
@@ -174,10 +187,11 @@
       rang.appendChild(titreAp);
       var sous = document.createElement('div');
       sous.className = 'site-sous';
-      [['apProjet', ' — Roots'], ['apEquipe', ' — Roots Café'],
-       ['apCommunaute', ' — NU'], ['apVision', ' — Roots Network']].forEach(function (e) {
+      [['apProjet', ' — Roots', 'roots'], ['apEquipe', ' — Roots Café', 'cafe'],
+       ['apCommunaute', ' — NU', 'nu'], ['apVision', ' — Roots Network', 'reseau']].forEach(function (e) {
         var l = document.createElement('span');
         l.className = 'site-apropos-ligne';
+        l.dataset.maison = e[2];
         l.setAttribute('aria-disabled', 'true');
         var q = document.createElement('span');
         q.dataset.ts = e[0];
