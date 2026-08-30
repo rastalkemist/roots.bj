@@ -54,11 +54,10 @@ body.p-site #marque{background:var(--jauge);
   body.p-site .chrome-inner>.site-noms{order:1}
   body.p-site .chrome-inner>.chrome-droite{order:2}
   body.p-site .chrome-burger{display:none}
-  .site-noms{display:flex;align-items:center}
+  .site-noms{display:flex;align-items:center;gap:var(--esp-6)}
   /* L'ecart entre les deux deroulants est la ligne d'interface pleine — le
      cran des barres des tenors. */
-  .site-nom{display:inline-flex;align-items:center;gap:var(--esp-1);min-height:var(--cible-min);max-width:220px;margin-inline-end:var(--esp-6);border:none;background:none;padding:0;cursor:pointer;font-family:var(--font-corps);font-weight:var(--w-bold);font-size:var(--t-body);color:var(--encre);text-decoration:none;transition:color var(--mvt-ample) var(--courbe-etat),max-width var(--mvt-ample) var(--courbe-etat),margin var(--mvt-ample) var(--courbe-etat),opacity var(--mvt-ample) var(--courbe-etat)}
-  .site-noms .site-apropos .site-nom{margin-inline-end:0}
+  .site-nom{display:inline-flex;align-items:center;gap:var(--esp-1);min-height:var(--cible-min);max-width:220px;border:none;background:none;padding:0;cursor:pointer;font-family:var(--font-corps);font-weight:var(--w-bold);font-size:var(--t-body);color:var(--encre);text-decoration:none;transition:color var(--mvt-ample) var(--courbe-etat),max-width var(--mvt-ample) var(--courbe-etat),margin var(--mvt-ample) var(--courbe-etat),opacity var(--mvt-ample) var(--courbe-etat)}
   /* Le survol et l'appui prennent la meme jauge, aux echelons voisins : aucun
      etat du nav ne parle un univers que le haut de page ne porte pas. */
   .site-nom:hover{background-image:var(--jauge-e4);-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -81,10 +80,13 @@ body.p-site #marque{background:var(--jauge);
 .site-apropos{position:relative}
 .site-apropos[data-ouvert] .site-chevron{transform:rotate(-90deg)}
 .site-apropos-menu[hidden]{display:none}
-.site-apropos-menu{position:absolute;top:calc(100% + var(--esp-2));right:0;min-width:280px;background:var(--blanc);border:1px solid var(--gris-service);border-radius:var(--rayon-carte);box-shadow:0 8px 24px rgba(var(--ombre-teinte),.18);padding:var(--esp-3) 0;display:flex;flex-direction:column;z-index:20}
+/* Un déroulant de nav n'est pas un tiroir : il ne porte que des mots, il se
+   taille sur eux et se pose sous son déclencheur. Largeur au contenu, pas de
+   plancher ; lignes serrées ; ombre courte ; rayon de tuile, pas de carte. */
+.site-apropos-menu{position:absolute;top:calc(100% + var(--esp-1));right:0;width:max-content;background:var(--blanc);border:1px solid var(--gris-service);border-radius:var(--rayon-tuile);box-shadow:0 4px 14px rgba(var(--ombre-teinte),.14);padding:var(--esp-2) 0;display:flex;flex-direction:column;z-index:20}
 /* Les lignes du panneau s'alignent a droite, comme celles du feuillet : le
    meme bord d'ancrage sur les deux ecrans. */
-.site-apropos-ligne{display:flex;align-items:center;justify-content:flex-end;text-align:right;min-height:var(--cible-min);padding:0 var(--esp-5);color:var(--encre);white-space:nowrap}
+.site-apropos-ligne{display:flex;align-items:center;justify-content:flex-end;text-align:right;min-height:calc(var(--air-i4) + var(--esp-3));padding:0 var(--esp-4);color:var(--encre);white-space:nowrap}
 /* La ligne revele son tiret et son nom au survol : le mot arrive, il ne
    saute pas. Sous mouvement reduit la regle generale coupe la transition et
    le nom reste pose. */
