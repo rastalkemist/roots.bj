@@ -79,6 +79,9 @@
         var part = c.height > 0 ? (c.bottom - fin) / c.height : 0;
         part = Math.max(0, Math.min(1, part));
         document.documentElement.style.setProperty('--part-rouge', part.toFixed(3));
+        /* La barre quitte la buee et reprend son fond des que la scene a
+           passe le cercle de la quete : un seul seuil, la meme grandeur. */
+        document.body.classList.toggle('sur-fond', part >= 1);
       }
     }
     var calme = false;

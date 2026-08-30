@@ -112,12 +112,27 @@ body.p-site #marque .reste{display:none}
 body.p-site #marque{cursor:pointer}
 @media(max-width:1023.98px){body.p-site .chrome-droite #marque{display:none}}
 
+/* ---- LA BUÉE DE LA SCÈNE. Sur la scène, la barre ne porte aucun fond : une
+   buée seule brouille l'image derrière elle. Elle déborde sous la barre et
+   s'éteint par un masque vertical, si bien qu'aucune ligne ne marque où le
+   brouillage s'arrête. Passé la scène, la barre reprend le fond plein du
+   tronc et la buée s'efface. ---- */
+body.p-site .chrome-haut{background:transparent;backdrop-filter:none;border-bottom-color:transparent;transition:background var(--mvt-ample) var(--courbe-etat),border-color var(--mvt-ample) var(--courbe-etat)}
+body.p-site .chrome-haut::after{content:'';position:absolute;inset:0 0 auto 0;z-index:-1;pointer-events:none;
+  height:calc(var(--entete-h-rendue,64px) * 2.6);
+  backdrop-filter:blur(16px);
+  -webkit-mask-image:linear-gradient(to bottom,var(--noir) 0%,var(--noir) 34%,transparent 100%);
+  mask-image:linear-gradient(to bottom,var(--noir) 0%,var(--noir) 34%,transparent 100%);
+  transition:opacity var(--mvt-ample) var(--courbe-etat)}
+body.p-site.sur-fond .chrome-haut{background:rgba(var(--blanc-rgb),.96);backdrop-filter:blur(8px);border-bottom-color:var(--gris-service)}
+body.p-site.sur-fond .chrome-haut::after{opacity:0}
+
 /* ---- L'ACCUEIL FILMÉ. Barre comprise, la scène tient 85 % de la
    fenêtre : le dixième restant montre qu'il y a une suite. L'affiche porte
    l'image tant que le film n'a pas le droit de partir. ---- */
 /* La scene est la premiere piece du corps et colle sous la barre : elle rend
    le cran d'air que le corps Roam pose au-dessus de sa matiere. */
-.site-accueil{position:relative;min-height:calc(85svh - var(--entete-h-rendue,64px));display:grid;place-items:center;overflow:hidden;margin:calc(-1 * var(--air-i3)) calc(50% - 50vw) var(--air-i6)}
+.site-accueil{position:relative;min-height:85svh;display:grid;place-items:center;overflow:hidden;margin:calc(-1 * var(--entete-h-rendue,64px) - var(--air-i3)) calc(50% - 50vw) var(--air-i6)}
 .site-scene,.site-film{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .site-film{opacity:0;transition:opacity var(--mvt-long) var(--courbe-etat)}
 .site-film.joue{opacity:1}
