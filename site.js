@@ -13,15 +13,21 @@
 (function () {
   'use strict';
 
+  /* Le nom porte a cote de l'ankh est celui de la maison, pas d'un univers,
+     et il ne se traduit pas. */
+  var MAISON = 'Roots Inc';
+
   var DITS = {
     fr: { navConnecter: 'Connecter', navVisiter: 'Visiter', navDecouvrir: 'Découvrir',
           navRevenir: 'Revenir', navAPropos: 'À propos',
           apProjet: 'Le projet', apEquipe: 'L’équipe', apCommunaute: 'La communauté',
-          apVision: 'La vision' },
+          apVision: 'La vision',
+          titrePage: 'Roots Benin - Retour à la terre-mère' },
     en: { navConnecter: 'Connect', navVisiter: 'Visit', navDecouvrir: 'Discover',
           navRevenir: 'Return', navAPropos: 'About',
           apProjet: 'The project', apEquipe: 'The team', apCommunaute: 'The community',
-          apVision: 'The vision' }
+          apVision: 'The vision',
+          titrePage: 'Roots Benin - Connect to the motherland' }
   };
   function langue() {
     try { return localStorage.getItem('roots.langue') === 'en' ? 'en' : 'fr'; }
@@ -29,6 +35,7 @@
   }
   function poserDits() {
     var d = DITS[langue()];
+    if (d.titrePage) document.title = d.titrePage;
     Array.prototype.forEach.call(document.querySelectorAll('[data-ts]'), function (el) {
       if (d[el.dataset.ts]) el.textContent = d[el.dataset.ts];
     });
@@ -192,11 +199,10 @@
   }
 
   /* ---- LA RÉPARTITION DES PIÈCES DU TRONC. Trois zones dans la barre : la
-     marque à gauche — l'ankh et son nom —, la quête au centre, les noms, le
-     lecteur et la pastille à droite. Au-dessus du seuil des cinq noms, le
-     lecteur et la pastille siègent dans la barre ; sous ce seuil ils
-     retrouvent leur rangée d'origine dans le menu. Les pièces voyagent
-     entières : le site les déplace, il ne les refait pas. */
+     marque à gauche — l'ankh et son nom —, la quête au centre, les noms et la
+     pastille à droite. Au-dessus du seuil des cinq noms la pastille siège dans
+     la barre ; sous ce seuil elle retrouve sa rangée d'origine dans le menu.
+     Les pièces voyagent entières : le site les déplace, il ne les refait pas. */
   function poserBarre() {
     var marque = document.getElementById('marque');
     var droite = document.querySelector('.chrome-droite');
@@ -204,16 +210,15 @@
     var inner = document.querySelector('.chrome-inner');
     var ankh = document.querySelector('.ankh-home');
     var titre = document.querySelector('.chrome-titre');
-    var languette = document.querySelector('.languette-radio');
     if (!marque || !droite) return;
     if (inner && ankh && titre) {
       titre.setAttribute('href', '#haut');
       inner.insertBefore(titre, ankh.nextSibling);
       /* Le nom a cote de l'ankh est celui de la maison, pas celui d'un
          univers ; le tronc le reecrit a ses redessins, la garde le repose. */
-      titre.textContent = 'Roots';
+      titre.textContent = MAISON;
       new MutationObserver(function () {
-        if (titre.textContent !== 'Roots') titre.textContent = 'Roots';
+        if (titre.textContent !== 'Roots') titre.textContent = MAISON;
       }).observe(titre, { childList: true, characterData: true, subtree: true });
       titre.addEventListener('click', function (e) {
         e.preventDefault();
@@ -231,11 +236,10 @@
     function placer() {
       var rangee = document.querySelector('#sections .tiroir-radio');
       var centre = rangee ? rangee.querySelector('.centre') : null;
+      if (!centre) return;
       if (seuil.matches) {
-        loger(languette, droite, droite.firstChild);
         loger(marque, droite, burger);
       } else {
-        loger(languette, rangee, rangee ? rangee.firstChild : null);
         loger(marque, centre, centre ? centre.firstChild : null);
       }
     }
