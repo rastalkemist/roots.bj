@@ -123,6 +123,13 @@ body.p-site.sur-fond .site-nom .site-chevron{color:var(--encre)}
    cinq noms elle quitte la barre — la porte du menu la remplace — pour que
    la barre étroite ne dispute l'attention qu'entre la quête et la
    réservation. ---- */
+/* Le voile que le tiroir jette sur l'écran prendrait la teinte d'ombre de
+   l'univers du corps — le rouge — alors que le haut de page parle vert. Il
+   suit la même grandeur que le reste de la barre : deux couches, l'une
+   s'efface pendant que l'autre paraît. */
+body.p-site .voile{background:
+  linear-gradient(rgba(var(--rouge-e1-rgb),calc(.5 * var(--part-rouge,0))),rgba(var(--rouge-e1-rgb),calc(.5 * var(--part-rouge,0)))),
+  linear-gradient(rgba(var(--vert-e1-rgb),calc(.5 * (1 - var(--part-rouge,0)))),rgba(var(--vert-e1-rgb),calc(.5 * (1 - var(--part-rouge,0)))))}
 body.p-site #marque .reste{display:none}
 body.p-site #marque{cursor:pointer}
 @media(max-width:1023.98px){body.p-site .chrome-droite #marque{display:none}}
