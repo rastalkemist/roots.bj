@@ -165,6 +165,13 @@ body.p-site.sur-fond .chrome-haut::after{opacity:0}
 .site-accueil .commande-video:focus,.site-accueil .commande-video:focus-visible{left:var(--esp-5)}
 .site-accueil .commande-video svg{width:20px;height:20px}
 
+/* ---- LE GESTE FOCAL DU ROOTS. Il ne vit pas au bas de la fenetre comme sur
+   l'ecran d'ou il vient, mais DANS la scene d'accueil, un cran d'air au-dessus
+   de sa limite basse : la scene le porte, le defilement l'emporte avec elle.
+   Seuls sa boite et son rang de pile se posent ici — son dessin est celui du
+   tronc. ---- */
+.site-accueil .fab{position:absolute;bottom:var(--air-i4);z-index:6}
+
 /* ---- LE MENU DU SITE. Les cinq noms et le déroulant, dans le tiroir, à la
    place des sections d'univers que le tronc y verse. Le feuillet s'ancre à
    droite : ses lignes s'alignent sur ce bord, le sous-menu s'y indente. ---- */

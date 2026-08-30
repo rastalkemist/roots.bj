@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; object-src 'none'; frame-src 'none'; script-src 'self' 'sha256-zq8VBJJwdYBKfEemUSbHzbOJ8W43mw9ygKAfrEr3tzU=' 'sha256-bmbaj2wjIFCy5W1LZRrWkqgUoc+8lalQn31/AYusnFM='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self'; font-src 'self'; connect-src 'self' https://xrqorebcgnixcbqqeoll.supabase.co; manifest-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; object-src 'none'; frame-src 'none'; script-src 'self' 'sha256-zq8VBJJwdYBKfEemUSbHzbOJ8W43mw9ygKAfrEr3tzU=' 'sha256-10j7Tj1GjX8ahrm5S2J+BHqqNxK4EQHxxm1LCO9cZzI=' 'sha256-Pj9ou4kA1BBhHCBaZXUy6cbQi/9XylHhny7c9OKLzCw='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self'; font-src 'self'; connect-src 'self' https://xrqorebcgnixcbqqeoll.supabase.co; manifest-src 'self'">
 <title>Roots Benin - Retour à la terre-mère</title>
 <meta name="description" content="Le Roots, jardin créatif de Cotonou : café-coworking, séjours chez Kër Yawa, et le Bénin à découvrir. Return to the motherland.">
 <link rel="canonical" href="https://roots.bj/">
@@ -89,6 +89,7 @@
     <img class="site-scene" src="media/hero.jpg" alt="" width="1600" height="900" fetchpriority="high" decoding="async">
     <video class="site-film" id="filmAccueil" muted loop playsinline preload="none" poster="media/hero.jpg" aria-hidden="true"></video>
     <button type="button" class="commande-video cache" id="cmdFilm" aria-label="Mettre la vidéo en pause"><svg class="i" aria-hidden="true"><use href="#i-pause"/></svg></button>
+    <button class="fab" id="fab" data-t="reserver">Réserver</button>
   </section>
 
   <section class="bloc-sejour" id="sejourner" aria-labelledby="etSejourner">
@@ -277,6 +278,156 @@
      ce qu'on entend. -->
 <button class="fab" id="fabRecherche" aria-haspopup="dialog" aria-controls="feuilleResa"
         data-t="chercherMots">Je découvre le Bénin</button>
+
+<!-- ══════════════ Feuille du bas (+) : Réserver | Commander ══════════════ -->
+<div class="voile" id="voileDlg"></div>
+<div class="feuille-bas" id="dialogue" role="dialog" aria-modal="true" aria-label="Réserver ou commander" data-al-chrome="feuille">
+  <div class="poignee"></div>
+  <div class="tete">
+    <button class="fermer" id="fermerDlg" aria-label="Fermer" data-al-chrome="fermer"><svg class="i"><use href="#i-x"/></svg></button>
+  </div>
+  <div class="onglets">
+    <button class="actif" data-ong="reserver" data-t="ongReserver">Coworking</button>
+    <button data-ong="commander" data-t="ongCommander">Menu</button>
+    <button data-ong="evenement" data-t="ongEvenement">Événement</button>
+  </div>
+
+  <!-- Onglet Réserver -->
+  <div class="contenu actif" id="ct-reserver">
+    <div id="vueResa">
+      <div class="groupe"><span class="etiquette" data-t="etEspace">Espace</span>
+        <div class="selecteur-espaces" id="selecteurEspaces"></div></div>
+      <div class="groupe"><span class="etiquette" data-t="etJour">Quel jour ?</span>
+        <div class="champ" style="margin-bottom:0"><input type="date" id="dateResa" aria-label="Quel jour ?" data-al="etJour"></div></div>
+      <div class="rangee-choix">
+        <div class="groupe col-creneaux" id="groupeCreneaux"><span class="etiquette" data-t="etCreneau">Créneau</span>
+          <div class="rangee-chips" id="chipsCreneaux"></div></div>
+        <div class="groupe col-personnes groupe-personnes" style="display:none">
+          <span class="etiquette" data-t="etPersonnes">Combien serez-vous ?</span>
+          <div class="stepper">
+            <button type="button" class="personnes-moins" aria-label="Moins" data-al-chrome="moins"><svg class="i"><use href="#i-minus"/></svg></button>
+            <span class="personnes-valeur">1</span>
+            <button type="button" class="personnes-plus" aria-label="Plus" data-al-chrome="plus"><svg class="i"><use href="#i-plus"/></svg></button>
+            <span class="max personnes-max"></span>
+          </div>
+        </div>
+      </div>
+      <div class="message-ferme" id="messageFerme" role="status" aria-live="polite"></div>
+      <p class="jauge" id="jauge" aria-live="polite" style="margin-top:0"></p>
+      <div class="champ groupe" style="margin-bottom:var(--air-i3)"><label for="nomResa" data-t="tonNomResa">Ton prénom</label>
+        <input id="nomResa" autocomplete="given-name" data-p="pNom" placeholder="Ton prénom"></div>
+      <div class="champ groupe"><label for="telResa" data-t="tel">Ton numéro (pour te confirmer)</label>
+        <input type="tel" inputmode="tel" id="telResa" autocomplete="tel"></div>
+      <div class="recap" id="recapResa">
+        <span class="titre" data-t="totalTitre">Total</span>
+        <span id="recapTexte"></span>
+        <span class="total" id="recapTotal"></span></div>
+      <button class="bouton-confirmer" id="btnResa" disabled data-t="reserver">Réserver</button>
+      <p class="erreur" id="erreurResa" role="alert" aria-live="polite"></p>
+      <p class="consent" id="texteConsentResa"></p>
+      <p class="consent-lien"><a href="confidentialite.html" data-t="politique">Politique de confidentialité</a></p>
+    </div>
+    <div class="confirmation" id="confResa">
+      <div class="soleil-ok"><svg viewBox="0 0 191 178" aria-hidden="true"><use href="#i-soleil"/></svg></div>
+      <p class="conf-titre" data-t="cestReserve">C'est réservé. On t'attend.</p>
+      <div class="ligne-code">
+        <div class="code" id="codeResa">——————</div>
+        <button type="button" class="geste-code-ico" data-code-copier data-code-source="codeResa" data-fait="Copié" data-al="alCopier" aria-label="Copier le code"><svg class="i" aria-hidden="true"><use href="#i-copie"/></svg></button>
+        <button type="button" class="geste-code-ico" data-code-cartel data-code-source="codeResa" data-titre="Ma réservation" data-al="alTelecharger" aria-label="Télécharger le code"><svg class="i" aria-hidden="true"><use href="#i-telecharger"/></svg></button>
+      </div>
+      <!-- La somme due ne parait ici QUE si le paiement en ligne n'est pas
+           offert : sinon elle vit sur le bouton qui l'engage, et ne se lit
+           pas deux fois. -->
+      <p class="montant-conf" id="montantResa"></p>
+      <!-- L'identite a qui la facture est adressee. La porte prend le couple
+           code + numero, que cette confirmation detient ; elle refuse des
+           qu'une piece existe, donc le geste se pose avant le guichet. -->
+      <div id="hoteFacturationResa"></div>
+      <div class="apres"><button class="bouton-confirmer cache" id="btnPayerResa" data-t="payer">Payer maintenant</button></div>
+      <p class="erreur" id="erreurPayer" role="alert" aria-live="polite"></p>
+    </div>
+  </div>
+
+  <!-- Onglet Commander -->
+  <!-- Onglet Evenement. Une DEMANDE, pas une reservation : l'usage exclusif se
+       pose sur devis, par l'echange. Champs obligatoires — nom, numero, date,
+       nombre — le courriel et le message sont facultatifs ; la porte refuse
+       sans consentement, et la notice annonce la poursuite de l'echange sur
+       WhatsApp. -->
+  <div class="contenu" id="ct-evenement">
+    <div id="vueEvt">
+      <div class="groupe"><span class="etiquette" id="etNature" data-t="etNature">Quelle occasion ?</span>
+        <div class="rangee-chips" role="group" aria-labelledby="etNature">
+          <button type="button" class="chip actif" data-nature="evenement" data-t="natEvenement">Événement privé</button>
+          <button type="button" class="chip" data-nature="soiree" data-t="natSoiree">Soirée / Chill</button>
+          <button type="button" class="chip" data-nature="atelier" data-t="natAtelier">Atelier art / artisanat</button>
+          <button type="button" class="chip" data-nature="autre" data-t="natAutre">Autre</button>
+        </div></div>
+      <!-- Le recit vient tout de suite apres l'occasion. Facultatif, sauf sur
+           « Autre » : ce choix ne dit rien par lui-meme, le message est alors
+           la demande. -->
+      <div class="champ groupe"><label for="msgEvt" data-t="msgEvt">Dis-nous en plus — facultatif</label>
+        <textarea id="msgEvt" rows="3"></textarea></div>
+      <div class="rangee-choix">
+        <div class="groupe"><label class="etiquette" for="dateEvt" data-t="etDateEvt">Date souhaitée</label>
+          <div class="champ" style="margin-bottom:0"><input type="date" id="dateEvt"></div></div>
+        <div class="groupe"><label class="etiquette" for="nbEvt" data-t="etNbEvt">Combien environ ?</label>
+          <div class="champ" style="margin-bottom:0"><input id="nbEvt" inputmode="numeric" placeholder="30"></div></div>
+      </div>
+      <div class="champ groupe" style="margin-bottom:var(--air-i3)"><label for="nomEvt" data-t="tonNomEvt">Ton prénom</label>
+        <input id="nomEvt" autocomplete="given-name" data-p="pNom" placeholder="Ton prénom"></div>
+      <div class="champ groupe" style="margin-bottom:var(--air-i3)"><label for="telEvt" data-t="telEvt">Ton numéro (pour te répondre)</label>
+        <input type="tel" inputmode="tel" id="telEvt" autocomplete="tel"></div>
+      <div class="champ groupe" style="margin-bottom:var(--air-i3)"><label for="emailEvt" data-t="emailEvt">Ton e-mail — facultatif</label>
+        <input type="email" id="emailEvt" autocomplete="email"></div>
+      <button class="bouton-confirmer" id="btnEvt" disabled data-t="envoyerDemande">Envoyer la demande</button>
+      <p class="erreur" id="erreurEvt" role="alert" aria-live="polite"></p>
+      <p class="consent" id="consentEvt"></p>
+      <p class="consent-lien"><a href="confidentialite.html" data-t="politique2">Politique de confidentialité</a></p>
+    </div>
+    <div class="confirmation" id="confEvt">
+      <div class="soleil-ok"><svg viewBox="0 0 191 178" aria-hidden="true"><use href="#i-soleil"/></svg></div>
+      <p class="conf-titre" id="confEvtTitre"></p>
+      <p class="instructions" id="confEvtDit"></p>
+      <div class="apres"><a class="bouton-confirmer" id="btnWhatsApp" target="_blank" rel="noopener">Poursuivre sur WhatsApp</a></div>
+    </div>
+  </div>
+
+  <div class="contenu" id="ct-commander">
+    <div id="vueCmd">
+      <div id="menuCompact"></div>
+      <a class="lien-detail" href="carte.html" data-t="voirDetail">Voir la carte détaillée →</a>
+      <div class="groupe" style="margin-top:var(--air-i3)"><span class="etiquette" data-t="etService">Service</span>
+        <div class="rangee-chips" id="chipsService"></div></div>
+      <div class="recap" id="recapCmd"><span class="titre" data-t="cmdTotal">Total commande</span>
+        <span class="total" id="cmdTotal"></span></div>
+      <div class="champ"><label for="nomCmd" data-t="tonNom">Ton nom (pour t'appeler)</label>
+        <input id="nomCmd" autocomplete="given-name" data-p="pNom" placeholder="Ton prénom"></div>
+      <div class="champ"><label for="telCmd" data-t="tonTel">Ton numéro</label>
+        <input type="tel" inputmode="tel" id="telCmd" autocomplete="tel"></div>
+      <button class="bouton-confirmer" id="btnCmd" disabled data-t="commander">Commander</button>
+      <p class="erreur" id="erreurCmd" role="alert" aria-live="polite"></p>
+      <p class="consent" id="texteConsentCmd"></p>
+      <p class="consent-lien"><a href="confidentialite.html" data-t="politique">Politique de confidentialité</a></p>
+    </div>
+    <div class="confirmation" id="confCmd">
+      <div class="soleil-ok"><svg viewBox="0 0 191 178" aria-hidden="true"><use href="#i-soleil"/></svg></div>
+      <p class="conf-titre" data-t="cestCommande">C'est commandé. La cuisine s'y met.</p>
+      <div class="ligne-code">
+        <div class="code" id="codeCmd">——————</div>
+        <button type="button" class="geste-code-ico" data-code-copier data-code-source="codeCmd" data-fait="Copié" data-al="alCopier" aria-label="Copier le code"><svg class="i" aria-hidden="true"><use href="#i-copie"/></svg></button>
+        <button type="button" class="geste-code-ico" data-code-cartel data-code-source="codeCmd" data-titre="Ma commande" data-al="alTelecharger" aria-label="Télécharger le code"><svg class="i" aria-hidden="true"><use href="#i-telecharger"/></svg></button>
+      </div>
+      <p class="instructions" data-t="instrCmd">Donne ce code au comptoir. On t'appelle par ton prénom dès que c'est prêt.</p>
+      <p class="note-partielle" id="partielCmd" style="display:none"></p>
+      <!-- L'identite a qui la facture est adressee. Seule fenetre : la porte
+           refuse des qu'une piece existe, et la piece suit le paiement. -->
+      <div id="hoteFacturation"></div>
+      <div class="apres"><button class="bouton-confirmer cache" id="btnPayerCmd" data-t="payer">Payer maintenant</button></div>
+      <p class="erreur" id="erreurPayerCmd" role="alert" aria-live="polite"></p>
+    </div>
+  </div>
+</div>
 
 <div class="voile" id="voileResa"></div>
 <div class="feuille-bas" id="feuilleResa" role="dialog" aria-modal="true" aria-labelledby="ong-visiter" data-al-chrome="feuille">
@@ -1105,23 +1256,36 @@
   $('btnSejour').addEventListener('click', reserver);
   $('btnPayerSejour').addEventListener('click', payerSejour);
 
+  /* La page heberge d'autres blocs de mots, chacun avec son dictionnaire, et
+     des cles se repetent d'un dictionnaire a l'autre. Chaque bloc ne pose donc
+     ses mots que sur ce qui lui appartient : ce qui vit sous un hote etranger
+     est laisse a son propre bloc. */
+  var ETRANGERS = ['fab', 'dialogue'];
+  function horsDesAutres(sel, pose) {
+    var hotes = ETRANGERS.map(function (i) { return $(i); }).filter(Boolean);
+    Array.prototype.forEach.call(document.querySelectorAll(sel), function (el) {
+      var etranger = hotes.some(function (h) { return h === el || h.contains(el); });
+      if (!etranger) pose(el);
+    });
+  }
+
   function appliquerLangue() {
     document.documentElement.lang = langue;
     /* Le libelle nomme la langue vers laquelle on bascule, jamais la
        courante : le bouton dit ou l'on va. */
     $('btnLangue').textContent = langue === 'fr' ? 'EN' : 'FR';
     $('btnLangue').setAttribute('lang', langue === 'fr' ? 'en' : 'fr');
-    document.querySelectorAll('[data-t]').forEach(function (el) {
+    horsDesAutres('[data-t]', function (el) {
       var v = t()[el.getAttribute('data-t')];
       if (typeof v === 'string') el.textContent = v;
     });
-    document.querySelectorAll('[data-p]').forEach(function (el) {
+    horsDesAutres('[data-p]', function (el) {
       var v = t()[el.getAttribute('data-p')];
       if (typeof v === 'string') el.placeholder = v;
     });
     /* Un libelle qui ne se lit qu'a l'oreille se traduit comme les autres :
        `data-al` pointe la table de l'ecran, et rien ne le reposait. */
-    document.querySelectorAll('[data-al]').forEach(function (el) {
+    horsDesAutres('[data-al]', function (el) {
       var v = t()[el.getAttribute('data-al')];
       if (typeof v === 'string') el.setAttribute('aria-label', v);
     });
@@ -1144,6 +1308,9 @@
     langue = (langue === 'fr') ? 'en' : 'fr';
     Roots.retenirLangue(langue);
     appliquerLangue();
+    /* La page porte plusieurs blocs de mots, chacun avec son dictionnaire.
+       Le chrome tient la bascule ; les autres l'apprennent par ce signal. */
+    document.dispatchEvent(new CustomEvent('roots:langue'));
   }
 
 
@@ -2159,6 +2326,1057 @@
       appliquerLangue();
     }
   })();
+})();
+</script>
+<script>
+(function () {
+  'use strict';
+
+  var T = {
+    fr: {
+      ongReserver: 'Coworking', ongCommander: 'Menu',
+      ongEvenement: 'Événement',
+      etNature: 'Quelle occasion ?',
+      natEvenement: 'Événement privé', natSoiree: 'Soirée / Chill',
+      natAtelier: 'Atelier art / artisanat', natAutre: 'Autre',
+      etDateEvt: 'Date souhaitée', etNbEvt: 'Combien environ ?',
+      tonNomEvt: 'Ton prénom', telEvt: 'Ton numéro (pour te répondre)',
+      emailEvt: 'Ton e-mail — facultatif', msgEvt: 'Dis-nous en plus — facultatif',
+      msgEvtRequis: 'Dis-nous en plus',
+      evtMsgManque: 'Dis-nous en quelques mots ce que tu prépares.',
+      envoyerDemande: 'Envoyer la demande',
+      politique2: 'Politique de confidentialité',
+      evtManque: 'Indique ton prénom et ton numéro.',
+      evtNbFaux: 'Un nombre entre 1 et 500.',
+      evtEmailFaux: 'Vérifie cette adresse e-mail, ou laisse le champ vide.',
+      evtDateFausse: 'Choisis une date à venir.',
+      confEvtTitre: 'C’est envoyé. L’équipe te répond vite.',
+      confEvtDit: 'Ta demande est sur le bureau du responsable événementiel. Poursuis sur WhatsApp si tu veux — sinon, on t’appelle.',
+      btnWhatsApp: 'Poursuivre sur WhatsApp',
+      msgWhatsApp: 'Bonjour Roots ! Je viens d’envoyer une demande d’événement au nom de ',
+      etEspace: 'Espace', etJour: 'Quel jour ?', etCreneau: 'Créneau',
+      etPersonnes: 'Combien serez-vous ?', etService: 'Service',
+      tel: 'Ton numéro (pour te confirmer)', tonNomResa: 'Ton prénom', pNom: 'Ton prénom',
+      reserver: 'Réserver',
+      cestReserve: "C'est réservé. On t'attend.",
+      alCopier: 'Copier le code', alTelecharger: 'Télécharger le code',
+      alPause: 'Mettre la vidéo en pause', alLire: 'Lancer la vidéo',
+      voirDetail: 'Voir la carte détaillée →', cmdTotal: 'Total commande',
+      tonNom: "Ton nom (pour t'appeler)", tonTel: 'Ton numéro',
+      commander: 'Commander', cmdMention: 'Sans compte. Tu peux payer en ligne juste après, ou au comptoir.',
+      cestCommande: "C'est commandé. La cuisine s'y met.",
+      instrCmd: "Donne ce code au comptoir. On t'appelle par ton prénom dès que c'est prêt.",
+      matin: 'Matinée', apres_midi: 'Après-m', journee: 'Journée',
+      partage: 'partagé', reunion_privee: 'privé', prive: 'privé',
+      jusqua: function (n) { return "jusqu'à " + n + ' personne' + (n > 1 ? 's' : ''); },
+      parPers: ' / pers.', monnaie: 'FCFA',
+      complet: "C'est complet, une prochaine fois !", priveOccupe: 'Privatisé sur ce créneau.',
+      surDevis: 'Cet usage se réserve auprès de l’équipe.',
+      payer: 'Payer maintenant', onOuvre: 'On ouvre le paiement…',
+      payerFerme: 'Le paiement en ligne n’est pas encore ouvert. Règle au comptoir.',
+      refuseGarde: "Envoi impossible pour le moment. Réessaie dans un instant.",
+      maxAtteint: 'Maximum atteint', totalTitre: 'Total',
+      onRegarde: 'On regarde…', onReserve: 'On réserve…', onEnvoie: 'On envoie…',
+      aujourdhui: "Aujourd'hui", demain: 'Demain',
+      sur_place: 'Sur place', emporter: 'À emporter',
+      expire: 'Le temps est écoulé — la place a été relâchée. Réserve à nouveau.',
+      manqueContact: 'Indique ton prénom et un numéro valide.',
+      menuVide: "La carte n'est pas disponible pour le moment.",
+      partiel: function (l) { return 'À ajouter au comptoir : ' + l + '.'; },
+      radio: 'Roots Radio',
+      toastVerbe: function (v) { return v + ' arrive bientôt.'; },
+      toastNu: 'Le mode NU (communauté) arrive bientôt.',
+      politique: 'Politique de confidentialité',
+      saut: 'Aller au contenu',
+      phase: 'Version d\'essai. Des fonctions sont incomplètes ou indisponibles.',
+      fCode: 'Six signes, lettres et chiffres — par exemple ABC123.'
+    },
+    en: {
+      ongReserver: 'Coworking', ongCommander: 'Menu',
+      ongEvenement: 'Event',
+      etNature: 'What’s the occasion?',
+      natEvenement: 'Private event', natSoiree: 'Rave / House Party',
+      natAtelier: 'Arts & crafts Workshop', natAutre: 'Something else',
+      etDateEvt: 'Preferred date', etNbEvt: 'Roughly how many?',
+      tonNomEvt: 'Your first name', telEvt: 'Your number (so we can get back to you)',
+      emailEvt: 'Your email — optional', msgEvt: 'Tell us more — optional',
+      msgEvtRequis: 'Tell us more',
+      evtMsgManque: 'Tell us in a few words what you have in mind.',
+      envoyerDemande: 'Send my request',
+      politique2: 'Privacy policy',
+      evtManque: 'Enter your first name and phone number.',
+      evtNbFaux: 'A number from 1 to 500.',
+      evtEmailFaux: 'Check this email address, or leave the field empty.',
+      evtDateFausse: 'Choose a date in the future.',
+      confEvtTitre: 'Sent. The team will get back to you shortly.',
+      confEvtDit: 'Your request has landed with our events lead. Carry on over WhatsApp if you like — otherwise we’ll call you.',
+      btnWhatsApp: 'Continue on WhatsApp',
+      msgWhatsApp: 'Hello Roots! I just sent an event request under the name ',
+      etEspace: 'Space', etJour: 'Which day?', etCreneau: 'Time slot',
+      etPersonnes: 'How many people?', etService: 'Service',
+      tel: 'Your number', tonNomResa: 'Your first name', pNom: 'Your first name',
+      reserver: 'Book now',
+      cestReserve: 'Booked. See you soon.',
+      alCopier: 'Copy the code', alTelecharger: 'Download the code',
+      alPause: 'Pause the video', alLire: 'Play the video',
+      voirDetail: 'See the full menu →', cmdTotal: 'Order total',
+      tonNom: 'Your name', tonTel: 'Your number',
+      commander: 'Place order', cmdMention: 'No account needed. You can pay online right after, or at the counter.',
+      cestCommande: 'Order placed. The kitchen has it.',
+      instrCmd: 'Show this code at the counter. We will call your name when it is ready.',
+      matin: 'Morning', apres_midi: 'Afternoon', journee: 'Full day',
+      partage: 'shared', reunion_privee: 'private', prive: 'private',
+      jusqua: function (n) { return 'up to ' + n + ' person' + (n > 1 ? 's' : ''); },
+      parPers: ' / person', monnaie: 'FCFA',
+      complet: 'Fully booked. Choose another slot.', priveOccupe: 'This slot is booked privately.',
+      surDevis: 'This space is booked through the team. Contact us and we will arrange it.',
+      payer: 'Pay', onOuvre: 'Opening payment…',
+      payerFerme: 'Online payment is unavailable. You can pay at the counter.',
+      refuseGarde: 'Sorry, there is a technical problem. Try again in a few moments.',
+      maxAtteint: 'Maximum reached', totalTitre: 'Total',
+      onRegarde: 'Checking…', onReserve: 'Booking…', onEnvoie: 'Sending…',
+      aujourdhui: 'Today', demain: 'Tomorrow',
+      sur_place: 'Eat in', emporter: 'Takeaway',
+      expire: 'Time is up — your spot has been released. Please book again.',
+      manqueContact: 'Enter your first name and a valid phone number.',
+      menuVide: 'The menu is unavailable right now.',
+      partiel: function (l) { return 'Ask at the counter for: ' + l + '.'; },
+      radio: 'Roots Radio',
+      toastVerbe: function (v) { return v + ' is coming soon.'; },
+      toastNu: 'NU, the community side of Roots, is coming soon.',
+      politique: 'Privacy policy',
+      saut: 'Skip to content',
+      phase: 'Trial version. Some features are incomplete.',
+      fCode: 'Six characters, letters and numbers. For example ABC123.'
+    }
+  };
+
+  var VERBES = { space: 'Space', roots: 'Roots', roam: 'Roam' };
+  var ORDRE_CRENEAUX = ['matin', 'apres_midi', 'journee'];
+  var ICONE_MODE = { coworking: 'i-esp-coworking', partage: 'i-esp-partage',
+                   reunion_privee: 'i-esp-reunion_privee', prive: 'i-esp-reunion_privee' };
+
+  var langue = Roots.langueRetenue(Roots.langueParDefaut());
+
+  var $ = function (id) { return document.getElementById(id); };
+  function t() { return T[langue]; }
+  function fmt(n) { return Number(n || 0).toLocaleString(langue === 'fr' ? 'fr-FR' : 'en-US'); }
+  function prix(n) { return fmt(n) + ' ' + t().monnaie; }
+
+  /* ---------- État ---------- */
+
+  var OFFRES = [];
+  var resa = { offre: null, date: '', creneau: null, creneauDit: false, personnes: 1, dispo: null, notice: null };
+  var CATEGORIES = [];
+  var ARTICLES = {};
+  var panier = {};
+  var cmd = { service: 'sur_place', notice: null };
+  var itiResa = null, itiCmd = null;
+
+  /* ---------- Feuille du bas ---------- */
+
+  var voileDlg = $('voileDlg'), dialogue = $('dialogue');
+  var feuille = Roots.modale(dialogue, {
+    cle: 'feuille',
+    montrer: function () { dialogue.classList.add('visible'); voileDlg.classList.add('visible'); },
+    cacher: function () { dialogue.classList.remove('visible'); voileDlg.classList.remove('visible'); }
+  });
+  /* Les pieces de cette feuille se resolvent DANS la feuille, jamais par
+     identifiant de document : deux feuilles de meme facture peuvent tenir
+     la meme page, et un identifiant n'y designerait que la premiere. */
+  function dansFeuille(sel) { return dialogue.querySelector(sel); }
+  function toutesDansFeuille(sel) { return dialogue.querySelectorAll(sel); }
+  function ouvrirDlg() { feuille.ouvrir(); }
+  function fermerDlg() { feuille.fermer(); }
+  $('fab').addEventListener('click', ouvrirDlg);
+  $('fermerDlg').addEventListener('click', fermerDlg);
+  voileDlg.addEventListener('click', fermerDlg);
+  dansFeuille('.onglets').addEventListener('click', function (e) {
+    var b = e.target.closest('button'); if (!b) return;
+    toutesDansFeuille('.onglets button').forEach(function (x) { x.classList.toggle('actif', x === b); });
+    $('ct-reserver').classList.toggle('actif', b.dataset.ong === 'reserver');
+    $('ct-commander').classList.toggle('actif', b.dataset.ong === 'commander');
+    $('ct-evenement').classList.toggle('actif', b.dataset.ong === 'evenement');
+  });
+
+  /* ---------- Onglet Evenement ----------
+     Une DEMANDE sur devis. Obligatoires : nom, numero, date a venir, nombre
+     de personnes ; le courriel et le message sont facultatifs. La cle
+     d'idempotence est tiree une fois par saisie, pour que le reessai d'un
+     envoi tombe sur la meme demande au lieu d'en creer deux. Le numero du
+     lien WhatsApp est le standard, en chiffres seuls comme l'exige le format
+     wa.me. */
+  var NUMERO_WHATSAPP = '2290146755575';
+  var evt = { nature: 'evenement', notice: null, cle: null, enCours: false };
+  var itiEvt = null;
+
+  /* Sur « Autre », le message EST la demande : son libelle perd le
+     « facultatif » et le bouton l'attend. */
+  function majLibelleMsg() {
+    var l = document.querySelector('label[for="msgEvt"]');
+    var cle = evt.nature === 'autre' ? 'msgEvtRequis' : 'msgEvt';
+    l.setAttribute('data-t', cle);
+    l.textContent = t()[cle];
+  }
+
+  document.querySelectorAll('#ct-evenement .chip').forEach(function (c) {
+    c.addEventListener('click', function () {
+      document.querySelectorAll('#ct-evenement .chip').forEach(function (x) {
+        x.classList.toggle('actif', x === c);
+      });
+      evt.nature = c.dataset.nature;
+      majLibelleMsg();
+      majEvt();
+    });
+  });
+
+  function msgEvtValide() {
+    return evt.nature !== 'autre' || $('msgEvt').value.trim().length >= 2;
+  }
+  function nbEvtValide() {
+    var n = parseInt($('nbEvt').value.trim(), 10);
+    return n >= 1 && n <= 500;
+  }
+  function emailEvtValide() {
+    var v = $('emailEvt').value.trim();
+    return !v || /^[^@\s]+@[^@\s]+\.[a-z]{2,}$/i.test(v);
+  }
+  function dateEvtValide() {
+    var d = $('dateEvt').value;
+    return !!d && d >= new Date().toISOString().slice(0, 10);
+  }
+  function majEvt() {
+    $('btnEvt').disabled = !($('nomEvt').value.trim().length >= 2
+      && numeroValide($('telEvt'), itiEvt) && dateEvtValide()
+      && nbEvtValide() && emailEvtValide() && msgEvtValide() && evt.notice);
+  }
+  ['nomEvt', 'telEvt', 'dateEvt', 'nbEvt', 'emailEvt', 'msgEvt'].forEach(function (id) {
+    $(id).addEventListener('input', majEvt);
+  });
+
+  /* Ce que la porte refuserait se dit ICI, pres du champ, avant le reseau. */
+  function lireDemandeEvt() {
+    var m = t();
+    var nom = $('nomEvt').value.trim();
+    if (nom.length < 2 || !numeroValide($('telEvt'), itiEvt)) {
+      montrerErreur('erreurEvt', m.evtManque); return null;
+    }
+    if (!dateEvtValide()) {
+      montrerErreur('erreurEvt', m.evtDateFausse); $('dateEvt').focus(); return null;
+    }
+    if (!nbEvtValide()) {
+      montrerErreur('erreurEvt', m.evtNbFaux); $('nbEvt').focus(); return null;
+    }
+    if (!emailEvtValide()) {
+      montrerErreur('erreurEvt', m.evtEmailFaux); $('emailEvt').focus(); return null;
+    }
+    if (!msgEvtValide()) {
+      montrerErreur('erreurEvt', m.evtMsgManque); $('msgEvt').focus(); return null;
+    }
+    /* La nature part telle que la pastille l'a posee : l'enumeration de la
+       porte porte les quatre valeurs. Une valeur hors enumeration fait
+       refuser la demande entiere, pastille comprise. */
+    return { nature: evt.nature, nom: nom, tel: numeroDe($('telEvt'), itiEvt),
+             email: $('emailEvt').value.trim() || null,
+             date: $('dateEvt').value,
+             personnes: parseInt($('nbEvt').value.trim(), 10),
+             message: $('msgEvt').value.trim() || null };
+  }
+
+  async function envoyerEvt() {
+    if (evt.enCours || !evt.notice) return;
+    cacherErreur('erreurEvt');
+    var d = lireDemandeEvt();
+    if (!d) return;
+    evt.enCours = true;
+    var b = $('btnEvt');
+    b.disabled = true;
+    var libelle = b.textContent;
+    b.textContent = t().onEnvoie || '…';
+    if (!evt.cle) evt.cle = Roots.db.cleIdempotence();
+    d.cle = evt.cle;
+    d.consentement = evt.notice.version;
+    try {
+      await Roots.db.demanderEvenement(d);
+      $('vueEvt').style.display = 'none';
+      $('confEvt').classList.add('visible');
+      $('confEvtTitre').textContent = t().confEvtTitre;
+      $('confEvtDit').textContent = t().confEvtDit;
+      $('btnWhatsApp').textContent = t().btnWhatsApp;
+      $('btnWhatsApp').href = 'https://wa.me/' + NUMERO_WHATSAPP
+        + '?text=' + encodeURIComponent(t().msgWhatsApp + d.nom + '.');
+      evt.cle = null;
+    } catch (e) {
+      montrerErreur('erreurEvt', e.message);
+    } finally {
+      evt.enCours = false;
+      b.textContent = libelle;
+      majEvt();
+    }
+  }
+  $('btnEvt').addEventListener('click', envoyerEvt);
+
+  /* ---------- Messages inline ---------- */
+
+  function montrerErreur(id, msg) { var e = $(id); e.textContent = msg; e.classList.add('visible'); }
+  function cacherErreur(id) { var e = $(id); e.textContent = ''; e.classList.remove('visible'); }
+
+  /* ---------- Notice de traitement ----------
+     Elle reste affichée au-dessus du bouton : c'est la validation qui vaut
+     acceptation. Si la notice ne le dit pas elle-même, l'écran l'énonce. */
+
+  /* La notice du socle fait foi : c'est SA version qui est scellee avec le
+     consentement. L'ecran n'ajoute sa phrase que si la notice ne la dit pas —
+     sinon il afficherait des mots que la version enregistree ne couvre pas. */
+  function texteNotice(n) { return Roots.db.texteNotice(n, langue); }
+
+  /* ---------- Réservation ---------- */
+
+  /* Une offre porte un nom, pas un nom d'espace suivi d'un suffixe de mode :
+     « Bureau partage » se lit, « Le bureau — partage » se decode. Le socle ne
+     porte que `espaces.nom`, en francais et sans le mode ; les deux langues
+     vivent donc ici. A porter au socle le jour ou l'offre y aura son nom. */
+  var NOMS_OFFRE = {
+    'jardin|coworking': { fr: 'Jardin connecté', en: 'Connected garden' },
+    'bureau|partage': { fr: 'Bureau partagé', en: 'Shared office' },
+    'bureau|prive': { fr: 'Bureau privé', en: 'Private office' },
+    'bureau|reunion_privee': { fr: 'Bureau privé', en: 'Private office' }
+  };
+
+  function libelleOffre(o) {
+    var n = NOMS_OFFRE[o.slug + '|' + o.mode];
+    if (n && n[langue]) return n[langue];
+    var suffixe = t()[o.mode];
+    return suffixe ? o.nom + ' — ' + suffixe : o.nom;
+  }
+
+  /* Le socle peut ecrire le creneau de plusieurs facons ; on ramene la clef a
+     celle du dictionnaire avant de chercher, sinon le libelle retombe sur la
+     valeur brute et reste en francais quelle que soit la langue. */
+  /* Normalisee des l'entree : si l'on se contentait de traduire a l'affichage,
+     le libelle serait juste mais l'ordre des creneaux, lui, resterait faux. */
+  function cleCreneau(c) {
+    var k = String(c || '').toLowerCase().replace(/[\s-]+/g, '_');
+    if (k === 'apresmidi' || k === 'aprem') k = 'apres_midi';
+    return k;
+  }
+
+  function libelleCreneau(c) { return t()[cleCreneau(c)] || c; }
+
+  function tarifDe(o, creneau) {
+    var trouve = null;
+    o.creneaux.forEach(function (c) { if (c.creneau === creneau) trouve = c; });
+    return trouve;
+  }
+
+  function dessinerOffres() {
+    var z = $('selecteurEspaces');
+    z.innerHTML = '';
+    OFFRES.forEach(function (o) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'option-espace' + (resa.offre === o ? ' actif' : '');
+      b.setAttribute('aria-pressed', resa.offre === o ? 'true' : 'false');
+      /* L'îlot porte le nom de l'espace et son icône, rien d'autre : le prix
+         vit sur le créneau et n'apparaît qu'une fois le choix fait. */
+      b.innerHTML = '<span class="ico"><svg class="brand" aria-hidden="true"><use href="#' +
+        (ICONE_MODE[o.mode] || 'i-esp-coworking') + '"/></svg></span><div class="nom"></div>';
+      b.querySelector('.nom').textContent = libelleOffre(o);
+      b.addEventListener('click', function () { choisirOffre(o); });
+      z.appendChild(b);
+    });
+  }
+
+  function choisirOffre(o) {
+    resa.offre = o;
+    var possibles = o.creneaux.map(function (c) { return c.creneau; });
+    /* Un créneau unique est implicite. Sinon le choix reste entier, sauf s'il a
+       déjà été dit et qu'il vaut encore pour cette offre. */
+    if (possibles.length === 1) { resa.creneau = possibles[0]; resa.creneauDit = false; }
+    else if (!(resa.creneauDit && possibles.indexOf(resa.creneau) !== -1)) { resa.creneau = null; resa.creneauDit = false; }
+    if (resa.personnes > o.capacite) resa.personnes = o.capacite;
+    dessinerOffres(); dessinerCreneaux(); majPersonnes(); interroger();
+  }
+
+  function dessinerCreneaux() {
+    var z = $('chipsCreneaux');
+    z.innerHTML = '';
+    if (!resa.offre) { $('groupeCreneaux').style.display = 'none'; return; }
+    var liste = ORDRE_CRENEAUX.filter(function (c) { return tarifDe(resa.offre, c); });
+    resa.offre.creneaux.forEach(function (c) { if (liste.indexOf(c.creneau) === -1) liste.push(c.creneau); });
+    /* Un seul créneau possible : le choix n'en est pas un, on ne le demande pas. */
+    $('groupeCreneaux').style.display = liste.length > 1 ? '' : 'none';
+    liste.forEach(function (c) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'chip' + (resa.creneau === c ? ' actif' : '');
+      b.setAttribute('aria-pressed', resa.creneau === c ? 'true' : 'false');
+      /* La pastille porte le creneau, pas son prix : a trois par ligne elle
+         reste lisible, et le total s'affiche des qu'un creneau est choisi. */
+      b.innerHTML = '<span class="lib"></span>';
+      b.querySelector('.lib').textContent = libelleCreneau(c);
+      b.addEventListener('click', function () { resa.creneau = c; resa.creneauDit = true; dessinerCreneaux(); interroger(); });
+      z.appendChild(b);
+    });
+  }
+
+  function plafondPersonnes() {
+    if (!resa.offre) return 1;
+    var cap = resa.offre.capacite || 1;
+    if (resa.dispo && typeof resa.dispo.places_restantes === 'number') {
+      cap = Math.min(cap, Math.max(1, resa.dispo.places_restantes));
+    }
+    return Math.max(1, cap);
+  }
+
+  function majPersonnes() {
+    var plafond = plafondPersonnes();
+    if (resa.personnes > plafond) resa.personnes = plafond;
+    if (resa.personnes < 1) resa.personnes = 1;
+    dansFeuille('.personnes-valeur').textContent = resa.personnes;
+    dansFeuille('.personnes-max').textContent = (resa.personnes >= plafond && plafond > 1)
+      ? t().maxAtteint : '';
+    dansFeuille('.personnes-moins').disabled = resa.personnes <= 1;
+    dansFeuille('.personnes-plus').disabled = resa.personnes >= plafond;
+    dansFeuille('.groupe-personnes').style.display = plafond > 1 ? 'block' : 'none';
+    majRecap();
+  }
+
+  /* La porte publie deux choses de nature differente : une regle de JAUGE —
+     cet usage prend l'espace en entier — et une regle COMMERCIALE — cet
+     usage se pose par l'equipe. C'est la seconde qui gouverne le bouton.
+     On lit `sur_devis` si la porte la rend ; sinon on retombe sur
+     `exclusif_mode`, qui est le seul indice disponible. Le repli refuse
+     plutot que d'offrir : un bouton qui mene a un refus est un mensonge. */
+  function surDevis(d) {
+    if (!d) return false;
+    if (typeof d.sur_devis !== 'undefined' && d.sur_devis !== null) return !!d.sur_devis;
+    return !!d.exclusif_mode;
+  }
+
+  var jetonDispo = 0;
+  async function interroger() {
+    if (!resa.offre || !resa.date || !resa.creneau) {
+      ++jetonDispo;
+      resa.dispo = null;
+      $('jauge').textContent = '';
+      $('messageFerme').classList.remove('visible');
+      majPersonnes();
+      return;
+    }
+    var mien = ++jetonDispo;
+    $('jauge').textContent = t().onRegarde;
+    $('messageFerme').classList.remove('visible');
+    try {
+      var d = await Roots.db.disponibiliteEspace(resa.offre.slug, resa.offre.mode, resa.date, resa.creneau);
+      if (mien !== jetonDispo) return;
+      resa.dispo = d;
+      if (surDevis(d)) {
+        $('jauge').textContent = '';
+        $('messageFerme').textContent = t().surDevis;
+        $('messageFerme').classList.add('visible');
+      } else if (d && d.exclusif_neutralise) {
+        $('jauge').textContent = '';
+        $('messageFerme').textContent = t().priveOccupe;
+        $('messageFerme').classList.add('visible');
+      } else if (d && d.complet) {
+        $('jauge').textContent = '';
+        $('messageFerme').textContent = t().complet;
+        $('messageFerme').classList.add('visible');
+      } else if (d) {
+        /* On dit qu'il reste de la place, jamais combien : la salle tient plus
+           que ce qu'elle ouvre, et le nombre poserait une question qui n'a pas
+           lieu d'etre. */
+        $('jauge').textContent = '';
+      } else {
+        $('jauge').textContent = '';
+      }
+      majPersonnes(); majRecap();
+    } catch (e) {
+      if (mien !== jetonDispo) return;
+      resa.dispo = null;
+      $('jauge').textContent = '';
+      $('messageFerme').textContent = e.message;
+      $('messageFerme').classList.add('visible');
+      majRecap();
+    }
+  }
+
+  function montantLu() {
+    if (!resa.offre || !resa.creneau) return null;
+    var c = tarifDe(resa.offre, resa.creneau);
+    if (!c) return null;
+    return { total: c.parPersonne ? c.prix * resa.personnes : c.prix, parPersonne: c.parPersonne, unite: c.prix };
+  }
+
+  function libelleJour(iso) {
+    var auj = new Date(); auj.setHours(12, 0, 0, 0);
+    var jour = new Date(iso + 'T12:00:00');
+    var ecart = Math.round((jour - auj) / 86400000);
+    if (ecart === 0) return t().aujourdhui;
+    if (ecart === 1) return t().demain;
+    return jour.toLocaleDateString(langue === 'fr' ? 'fr-FR' : 'en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
+  }
+
+  function majRecap() {
+    var m = montantLu();
+    /* Tant que l'espace et le créneau ne sont pas dits, aucun montant n'est
+       affiché : la zone reste entièrement vide. */
+    if (!m || !resa.offre || !resa.creneau) {
+      $('recapResa').classList.remove('visible');
+      $('recapTexte').textContent = '';
+      $('recapTotal').textContent = '';
+    } else {
+      $('recapTexte').textContent = libelleOffre(resa.offre) + ' · ' + libelleCreneau(resa.creneau) +
+        ' · ' + libelleJour(resa.date);
+      $('recapTotal').textContent = prix(m.total);
+      $('recapResa').classList.add('visible');
+    }
+    var bloque = !resa.offre || !resa.date || !resa.creneau || !resa.notice ||
+      surDevis(resa.dispo) ||
+      (resa.dispo && (resa.dispo.complet || resa.dispo.exclusif_neutralise));
+    $('btnResa').disabled = !!bloque;
+  }
+
+  function numeroDe(input, iti) {
+    if (iti && typeof iti.getNumber === 'function') {
+      var v = iti.getNumber();
+      if (v) return v;
+    }
+    return (input.value || '').trim();
+  }
+
+  function numeroValide(input, iti) {
+    if (iti && typeof iti.isValidNumber === 'function' && input.value.trim()) {
+      var r = iti.isValidNumber();
+      if (r !== null && typeof r !== 'undefined') return !!r;
+    }
+    return numeroDe(input, iti).replace(/\D/g, '').length >= 8;
+  }
+
+  var gardeResa = Roots.garde($('btnResa').parentNode, 'complement');
+
+  var resaEnCours = false;
+  async function reserver() {
+    if (resaEnCours) return;
+    cacherErreur('erreurResa');
+    if (gardeResa.pris()) return montrerErreur('erreurResa', t().refuseGarde);
+    var nom = $('nomResa').value.trim();
+    if (!nom || !numeroValide($('telResa'), itiResa)) return montrerErreur('erreurResa', t().manqueContact);
+    if (!resa.notice) return;
+
+    resaEnCours = true;
+    var b = $('btnResa');
+    b.classList.add('occupe');
+    b.textContent = t().onReserve;
+    try {
+      await gardeResa.patienter();
+      var r = await Roots.db.reserverEspace({
+        espace: resa.offre.slug, mode: resa.offre.mode, date: resa.date, creneau: resa.creneau,
+        personnes: resa.personnes, nom: nom, tel: numeroDe($('telResa'), itiResa),
+        consentement: resa.notice.version
+      });
+      confirmerResa(r);
+    } catch (e) {
+      montrerErreur('erreurResa', e.message);
+      interroger();
+    } finally {
+      resaEnCours = false;
+      b.classList.remove('occupe');
+      b.textContent = t().reserver;
+    }
+  }
+
+  /* Le paiement en ligne. L'ecran ne connait ni montant ni prestataire : la
+     porte rend la reference et la somme que le serveur a figee, et l'ecran
+     d'encaissement — qui ne detient ni code ni jeton — ouvre le widget. */
+  var paiementEnCours = false;
+  async function payerResa() {
+    if (paiementEnCours) return;
+    cacherErreur('erreurPayer');
+    var b = $('btnPayerResa');
+    paiementEnCours = true;
+    b.disabled = true;
+    var libelle = b.textContent;
+    b.textContent = t().onOuvre;
+    try {
+      var code = $('codeResa').textContent.trim();
+      var tel = numeroDe($('telResa'), itiResa);
+      /* L'identite de facturation se pose AVANT le guichet : la piece nait au
+         constat du paiement, et une identite posee apres ne l'atteint plus. */
+      var pretR = await blocFacturationResa.poser({ par: 'reservation', type: 'espace', code: code, tel: tel });
+      if (!pretR) return;
+      var r = await Roots.db.initierPaiementReservation('espace', code, tel);
+      var pose = Roots.db.remisePaiement({
+        paiement: r.paiement, montant: r.montant,
+        type: 'reservation_espace', code: code, tel: tel
+      });
+      if (!pose) { montrerErreur('erreurPayer', t().payerFerme); return; }
+      location.assign('payer.html');
+    } catch (e) {
+      montrerErreur('erreurPayer', e.message);
+    } finally {
+      paiementEnCours = false;
+      b.disabled = false;
+      b.textContent = libelle;
+    }
+  }
+  $('btnPayerResa').addEventListener('click', payerResa);
+
+  /* Le paiement d'une commande. La porte exige l'identifiant ET le jeton :
+     seul le navigateur qui a passe la commande les detient, et la porte de
+     consultation par code ne les rend jamais. Le geste vit donc ici, sur
+     l'ecran qui vient de les recevoir, et nulle part ou on arrive par un code.
+     Le montant vient de la porte, jamais du panier affiche. */
+  var commandeOuverte = null;
+  var blocFacturation = Roots.blocFacturation({
+    hote: document.getElementById('hoteFacturation'),
+    getLangue: function () { return langue; }
+  });
+
+  var blocFacturationResa = Roots.blocFacturation({
+    hote: document.getElementById('hoteFacturationResa'),
+    getLangue: function () { return langue; },
+    suffixe: 'Resa'
+  });
+
+  async function payerCmd() {
+    if (paiementEnCours || !commandeOuverte) return;
+    cacherErreur('erreurPayerCmd');
+    var b = $('btnPayerCmd');
+    paiementEnCours = true;
+    b.disabled = true;
+    var libelle = b.textContent;
+    b.textContent = t().onOuvre;
+    try {
+      /* L'identite de facturation se pose AVANT le guichet : la porte refuse
+         des qu'une piece existe. */
+      var pretA = await blocFacturation.poser({ par: 'jeton', id: commandeOuverte.id, jeton: commandeOuverte.jeton });
+      if (!pretA) return;
+      var r = await Roots.db.initierPaiementCommande(commandeOuverte.id, commandeOuverte.jeton);
+      /* Le code et le numero suivent la remise : l'ecran d'attente ne connait la
+         vente que par ce que celui-ci lui laisse, et les portes de contact et de
+         remise ne prennent que ce couple. */
+      var pose = Roots.db.remisePaiement({
+        paiement: r.paiement, montant: r.montant, type: 'commande',
+        code: commandeOuverte.code || null, tel: commandeOuverte.tel || null
+      });
+      if (!pose) { montrerErreur('erreurPayerCmd', t().payerFerme); return; }
+      location.assign('payer.html');
+    } catch (e) {
+      montrerErreur('erreurPayerCmd', e.message);
+    } finally {
+      paiementEnCours = false;
+      b.disabled = false;
+      b.textContent = libelle;
+    }
+  }
+  $('btnPayerCmd').addEventListener('click', payerCmd);
+
+  /* La somme due vit sur le geste qui l'engage : elle est exacte a cet
+     endroit, et elle ne se lit pas deux fois. Quand le paiement en ligne
+     n'est pas offert, elle reprend sa ligne propre — elle ne disparait jamais
+     avec le bouton. Redessine a chaque changement de langue, sinon la reprise
+     des libelles effacerait le montant. */
+  var montantDu = null;
+
+  function majBoutonPayer() {
+    var du = (typeof montantDu === 'number') && montantDu > 0;
+    var offert = du && Roots.db.reglagePaiement().pose;
+    $('btnPayerResa').classList.toggle('cache', !offert);
+    blocFacturationResa.montrer(offert);
+    if (offert) $('btnPayerResa').textContent = t().payer + ' · ' + prix(montantDu);
+    $('montantResa').classList.toggle('cache', !(du && !offert));
+    $('montantResa').textContent = (du && !offert) ? prix(montantDu) : '';
+  }
+
+  /* LA RETENUE NE SE COMPTE PAS A VOIX HAUTE. Un decompte presse un geste qui
+     n'a pas besoin d'etre presse, et il occupe l'ecran d'une pastille de plus.
+     Le delai court quand meme : a son terme la place est relachee, l'ecran
+     revient au formulaire, et la personne repart d'une reservation neuve.
+     L'echeance qui fait foi est celle de la porte, pas une duree ecrite ici :
+     l'ecran lit `expire_le` et n'en decide pas. */
+  var minuteur = null;
+  var echeance = null;
+  var TENIR_LE_MOT = 4000;
+
+  /* Deux temps, et l'ordre compte. D'abord la confirmation cesse de mentir :
+     le code, la somme et le geste de paiement disparaissent a l'instant meme,
+     parce que la place n'est plus tenue et que rien ne doit plus donner a
+     croire le contraire. Le mot reste seul a l'ecran le temps d'etre lu.
+     Ensuite seulement la feuille repart, vide, sur une reservation neuve. */
+  function relacherLaPlace() {
+    clearTimeout(minuteur);
+    minuteur = null;
+    echeance = null;
+    montantDu = null;
+    blocFacturationResa.montrer(false);
+    cacherErreur('erreurPayer');
+    var conf = $('confResa');
+    conf.querySelector('.soleil-ok').style.display = 'none';
+    conf.querySelector('.ligne-code').style.display = 'none';
+    conf.querySelector('.apres').style.display = 'none';
+    $('montantResa').style.display = 'none';
+    $('hoteFacturationResa').style.display = 'none';
+    conf.querySelector('.conf-titre').textContent = t().expire;
+    dialogue.scrollTop = 0;
+    minuteur = setTimeout(rouvrirLaFeuille, TENIR_LE_MOT);
+  }
+
+  function rouvrirLaFeuille() {
+    clearTimeout(minuteur);
+    minuteur = null;
+    var conf = $('confResa');
+    conf.classList.remove('visible');
+    conf.querySelector('.soleil-ok').style.display = '';
+    conf.querySelector('.ligne-code').style.display = '';
+    conf.querySelector('.apres').style.display = '';
+    $('montantResa').style.display = '';
+    $('hoteFacturationResa').style.display = '';
+    conf.querySelector('.conf-titre').textContent = t().cestReserve;
+    $('codeResa').textContent = '——————';
+    $('vueResa').style.display = '';
+    interroger();
+    dialogue.scrollTop = 0;
+  }
+
+  /* Une minuterie ne survit ni au sommeil de l'appareil, ni au gel d'un onglet
+     laisse en arriere-plan : au retour, elle peut n'avoir jamais tire. On
+     compare donc l'echeance a l'heure courante chaque fois que la page
+     redevient visible — c'est le seul controle qui ne depende pas de nous. */
+  function verifierEcheance() {
+    if (echeance && Date.now() >= echeance) relacherLaPlace();
+  }
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden) verifierEcheance();
+  });
+  window.addEventListener('pageshow', verifierEcheance);
+
+  function confirmerResa(r) {
+    $('vueResa').style.display = 'none';
+    $('confResa').classList.add('visible');
+    $('codeResa').textContent = (r && r.code) || '——————';
+    /* Rien a payer, rien a proposer. Et si le reglage du prestataire n'est pas
+       pose, le bouton reste absent plutot que de mener a un mur. */
+    montantDu = (r && typeof r.montant === 'number') ? r.montant : null;
+    majBoutonPayer();
+    dialogue.scrollTop = 0;
+
+    clearTimeout(minuteur);
+    minuteur = null;
+    echeance = null;
+    if (r && r.expire_le) {
+      echeance = new Date(r.expire_le).getTime();
+      minuteur = setTimeout(relacherLaPlace, Math.max(0, echeance - Date.now()));
+    }
+  }
+
+  /* ---------- Commande ---------- */
+
+  function dessinerService() {
+    var z = $('chipsService');
+    z.innerHTML = '';
+    ['sur_place', 'emporter'].forEach(function (s) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'chip' + (cmd.service === s ? ' actif' : '');
+      b.setAttribute('aria-pressed', cmd.service === s ? 'true' : 'false');
+      b.textContent = t()[s];
+      b.addEventListener('click', function () { cmd.service = s; dessinerService(); });
+      z.appendChild(b);
+    });
+  }
+
+  function dessinerMenuCompact() {
+    var z = $('menuCompact');
+    z.innerHTML = '';
+    var vues = 0;
+    CATEGORIES.forEach(function (cat) {
+      var articles = cat.articles.filter(function (a) { return a.dispo !== false; });
+      /* Une catégorie sans article visible ne s'affiche pas. */
+      if (!articles.length) return;
+      vues++;
+      var titre = document.createElement('div');
+      titre.className = 'cat-compacte';
+      titre.textContent = langue === 'en' ? (cat.nom_en || cat.nom_fr) : (cat.nom_fr || cat.nom_en);
+      z.appendChild(titre);
+      articles.forEach(function (a) {
+        var q = panier[a.id] || 0;
+        var ligne = document.createElement('div');
+        ligne.className = 'art-compact';
+        ligne.innerHTML = '<div><div class="n"></div><div class="p"></div></div>';
+        ligne.querySelector('.n').textContent = langue === 'en' ? (a.nom_en || a.nom_fr) : (a.nom_fr || a.nom_en);
+        ligne.querySelector('.p').textContent = prix(a.prix);
+        if (q === 0) {
+          var plus = document.createElement('button');
+          plus.type = 'button';
+          plus.className = 'btn-plus';
+          plus.textContent = '+';
+          plus.setAttribute('aria-label', '+');
+          plus.addEventListener('click', function () { ajouter(a.id, 1); });
+          ligne.appendChild(plus);
+        } else {
+          var st = document.createElement('div');
+          st.className = 'stepper-c';
+          var bm = document.createElement('button');
+          bm.type = 'button'; bm.textContent = '−'; bm.setAttribute('aria-label', '−');
+          bm.addEventListener('click', function () { ajouter(a.id, -1); });
+          var val = document.createElement('span');
+          val.textContent = q;
+          var bp = document.createElement('button');
+          bp.type = 'button'; bp.textContent = '+'; bp.setAttribute('aria-label', '+');
+          bp.addEventListener('click', function () { ajouter(a.id, 1); });
+          st.appendChild(bm); st.appendChild(val); st.appendChild(bp);
+          ligne.appendChild(st);
+        }
+        z.appendChild(ligne);
+      });
+    });
+    if (!vues) {
+      var vide = document.createElement('p');
+      vide.className = 'vide-menu';
+      vide.textContent = t().menuVide;
+      z.appendChild(vide);
+    }
+  }
+
+  function ajouter(id, delta) {
+    var q = (panier[id] || 0) + delta;
+    if (q <= 0) delete panier[id]; else panier[id] = Math.min(50, q);
+    dessinerMenuCompact();
+    majCmd();
+  }
+
+  /* Total lu à partir des prix de la carte : il sert l'affichage, jamais l'envoi. */
+  function totalCmd() {
+    var s = 0;
+    Object.keys(panier).forEach(function (id) {
+      var a = ARTICLES[id];
+      if (a) s += a.prix * panier[id];
+    });
+    return s;
+  }
+
+  function majCmd() {
+    var lignes = Object.keys(panier).length;
+    /* Panier vide : pas de total affiché. */
+    $('recapCmd').classList.toggle('visible', lignes > 0);
+    $('cmdTotal').textContent = lignes ? prix(totalCmd()) : '';
+    $('btnCmd').disabled = !lignes || !cmd.notice;
+  }
+
+  var cmdEnCours = false;
+  async function commander() {
+    if (cmdEnCours) return;
+    cacherErreur('erreurCmd');
+    var lignes = Object.keys(panier);
+    if (!lignes.length) return;
+    var nom = $('nomCmd').value.trim();
+    if (!nom || !numeroValide($('telCmd'), itiCmd)) return montrerErreur('erreurCmd', t().manqueContact);
+    if (!cmd.notice) return;
+
+    cmdEnCours = true;
+    var b = $('btnCmd');
+    b.classList.add('occupe');
+    b.textContent = t().onEnvoie;
+    try {
+      var r = await Roots.db.ouvrirCommande({
+        nom: nom, tel: numeroDe($('telCmd'), itiCmd),
+        service: cmd.service, consentement: cmd.notice.version
+      });
+      var manquants = [];
+      for (var i = 0; i < lignes.length; i++) {
+        var id = lignes[i];
+        try {
+          await Roots.db.ajouterArticle(r.id, r.jeton, id, panier[id]);
+        } catch (e2) {
+          var a = ARTICLES[id];
+          manquants.push(a ? (langue === 'en' ? (a.nom_en || a.nom_fr) : (a.nom_fr || a.nom_en)) : id);
+        }
+      }
+      confirmerCmd(r, manquants, numeroDe($('telCmd'), itiCmd));
+    } catch (e) {
+      montrerErreur('erreurCmd', e.message);
+    } finally {
+      cmdEnCours = false;
+      b.classList.remove('occupe');
+      b.textContent = t().commander;
+    }
+  }
+
+  /* Le code et le numero sont retenus a cote de l'identifiant et du jeton : ils
+     ne servent pas a payer, mais l'ecran d'attente ne connait la vente que par
+     ce que cet ecran lui remet, et les portes de contact et de remise ne
+     prennent que ce couple. */
+  function confirmerCmd(r, manquants, tel) {
+    $('vueCmd').style.display = 'none';
+    $('confCmd').classList.add('visible');
+    $('codeCmd').textContent = (r && r.code) || '——————';
+    commandeOuverte = (r && r.id && r.jeton)
+      ? { id: r.id, jeton: r.jeton, code: r.code || null, tel: tel || null } : null;
+    var payable = !!commandeOuverte && Roots.db.reglagePaiement().pose;
+    $('btnPayerCmd').classList.toggle('cache', !payable);
+    /* Le depliant suit le bouton : sans geste qui le pose, il ne parait pas. */
+    blocFacturation.montrer(payable);
+    if (manquants && manquants.length) {
+      $('partielCmd').textContent = t().partiel(manquants.join(', '));
+      $('partielCmd').style.display = 'block';
+    } else {
+      $('partielCmd').style.display = 'none';
+    }
+    dialogue.scrollTop = 0;
+  }
+
+  /* ---------- Langue ---------- */
+
+  /* Les mots ne se posent que sur les pieces importees. Le dictionnaire de
+     cette feuille et celui de la page partagent des cles ; appliquer l'un au
+     document entier reecrirait les mots de l'autre. */
+  var MIENNES = [dialogue, $('fab')];
+  function chezMoi(sel, pose) {
+    MIENNES.forEach(function (hote) {
+      if (!hote) return;
+      var lot = hote.matches(sel) ? [hote] : [];
+      Array.prototype.push.apply(lot, hote.querySelectorAll(sel));
+      lot.forEach(pose);
+    });
+  }
+  function appliquerLangue() {
+    chezMoi('[data-t]', function (el) {
+      var v = t()[el.getAttribute('data-t')];
+      if (typeof v === 'string') el.textContent = v;
+    });
+    chezMoi('[data-p]', function (el) {
+      var v = t()[el.getAttribute('data-p')];
+      if (typeof v === 'string') el.placeholder = v;
+    });
+    chezMoi('[data-al]', function (el) {
+      var v = t()[el.getAttribute('data-al')];
+      if (typeof v === 'string') el.setAttribute('aria-label', v);
+    });
+    if (blocFacturation) blocFacturation.dessiner();
+    if (blocFacturationResa) blocFacturationResa.dessiner();
+    if (resa.notice) $('texteConsentResa').textContent = texteNotice(resa.notice);
+    if (cmd.notice) $('texteConsentCmd').textContent = texteNotice(cmd.notice);
+    dessinerOffres(); dessinerCreneaux(); majPersonnes(); majRecap();
+    dessinerService(); dessinerMenuCompact(); majCmd(); majBoutonPayer();
+  }
+
+  /* ---------- Chargement ---------- */
+
+  async function chargerEspaces() {
+    var d = await Roots.db.espaces();
+    var parId = {};
+    (d.espaces || []).forEach(function (e) { parId[e.id] = e; });
+    var vus = {};
+    (d.capacites || []).forEach(function (c) {
+      var e = parId[c.espace_id];
+      if (!e) return;
+      var tarifs = (d.tarifs || []).filter(function (x) { return x.espace_id === c.espace_id && x.mode === c.mode; });
+      /* Un couple espace x mode sans tarif n'est pas une offre. */
+      if (!tarifs.length) return;
+      var cle = e.slug + '|' + c.mode;
+      if (vus[cle]) return;
+      vus[cle] = true;
+      OFFRES.push({
+        slug: e.slug, nom: e.nom, mode: c.mode, capacite: c.capacite,
+        creneaux: tarifs.map(function (x) { return { creneau: cleCreneau(x.creneau), prix: x.prix, parPersonne: x.par_personne }; })
+      });
+    });
+    OFFRES.sort(function (a, b) {
+      var pa = Math.min.apply(null, a.creneaux.map(function (x) { return x.prix; }));
+      var pb = Math.min.apply(null, b.creneaux.map(function (x) { return x.prix; }));
+      return pa - pb;
+    });
+    /* Aucun espace n'est présélectionné : la parole revient à l'utilisateur. */
+    dessinerOffres();
+  }
+
+  async function chargerCarte() {
+    var d = await Roots.db.carte();
+    var parCat = {};
+    (d.articles || []).forEach(function (a) {
+      ARTICLES[a.id] = a;
+      (parCat[a.categorie_id] = parCat[a.categorie_id] || []).push(a);
+    });
+    CATEGORIES = (d.categories || []).map(function (c) {
+      return {
+        id: c.id, nom_fr: c.nom_fr, nom_en: c.nom_en,
+        articles: (parCat[c.id] || []).slice().sort(function (x, y) { return (x.ordre || 0) - (y.ordre || 0); })
+      };
+    });
+    dessinerMenuCompact();
+    majCmd();
+  }
+
+  async function demarrer() {
+    var maintenant = new Date();
+    var debut = new Date(maintenant.getTime() + 86400000);
+    var fin = new Date(maintenant.getTime() + 30 * 86400000);
+    $('dateResa').min = debut.toISOString().slice(0, 10);
+    $('dateResa').max = fin.toISOString().slice(0, 10);
+    $('dateResa').value = debut.toISOString().slice(0, 10);
+    resa.date = $('dateResa').value;
+
+    try {
+      await chargerEspaces();
+      resa.notice = await Roots.db.notice('espace');
+      if (resa.notice) $('texteConsentResa').textContent = texteNotice(resa.notice);
+      majRecap();
+    } catch (e) {
+      montrerErreur('erreurResa', e.message);
+    }
+
+    try {
+      evt.notice = await Roots.db.notice('evenement');
+      if (evt.notice) $('consentEvt').textContent = texteNotice(evt.notice);
+      majEvt();
+    } catch (e) {
+      montrerErreur('erreurEvt', e.message);
+    }
+
+    try {
+      await chargerCarte();
+      cmd.notice = await Roots.db.notice('commande');
+      if (cmd.notice) $('texteConsentCmd').textContent = texteNotice(cmd.notice);
+      majCmd();
+    } catch (e) {
+      montrerErreur('erreurCmd', e.message);
+    }
+  }
+
+  /* ---------- Câblage des gestes ---------- */
+
+  $('dateResa').addEventListener('change', function () { resa.date = this.value; interroger(); });
+  dansFeuille('.personnes-moins').addEventListener('click', function () { resa.personnes--; majPersonnes(); });
+  dansFeuille('.personnes-plus').addEventListener('click', function () { resa.personnes++; majPersonnes(); });
+  $('btnResa').addEventListener('click', reserver);
+  $('btnCmd').addEventListener('click', commander);
+  /* La bascule vit dans le chrome de la page, qui la diffuse : ce bloc suit
+     la langue retenue, il ne la decide pas. */
+  document.addEventListener('roots:langue', function () {
+    langue = Roots.langueRetenue(langue);
+    appliquerLangue();
+  });
+
+  /* Un lien profond ouvre la feuille sur l'onglet demandé. */
+  function ouvrirDepuisLien() {
+    var quoi = new URLSearchParams(location.search).get('ouvrir');
+    if (quoi !== 'reserver' && quoi !== 'commander') return;
+    var onglet = dansFeuille('.onglets button[data-ong="' + quoi + '"]');
+    if (onglet) onglet.click();
+    ouvrirDlg();
+  }
+
+  appliquerLangue();
+  demarrer();
+  ouvrirDepuisLien();
+
+  window.addEventListener('load', function () {
+    itiResa = Roots.initTelRoots($('telResa'));
+    itiEvt = Roots.initTelRoots($('telEvt'));
+    itiCmd = Roots.initTelRoots($('telCmd'));
+  });
 })();
 </script>
 </body>
