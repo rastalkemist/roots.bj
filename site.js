@@ -259,8 +259,6 @@
         window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
       });
     }
-    var langueBtn = document.querySelector('.pied-politique .lien-langue');
-    var pied = langueBtn ? langueBtn.parentNode : null;
     var seuil = matchMedia('(min-width:1024px)');
     /* Une piece ne se deplace que si elle n'est pas deja chez son hote : sans
        cette garde, l'observateur qui surveille le bac se reveillerait sur son
@@ -274,10 +272,8 @@
       var centre = rangee ? rangee.querySelector('.centre') : null;
       if (!centre) return;
       if (seuil.matches) {
-        loger(langueBtn, droite, droite.firstChild);
         loger(marque, droite, burger);
       } else {
-        loger(langueBtn, pied, pied ? pied.firstChild : null);
         loger(marque, centre, centre ? centre.firstChild : null);
       }
     }

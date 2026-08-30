@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; object-src 'none'; frame-src 'none'; script-src 'self' 'sha256-zq8VBJJwdYBKfEemUSbHzbOJ8W43mw9ygKAfrEr3tzU=' 'sha256-vEDhi7+GKwU6hTtaYB9bSsL0r37cgViiH1KQnV08bJk='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self'; font-src 'self'; connect-src 'self' https://xrqorebcgnixcbqqeoll.supabase.co; manifest-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; object-src 'none'; frame-src 'none'; script-src 'self' 'sha256-zq8VBJJwdYBKfEemUSbHzbOJ8W43mw9ygKAfrEr3tzU=' 'sha256-h9vC7Vpgtr5d69vjH77nu0/Prmo0vIlkacevwhXpy5o='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self'; font-src 'self'; connect-src 'self' https://xrqorebcgnixcbqqeoll.supabase.co; manifest-src 'self'">
 <title>Roots Benin - Retour à la terre-mère</title>
 <meta name="description" content="Le Roots, jardin créatif de Cotonou : café-coworking, séjours chez Kër Yawa, et le Bénin à découvrir. Return to the motherland.">
 <link rel="canonical" href="https://roots.bj/">
@@ -73,6 +73,7 @@
       </div>
     </nav>
     <div class="chrome-droite">
+      <button class="lang-btn" id="btnLangue" aria-label="Langue" data-al-chrome="langue">EN</button>
       <button class="chrome-burger" id="btnBurger" aria-expanded="false" aria-controls="drawer" aria-label="Menu" data-al-chrome="menu"><svg class="i"><use href="#i-menu"/></svg></button>
     </div>
   </div>
@@ -1115,6 +1116,10 @@
 
   function appliquerLangue() {
     document.documentElement.lang = langue;
+    /* Le libelle nomme la langue vers laquelle on bascule, jamais la
+       courante : le bouton dit ou l'on va. */
+    $('btnLangue').textContent = langue === 'fr' ? 'EN' : 'FR';
+    $('btnLangue').setAttribute('lang', langue === 'fr' ? 'en' : 'fr');
     document.querySelectorAll('[data-t]').forEach(function (el) {
       var v = t()[el.getAttribute('data-t')];
       if (typeof v === 'string') el.textContent = v;
@@ -1142,6 +1147,8 @@
     radio: true,
     onLangue: function () { basculerLangue(); }
   });
+  $('btnLangue').addEventListener('click', function () { basculerLangue(); });
+
   function basculerLangue() {
     langue = (langue === 'fr') ? 'en' : 'fr';
     Roots.retenirLangue(langue);
