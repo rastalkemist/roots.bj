@@ -45,10 +45,18 @@ body.p-site #marque{background:var(--roots-noir);
    nav est visible, l'ouverture de menu se retire : une seule entrée vers les
    mêmes noms. Sous le seuil, la grille du tronc reprend la main et les noms
    vivent dans le menu, avec la porte vers l'espace personnel. ---- */
+/* La typographie des noms ne dépend pas de la largeur de l'écran : posée
+   hors de toute portée, elle vaut partout où un nom paraît. Seule la mise en
+   page — le rang, ses écarts, son pliage — appartient au grand écran. Sans
+   cela, un nom sorti de sa portée retomberait à la police du navigateur. */
+.site-nom{font-family:var(--font-corps);font-weight:var(--w-bold);font-size:var(--t-body);color:var(--encre)}
 .site-noms{display:none}
 @media(max-width:1023.98px){body.p-site .chrome-inner>.chrome-titre{display:none}}
 @media(min-width:1024px){
-  body.p-site .chrome-titre{font-size:var(--t-16)}
+  /* Le nom de la maison et le logotype de la pastille disent la même chose
+     au même barreau : ils descendent ensemble d'un cran sur grand écran. Le
+     disque, lui, garde sa mesure — il est une cible, pas un mot. */
+  body.p-site .chrome-titre,body.p-site #marque .mot{font-size:var(--t-16)}
   body.p-site .chrome-inner{display:flex;align-items:center;gap:var(--esp-4);width:min(92%,1200px)}
   body.p-site .chrome-inner>.quete-groupe{margin-inline:auto}
   body.p-site .chrome-inner>.site-noms{order:1}
@@ -57,7 +65,7 @@ body.p-site #marque{background:var(--roots-noir);
   .site-noms{display:flex;align-items:center;gap:var(--esp-6)}
   /* L'ecart entre les deux deroulants est la ligne d'interface pleine — le
      cran des barres des tenors. */
-  .site-nom{display:inline-flex;align-items:center;gap:var(--esp-1);min-height:var(--cible-min);max-width:220px;border:none;background:none;padding:0;cursor:pointer;font-family:var(--font-corps);font-weight:var(--w-bold);font-size:var(--t-body);color:var(--encre);text-decoration:none;transition:color var(--mvt-ample) var(--courbe-etat),max-width var(--mvt-ample) var(--courbe-etat),margin var(--mvt-ample) var(--courbe-etat),opacity var(--mvt-ample) var(--courbe-etat)}
+  .site-nom{display:inline-flex;align-items:center;gap:var(--esp-1);min-height:var(--cible-min);max-width:220px;border:none;background:none;padding:0;cursor:pointer;text-decoration:none;transition:color var(--mvt-ample) var(--courbe-etat),max-width var(--mvt-ample) var(--courbe-etat),margin var(--mvt-ample) var(--courbe-etat),opacity var(--mvt-ample) var(--courbe-etat)}
   /* Le survol et l'appui prennent la meme jauge, aux echelons voisins : aucun
      etat du nav ne parle un univers que le haut de page ne porte pas. */
   body.p-site.sur-fond .site-nom:hover{background-image:var(--jauge-e3);-webkit-background-clip:text;background-clip:text;color:transparent}
