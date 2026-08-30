@@ -24,7 +24,9 @@ body.p-site{--part:calc(var(--part-rouge,0) * 100%);
 /* Sur la scène, la barre entière parle blanc : rien n'a de fond derrière soi,
    et une encre unique tient l'ensemble. Revenue sur son fond plein, elle
    reprend le noir de la maison et la jauge du mot de section. */
-body.p-site .chrome-titre,body.p-site .site-nom,body.p-site .chrome-burger,body.p-site .ankh-home{color:var(--blanc)}
+body.p-site .chrome-titre,body.p-site .site-nom,body.p-site .chrome-burger,body.p-site .ankh-home,body.p-site .lang-btn{color:var(--blanc)}
+body.p-site.sur-fond .lang-btn{color:var(--roots-noir)}
+@media(max-width:1023.98px){body.p-site .chrome-droite .lang-btn{display:none}}
 body.p-site.sur-fond .chrome-titre{color:var(--roots-noir)}
 body.p-site.sur-fond .site-nom{color:var(--encre)}
 body.p-site.sur-fond .chrome-burger{background-image:var(--jauge);-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -88,7 +90,8 @@ body.p-site #marque{background:var(--jauge);
 /* Le mot du bouton porte la jauge par un fond decoupe au texte, ce qui rend
    l'encre transparente : le chevron, qui suit l'encre courante, disparaitrait
    avec elle. Il reprend donc l'encre du texte courant. */
-.site-nom .site-chevron{color:var(--encre)}
+body.p-site .site-nom .site-chevron{color:var(--blanc)}
+body.p-site.sur-fond .site-nom .site-chevron{color:var(--encre)}
 .site-chevron{width:16px;height:16px;transform:rotate(90deg);transition:transform var(--mvt-court) var(--courbe-etat)}
 .site-apropos{position:relative}
 .site-apropos[data-ouvert] .site-chevron{transform:rotate(-90deg)}
@@ -125,17 +128,16 @@ body.p-site #marque .reste{display:none}
 body.p-site #marque{cursor:pointer}
 @media(max-width:1023.98px){body.p-site .chrome-droite #marque{display:none}}
 
-/* ---- LA BUÉE DE LA SCÈNE. Sur la scène, la barre ne porte aucun fond : une
-   buée seule brouille l'image derrière elle. Elle déborde sous la barre et
-   s'éteint par un masque vertical, si bien qu'aucune ligne ne marque où le
-   brouillage s'arrête. Passé la scène, la barre reprend le fond plein du
-   tronc et la buée s'efface. ---- */
+/* ---- LE VOILE DE LA SCÈNE. Sur la scène, la barre ne porte aucun fond : un
+   voile noir la couvre, à sa pleine opacité tout en haut, et décroît selon une
+   courbe exponentielle pour arriver à zéro au bas de la barre. La pente est
+   forte en haut et tangente à zéro en bas : la dissolution n'a donc aucun
+   point de rupture, et le dégradé se suffit — plus rien ne le masque. Passé la scène, la barre reprend le fond plein du
+   tronc et le voile s'efface. ---- */
 body.p-site .chrome-haut{background:transparent;backdrop-filter:none;border-bottom-color:transparent;transition:background var(--mvt-ample) var(--courbe-etat),border-color var(--mvt-ample) var(--courbe-etat)}
 body.p-site .chrome-haut::after{content:'';position:absolute;inset:0 0 auto 0;z-index:-1;pointer-events:none;
-  height:calc(var(--entete-h-rendue,64px) * 1.3);
-  backdrop-filter:blur(26px) saturate(1.5) brightness(1.06);
-  -webkit-mask-image:linear-gradient(to bottom,var(--noir) 0%,var(--noir) 34%,transparent 100%);
-  mask-image:linear-gradient(to bottom,var(--noir) 0%,var(--noir) 34%,transparent 100%);
+  height:var(--entete-h-rendue,64px);
+  background:linear-gradient(to bottom,rgba(var(--noir-rgb),0.950) 0%,rgba(var(--noir-rgb),0.753) 10%,rgba(var(--noir-rgb),0.581) 20%,rgba(var(--noir-rgb),0.433) 30%,rgba(var(--noir-rgb),0.309) 40%,rgba(var(--noir-rgb),0.207) 50%,rgba(var(--noir-rgb),0.127) 60%,rgba(var(--noir-rgb),0.067) 70%,rgba(var(--noir-rgb),0.028) 80%,rgba(var(--noir-rgb),0.006) 90%,rgba(var(--noir-rgb),0.000) 100%);
   transition:opacity var(--mvt-ample) var(--courbe-etat)}
 body.p-site.sur-fond .chrome-haut{background:rgba(var(--blanc-rgb),.96);backdrop-filter:blur(8px);border-bottom-color:var(--gris-service)}
 body.p-site.sur-fond .chrome-haut::after{opacity:0}
