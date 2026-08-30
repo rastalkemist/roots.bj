@@ -165,21 +165,6 @@ body.p-site.sur-fond .chrome-haut::after{opacity:0}
 .site-accueil .commande-video:focus,.site-accueil .commande-video:focus-visible{left:var(--esp-5)}
 .site-accueil .commande-video svg{width:20px;height:20px}
 
-/* ---- LA JAUGE DE LA LOUPE. Le disque de la quête dit le monde : vert dans
-   la zone du café, il se remplit de rouge à mesure que la ligne de fin de
-   l'accueil balaie son cercle, et se regorge de vert en remontant. La part
-   rouge est publiée par le script entre 0 et 1. ---- */
-/* Le glyphe de la loupe est dessine PAR le fond du tronc — le manche et le
-   cercle en couches de degrades. La jauge remplace la seule couche de couleur,
-   masquee au disque, et laisse le glyphe intact au-dessus d'elle. */
-body.p-site .quete-loupe{
-  background:
-    linear-gradient(45deg,transparent calc(50% - 1.7px),var(--blanc) calc(50% - 1.7px) calc(50% + 1.7px),transparent calc(50% + 1.7px)) 23px 23px/9px 9px no-repeat,
-    radial-gradient(circle at 50% 50%,transparent 4.2px,var(--blanc) 4.8px 7px,transparent 7.6px) 12px 12px/15px 15px no-repeat,
-    var(--jauge) !important;
-  -webkit-mask:radial-gradient(circle at 50% 50%,var(--encre) 18.6px,transparent 19.4px);
-  mask:radial-gradient(circle at 50% 50%,var(--encre) 18.6px,transparent 19.4px)}
-
 /* ---- LE MENU DU SITE. Les cinq noms et le déroulant, dans le tiroir, à la
    place des sections d'univers que le tronc y verse. Le feuillet s'ancre à
    droite : ses lignes s'alignent sur ce bord, le sous-menu s'y indente. ---- */
