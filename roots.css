@@ -1006,6 +1006,16 @@ body.page-figee{overflow:hidden}
    ou un aplat d'univers ne se detacherait d'aucune image. */
 :where(body.p-roam) .fab{background:var(--univers);color:var(--blanc);border:none;gap:var(--esp-2)}
 
+/* ---- L'UNIVERS PORTE PAR LA PIECE. Le corps dit le monde de la page ; une
+   piece qui vient d'un autre monde le declare pour elle et pour ce qu'elle
+   contient. Le jeu de jetons est celui de la regle de corps du meme univers.
+   Une piece sans cette marque suit la page, comme avant. ---- */
+[data-univers="roots"]{--univers:var(--roots-vert);--univers-rgb:var(--vert-e2-rgb);--encre:var(--vert-e1);--univers-e1:var(--vert-e1);--univers-e1-rgb:var(--vert-e1-rgb);--univers-e3:var(--vert-e3);--univers-e3-rgb:var(--vert-e3-rgb);--univers-e4:var(--vert-e4);--univers-e5:var(--vert-e5);--univers-selection:rgba(var(--univers-rgb),.08);--ombre-teinte:var(--vert-e1-rgb);--encre-ll-h1:var(--encre);--encre-ll-h3:var(--encre);--encre-ll-h5:var(--encre);--encre-ll-h2:var(--univers-e3);--encre-ll-h4:var(--univers-e3);--encre-ll-h6:var(--univers-e3);--encre-ll-chapo:var(--univers-e3)}
+/* Le geste focal se remplit de son univers sur les mondes qui le veulent
+   plein, et reste de papier sur ceux qui le veulent de papier : la peau suit
+   l'univers DECLARE, pas celui du corps. */
+.fab[data-univers="roots"]{background:var(--blanc);color:var(--univers);gap:var(--esp-2)}
+
 /* ---- La feuille d'exploration : trois pas, un seul ouvert. Un pas fermé se
    replie sur une rangée qui montre ce qu'il porte ; le pas ouvert est une
    carte claire posée sur le fond de la feuille. La valeur répondue passe de

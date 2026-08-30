@@ -89,7 +89,7 @@
     <img class="site-scene" src="media/hero.jpg" alt="" width="1600" height="900" fetchpriority="high" decoding="async">
     <video class="site-film" id="filmAccueil" muted loop playsinline preload="none" poster="media/hero.jpg" aria-hidden="true"></video>
     <button type="button" class="commande-video cache" id="cmdFilm" aria-label="Mettre la vidéo en pause"><svg class="i" aria-hidden="true"><use href="#i-pause"/></svg></button>
-    <button class="fab" id="fab" data-t="reserver">Réserver</button>
+    <button class="fab" id="fab" data-univers="roots" data-t="reserver">Réserver</button>
   </section>
 
   <section class="bloc-sejour" id="sejourner" aria-labelledby="etSejourner">
@@ -280,8 +280,8 @@
         data-t="chercherMots">Je découvre le Bénin</button>
 
 <!-- ══════════════ Feuille du bas (+) : Réserver | Commander ══════════════ -->
-<div class="voile" id="voileDlg"></div>
-<div class="feuille-bas" id="dialogue" role="dialog" aria-modal="true" aria-label="Réserver ou commander" data-al-chrome="feuille">
+<div class="voile" id="voileDlg" data-univers="roots"></div>
+<div class="feuille-bas" id="dialogue" data-univers="roots" role="dialog" aria-modal="true" aria-label="Réserver ou commander" data-al-chrome="feuille">
   <div class="poignee"></div>
   <div class="tete">
     <button class="fermer" id="fermerDlg" aria-label="Fermer" data-al-chrome="fermer"><svg class="i"><use href="#i-x"/></svg></button>
