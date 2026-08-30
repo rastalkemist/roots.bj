@@ -23,13 +23,15 @@
           apProjet: 'Le projet', apEquipe: 'L’équipe', apCommunaute: 'La communauté',
           apVision: 'La vision',
           hautDePage: 'Haut de page',
-          titrePage: 'Roots Benin - Retour à la terre-mère' },
+          titrePage: 'Roots Bénin',
+          descriptionPage: 'Terre-Mère, terre du futur' },
     en: { navConnecter: 'Connect', navVisiter: 'Visit', navDecouvrir: 'Discover',
           navRevenir: 'Return', navAPropos: 'About',
           apProjet: 'The project', apEquipe: 'The team', apCommunaute: 'The community',
           apVision: 'The vision',
           hautDePage: 'Back to top',
-          titrePage: 'Roots Benin - Connect to the motherland' }
+          titrePage: 'Roots Benin',
+          descriptionPage: '[Re]connect with the motherland' }
   };
   /* La langue se lit comme le tronc la lit : la clé si elle existe, sinon la
      langue du navigateur. Sans ce repli, la barre parlerait français pendant
@@ -40,9 +42,40 @@
     if (pose === 'en' || pose === 'fr') return pose;
     return (navigator.language || 'fr').toLowerCase().indexOf('en') === 0 ? 'en' : 'fr';
   }
+  /* Une fente porte la chaîne dans son titre ou dans son contenu, selon sa
+     nature ; le poseur ne connaît que la chaîne. */
+  function poserFente(sel, mot) {
+    if (!mot) return;
+    var el = document.querySelector(sel);
+    if (!el) return;
+    if (el.tagName === 'TITLE') el.textContent = mot;
+    else el.setAttribute('content', mot);
+  }
+
   function poserDits() {
     var d = DITS[langue()];
-    if (d.titrePage) document.title = d.titrePage;
+    /* IL N'Y A QU'UN TITRE ET QU'UNE DESCRIPTION. Le document les sert dans
+       cinq fentes — l'onglet, le nom du site, le titre et la description de la
+       carte de partage, la description du moteur — et chaque fente reçoit LA
+       MEME chaîne. Une fente qui porterait sa propre version serait une
+       seconde version : elles se posent donc toutes ici, en un seul endroit,
+       depuis les deux clés du dictionnaire. */
+    poserFente('title', d.titrePage);
+    poserFente('meta[property="og:site_name"]', d.titrePage);
+    poserFente('meta[property="og:title"]', d.titrePage);
+    poserFente('meta[name="description"]', d.descriptionPage);
+    poserFente('meta[property="og:description"]', d.descriptionPage);
+    /* La langue déclarée au partage suit la langue lue ; l'autre passe en
+       langue de rechange. */
+    var loc = document.querySelector('meta[property="og:locale"]');
+    var alt = document.querySelector('meta[property="og:locale:alternate"]');
+    if (loc && alt) {
+      var courante = langue() === 'en' ? 'en_GB' : 'fr_BJ';
+      if (loc.getAttribute('content') !== courante) {
+        alt.setAttribute('content', loc.getAttribute('content'));
+        loc.setAttribute('content', courante);
+      }
+    }
     /* Un libelle qui ne se lit qu'a l'oreille se traduit comme les autres. */
     Array.prototype.forEach.call(document.querySelectorAll('[data-als]'), function (el) {
       var m = d[el.getAttribute('data-als')];
