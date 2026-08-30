@@ -31,7 +31,7 @@
 <script src="garde.js"></script>
 <script src="site.js" defer></script>
 </head>
-<body class="p-roam p-site monde-vert" data-surface="claire" id="haut">
+<body class="p-roam p-site" data-surface="claire" id="haut">
 
 <script>Roots.sprite()</script>
 
@@ -83,18 +83,14 @@
        bien mis en avant retire la vedette, faute de quoi l'écran montrerait un
        lieu que le filtre vient d'écarter. -->
   <!-- ══════════════ L'ACCUEIL — CONNECTER ══════════════
-       La video du jardin, le diaporama du mot d'accueil et la ligne de
-       destination, qui suit la langue de la page. La video
-       ne part que si le mouvement n'est pas reduit et que la connexion n'est
-       pas econome ; l'affiche tient la scene dans tous les autres cas, et la
-       commande arrete ou relance le film. -->
-  <section class="site-accueil" id="connecter" aria-labelledby="motAccueil">
+       La scene filmee, sans texte : l'image porte seule. Le film ne part que
+       si le mouvement n'est pas reduit et que la connexion n'est pas econome ;
+       l'affiche tient la scene dans tous les autres cas. La commande d'arret
+       reprend la pose de l'ecran d'accueil de l'application — hors champ, elle
+       ne parait qu'au foyer du clavier. -->
+  <section class="site-accueil" id="connecter">
     <img class="site-scene" src="media/hero.jpg" alt="" width="1600" height="900" fetchpriority="high" decoding="async">
     <video class="site-film" id="filmAccueil" muted loop playsinline preload="none" poster="media/hero.jpg" aria-hidden="true"></video>
-    <div class="site-accueil-dit">
-      <h1 class="site-mot" id="motAccueil">Kwabo</h1>
-      <p class="site-ou" id="ouAccueil" data-ts="ouBenin">au Bénin</p>
-    </div>
     <button type="button" class="commande-video cache" id="cmdFilm" aria-label="Mettre la vidéo en pause"><svg class="i" aria-hidden="true"><use href="#i-pause"/></svg></button>
   </section>
 

@@ -1,38 +1,25 @@
 /* ==========================================================================
    ROOTS BENIN — la feuille propre au site d'une page.
    Elle ne redéclare aucun composant du tronc : elle pose les pièces que le
-   site est seul à porter — le nav des cinq noms, l'accueil filmé, la jauge
-   d'univers de la loupe — et remappe les jetons d'univers au fil du
-   défilement. Exige : roots-tokens.css, roots.css et roam.css avant elle.
+   site est seul à porter — le nav des cinq noms et la scène filmée —, répartit
+   les pièces du tronc entre la barre et le menu, et fait virer la couleur des
+   seules pièces du nav. Exige : roots-tokens.css, roots.css et roam.css.
    ========================================================================== */
 
-/* ---- LA BASCULE DE MONDE. La page appartient structurellement au monde
-   rouge ; le haut de page parle le monde vert. La classe .monde-vert remappe
-   les jetons d'univers ; la retirer rend la main aux jetons du monde rouge.
-   Toute couleur suit ces jetons : la bascule est UNE classe, jamais une
-   couleur écrite. ---- */
-/* La part rouge de la loupe : publiee par le script entre 0 et 1, nulle au
-   chargement. */
+/* ---- LA COULEUR DU NAV. Le corps de la page appartient au monde rouge du
+   bout a l'autre : rien n'y bascule. Seules les pieces de la barre parlent le
+   monde vert au haut de page et virent au rouge a mesure que la ligne de fin
+   de la scene balaie le cercle de la loupe. Une seule grandeur mene le
+   melange — la part rouge publiee par le script entre 0 et 1 — et toutes les
+   pieces la suivent ensemble. ---- */
+/* La part rouge : publiee par le script entre 0 et 1, nulle au chargement. */
 :root{--part-rouge:0}
-
-body.p-site.monde-vert{
-  --univers:var(--roots-vert);
-  --univers-rgb:var(--vert-e2-rgb);
-  --univers-selection:rgba(var(--univers-rgb),.08);
-  --univers-e1:var(--vert-e1);
-  --univers-e1-rgb:var(--vert-e1-rgb);
-  --univers-e3:var(--vert-e3);
-  --univers-e3-rgb:var(--vert-e3-rgb);
-  --univers-e4:var(--vert-e4);
-  --univers-e5:var(--vert-e5);
-  --ombre-teinte:var(--vert-e1-rgb);
-  --encre-ll-h1:var(--encre);
-  --encre-ll-h3:var(--encre);
-  --encre-ll-h5:var(--encre);
-  --encre-ll-h2:var(--univers-e3);
-  --encre-ll-h4:var(--univers-e3);
-  --encre-ll-h6:var(--univers-e3);
-  --encre-ll-chapo:var(--univers-e3)}
+body.p-site{--part:calc(var(--part-rouge,0) * 100%);
+  --encre-nav:color-mix(in srgb,var(--rouge-e3) var(--part),var(--vert-e3));
+  --fond-nav:color-mix(in srgb,var(--rouge-e2) var(--part),var(--roots-vert))}
+body.p-site .chrome-titre{color:var(--encre-nav)}
+body.p-site .site-nom.actif{color:var(--encre-nav)}
+body.p-site #marque{background:var(--fond-nav);box-shadow:inset 0 0 0 1.5px var(--fond-nav),0 3px 10px rgba(var(--ombre-teinte),.30)}
 .chrome-haut,.chrome-titre,.site-nom{transition:color var(--mvt-ample) var(--courbe-etat),border-color var(--mvt-ample) var(--courbe-etat)}
 
 /* ---- LA BARRE DU SITE. Trois zones sur grand écran : la marque à gauche —
@@ -55,7 +42,6 @@ body.p-site.monde-vert{
      barres des tenors — et il se plie avec le mot au rangement. */
   .site-nom{display:inline-flex;align-items:center;gap:var(--esp-1);min-height:var(--cible-min);max-width:220px;margin-inline-end:var(--esp-6);border:none;background:none;padding:0;cursor:pointer;font-family:var(--font-corps);font-weight:var(--w-bold);font-size:var(--t-body);color:var(--encre);text-decoration:none;transition:color var(--mvt-ample) var(--courbe-etat),max-width var(--mvt-ample) var(--courbe-etat),margin var(--mvt-ample) var(--courbe-etat),opacity var(--mvt-ample) var(--courbe-etat)}
   .site-noms .site-apropos .site-nom{margin-inline-end:0}
-  .site-nom.actif{color:var(--univers-e3)}
   .site-nom:hover{color:var(--univers-e4)}
   .site-nom:active{color:var(--univers-e1)}
   /* Des le premier defilement, les quatre mots d'ancre se rangent : seuls
@@ -87,31 +73,39 @@ body.p-site.monde-vert{
    cinq noms elle quitte la barre — la porte du menu la remplace — pour que
    la barre étroite ne dispute l'attention qu'entre la quête et la
    réservation. ---- */
+/* Le lecteur siege dans la barre au-dessus du seuil : il y tient replie, a la
+   mesure d'une pastille, et se deploie au survol comme au foyer. */
+@media(min-width:1024px){
+  /* Hors du menu, le tronc masque le lecteur tant qu'il n'a pas d'antenne ;
+     dans la barre il se tient comme le menu le tient — pose, meme muet. */
+  body.p-site .chrome-droite .languette-radio.cache{display:flex}
+  body.p-site .chrome-droite .languette-radio{opacity:1;transform:none}
+  body.p-site .chrome-droite .languette-radio{order:-1;margin:0 var(--esp-3) 0 0;max-width:calc(var(--cible-min) + var(--limite-ep) * 2);min-width:calc(var(--cible-min) + var(--limite-ep) * 2);gap:0;padding-left:0;padding-right:0;overflow:hidden;transition:max-width var(--mvt-parcours) var(--courbe-entree)}
+  body.p-site .chrome-droite .languette-radio:hover,
+  body.p-site .chrome-droite .languette-radio:focus-within{max-width:280px;gap:var(--esp-4);padding-left:var(--esp-3)}
+  body.p-site .chrome-droite .languette-radio .lecteur-texte{max-width:0;opacity:0;overflow:hidden;transition:max-width var(--mvt-parcours) var(--courbe-entree),opacity var(--mvt-etat) var(--courbe-etat)}
+  body.p-site .chrome-droite .languette-radio:hover .lecteur-texte,
+  body.p-site .chrome-droite .languette-radio:focus-within .lecteur-texte{max-width:220px;opacity:1}
+}
 body.p-site #marque .reste{display:none}
 body.p-site #marque{cursor:pointer}
 @media(max-width:1023.98px){body.p-site .chrome-droite #marque{display:none}}
 
 /* ---- L'ACCUEIL FILMÉ. La scène tient la fenêtre sous la barre ; l'affiche
    porte l'image tant que le film n'a pas le droit de partir. ---- */
-.site-accueil{position:relative;min-height:calc(100svh - var(--entete-h-rendue,64px));display:grid;place-items:center;overflow:hidden;margin:0 calc(50% - 50vw) var(--air-i6)}
+/* La scene est la premiere piece du corps et colle sous la barre : elle rend
+   le cran d'air que le corps Roam pose au-dessus de sa matiere. */
+.site-accueil{position:relative;min-height:calc(100svh - var(--entete-h-rendue,64px));display:grid;place-items:center;overflow:hidden;margin:calc(-1 * var(--air-i3)) calc(50% - 50vw) var(--air-i6)}
 .site-scene,.site-film{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .site-film{opacity:0;transition:opacity var(--mvt-long) var(--courbe-etat)}
 .site-film.joue{opacity:1}
-.site-accueil-dit{position:relative;text-align:center;max-width:min(85%,640px)}
-/* Les deux lignes de l'accueil parlent au meme niveau de l'echelle — le
-   barreau du h2, l'interligne qui lui repond, le barreau d'eclat. */
-/* Aucune encre unique ne tient sur une image qui varie : les deux lignes
-   portent le meme cerne — huit ombres sans flou, deux points d'epaisseur, au
-   premier echelon d'univers — et entrent et sortent en fondu ensemble. */
-.site-mot{margin:0 0 var(--air-i2);font-family:var(--font-eclat);font-weight:var(--w-bold);font-size:var(--t-h2);line-height:var(--lh-28);color:var(--blanc);overflow-wrap:anywhere;
-  text-shadow:2px 0 0 var(--univers-e1),-2px 0 0 var(--univers-e1),0 2px 0 var(--univers-e1),0 -2px 0 var(--univers-e1),1.4px 1.4px 0 var(--univers-e1),-1.4px 1.4px 0 var(--univers-e1),1.4px -1.4px 0 var(--univers-e1),-1.4px -1.4px 0 var(--univers-e1);
-  transition:opacity var(--mvt-ample) var(--courbe-etat)}
-.site-mot.passe{opacity:0}
-.site-ou{margin:0;font-family:var(--font-eclat);color:var(--blanc);font-weight:var(--w-bold);font-size:var(--t-h2);line-height:var(--lh-28);
-  text-shadow:2px 0 0 var(--univers-e1),-2px 0 0 var(--univers-e1),0 2px 0 var(--univers-e1),0 -2px 0 var(--univers-e1),1.4px 1.4px 0 var(--univers-e1),-1.4px 1.4px 0 var(--univers-e1),1.4px -1.4px 0 var(--univers-e1),-1.4px -1.4px 0 var(--univers-e1);
-  transition:opacity var(--mvt-ample) var(--courbe-etat)}
-.site-ou.passe{opacity:0}
-.site-accueil .commande-video{position:absolute;right:var(--esp-5);bottom:var(--esp-5)}
+/* La commande d'arret du film reprend mot pour mot la pose que l'application
+   lui donne sur son ecran filme : hors champ, elle ne parait qu'au foyer du
+   clavier. Le mecanisme reste joignable — une piece en mouvement qui part
+   seule doit pouvoir s'arreter — sans peser sur l'image. */
+.site-accueil .commande-video{position:fixed;left:-9999px;bottom:calc(var(--esp-5) + var(--safe-bas,0px));z-index:7;width:var(--cible-min);height:var(--cible-min);border:2px solid var(--creme);border-radius:50%;background:var(--univers-e1);color:var(--creme);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.site-accueil .commande-video:focus,.site-accueil .commande-video:focus-visible{left:var(--esp-5)}
+.site-accueil .commande-video svg{width:20px;height:20px}
 
 /* ---- LA JAUGE DE LA LOUPE. Le disque de la quête dit le monde : vert dans
    la zone du café, il se remplit de rouge à mesure que la ligne de fin de

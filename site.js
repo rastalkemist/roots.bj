@@ -1,11 +1,11 @@
 /* Le comportement propre au site d'une page.
 
-   Cinq responsabilités : tirer le mot d'accueil et le poser aux deux endroits
-   qui le portent ; suivre le défilement pour dire la section courante, le
-   monde de la page et la part rouge de la loupe ; tenir le déroulant des cinq
-   noms ; poser le menu du site dans le tiroir à la place des sections
-   d'univers ; conduire le film de l'accueil et sa commande. La langue, la
-   quête et les feuilles restent au tronc.
+   Quatre responsabilités : suivre le défilement pour dire la section courante
+   et la part rouge du nav ; tenir le déroulant des cinq noms ; poser le menu
+   du site dans le tiroir à la place des sections d'univers ; répartir les
+   pièces du tronc entre la barre et le menu selon la largeur, et conduire le
+   film de la scène. La langue, la quête, la radio et les feuilles restent au
+   tronc : le site les déplace, il ne les refait pas.
 
    Exige : un corps portant p-site, un nav .site-noms dont les ancres portent
    data-cible, les sections d'ancrage correspondantes, et une scène d'accueil
@@ -13,39 +13,15 @@
 (function () {
   'use strict';
 
-  /* Les mots qui parlent francais ou anglais portent leur langue : elle
-     s'impose a la ligne de destination pour que les deux lignes parlent
-     d'une seule voix. Les mots des langues du pays n'en portent pas — la
-     langue de la page decide. */
-  var MOTS = [
-    { dit: 'Kwabo', poids: 40, langue: '' },
-    { dit: 'Woezon', poids: 30, langue: '' },
-    { dit: 'E kaabo', poids: 10, langue: '' },
-    { dit: 'Bienvenue', poids: 10, langue: 'fr' },
-    { dit: 'Welcome', poids: 10, langue: 'en' }
-  ];
-  function tirer() {
-    var total = 0, i;
-    for (i = 0; i < MOTS.length; i++) total += MOTS[i].poids;
-    var d = Math.random() * total;
-    for (i = 0; i < MOTS.length; i++) {
-      d -= MOTS[i].poids;
-      if (d < 0) return MOTS[i].dit;
-    }
-    return MOTS[0].dit;
-  }
-
   var DITS = {
     fr: { navConnecter: 'Connecter', navVisiter: 'Visiter', navDecouvrir: 'Découvrir',
           navRevenir: 'Revenir', navAPropos: 'À propos',
           apProjet: 'Le projet', apEquipe: 'L’équipe', apCommunaute: 'La communauté',
-          apVision: 'La vision',
-          ouBenin: 'au Bénin', ouRoots: 'au Roots' },
+          apVision: 'La vision' },
     en: { navConnecter: 'Connect', navVisiter: 'Visit', navDecouvrir: 'Discover',
           navRevenir: 'Return', navAPropos: 'About',
           apProjet: 'The project', apEquipe: 'The team', apCommunaute: 'The community',
-          apVision: 'The vision',
-          ouBenin: 'to Benin', ouRoots: 'to the Roots' }
+          apVision: 'The vision' }
   };
   function langue() {
     try { return localStorage.getItem('roots.langue') === 'en' ? 'en' : 'fr'; }
@@ -56,18 +32,17 @@
     Array.prototype.forEach.call(document.querySelectorAll('[data-ts]'), function (el) {
       if (d[el.dataset.ts]) el.textContent = d[el.dataset.ts];
     });
-    var h1 = document.getElementById('motAccueil');
-    if (h1) accorderOu(h1.textContent);
   }
 
-  /* ---- LA SECTION COURANTE, LE MONDE, LA PART ROUGE DE LA LOUPE. La ligne
-     de fin de l'accueil balaie le cercle de la loupe : la part rouge est la
-     part du cercle passée au-dessus d'elle — nulle tant que la ligne est sous
-     le cercle, pleine dès qu'elle l'a dépassé, et elle se rejoue dans les
-     deux sens du défilement. */
+  /* ---- LA SECTION COURANTE ET LA PART ROUGE. La ligne de fin de la scène
+     balaie le cercle de la loupe : la part rouge est la part du cercle passée
+     au-dessus d'elle — nulle tant que la ligne est sous le cercle, pleine dès
+     qu'elle l'a dépassé, et elle se rejoue dans les deux sens du défilement.
+     Elle seule mène la couleur de la barre ; le corps de la page appartient
+     au monde rouge du bout à l'autre, sans état ni bascule. */
   var ANCRES = ['connecter', 'sejourner', 'decouvrir', 'infos'];
   function surveiller() {
-    var accueil = document.getElementById('connecter');
+    var scene = document.getElementById('connecter');
     function poserCourante() {
       var ligne = window.innerHeight / 3, courante = ANCRES[0], i, r;
       for (i = 0; i < ANCRES.length; i++) {
@@ -76,7 +51,6 @@
         r = el.getBoundingClientRect();
         if (r.top <= ligne) courante = ANCRES[i];
       }
-      document.body.classList.toggle('monde-vert', courante === 'connecter');
       Array.prototype.forEach.call(document.querySelectorAll('[data-cible]'), function (a) {
         var sienne = a.dataset.cible === courante;
         a.classList.toggle('actif', sienne);
@@ -84,8 +58,8 @@
         else a.removeAttribute('aria-current');
       });
       var loupe = document.querySelector('.quete-loupe');
-      if (loupe && accueil) {
-        var fin = accueil.getBoundingClientRect().bottom;
+      if (loupe && scene) {
+        var fin = scene.getBoundingClientRect().bottom;
         var c = loupe.getBoundingClientRect();
         var part = c.height > 0 ? (c.bottom - fin) / c.height : 0;
         part = Math.max(0, Math.min(1, part));
@@ -217,13 +191,12 @@
     }).observe(bac, { childList: true });
   }
 
-  /* ---- LA BARRE. Trois zones : la marque a gauche — l'ankh et son nom,
-     repris au tiroir ou le tronc les verse —, la quete au centre, les noms
-     et la pastille a droite. La pastille est la porte vers l'espace
-     personnel ; sous le seuil des cinq noms la feuille la retire de la
-     barre et la porte du menu la remplace, pour que la barre etroite ne
-     dispute l'attention qu'entre la quete et la reservation. La traversée
-     animée viendra par-dessus ; le geste, lui, mène déjà. */
+  /* ---- LA RÉPARTITION DES PIÈCES DU TRONC. Trois zones dans la barre : la
+     marque à gauche — l'ankh et son nom —, la quête au centre, les noms, le
+     lecteur et la pastille à droite. Au-dessus du seuil des cinq noms, le
+     lecteur et la pastille siègent dans la barre ; sous ce seuil ils
+     retrouvent leur rangée d'origine dans le menu. Les pièces voyagent
+     entières : le site les déplace, il ne les refait pas. */
   function poserBarre() {
     var marque = document.getElementById('marque');
     var droite = document.querySelector('.chrome-droite');
@@ -231,6 +204,7 @@
     var inner = document.querySelector('.chrome-inner');
     var ankh = document.querySelector('.ankh-home');
     var titre = document.querySelector('.chrome-titre');
+    var languette = document.querySelector('.languette-radio');
     if (!marque || !droite) return;
     if (inner && ankh && titre) {
       titre.setAttribute('href', '#haut');
@@ -241,21 +215,36 @@
       new MutationObserver(function () {
         if (titre.textContent !== 'Roots') titre.textContent = 'Roots';
       }).observe(titre, { childList: true, characterData: true, subtree: true });
+      titre.addEventListener('click', function (e) {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+      });
     }
-    /* Deux sieges pour la pastille, jamais les deux : la droite de la barre
-       quand les cinq noms y sont, sa place de rangee de radio dans le menu
-       sous ce seuil. Le geste de porte voyage avec elle. */
     var seuil = matchMedia('(min-width:1024px)');
-    function placerMarque() {
+    /* Une piece ne se deplace que si elle n'est pas deja chez son hote : sans
+       cette garde, l'observateur qui surveille le bac se reveillerait sur son
+       propre deplacement et la repose se rappellerait sans fin. */
+    function loger(piece, hote, avant) {
+      if (!piece || !hote || piece.parentNode === hote) return;
+      hote.insertBefore(piece, avant || null);
+    }
+    function placer() {
+      var rangee = document.querySelector('#sections .tiroir-radio');
+      var centre = rangee ? rangee.querySelector('.centre') : null;
       if (seuil.matches) {
-        droite.insertBefore(marque, burger || null);
+        loger(languette, droite, droite.firstChild);
+        loger(marque, droite, burger);
       } else {
-        var centre = document.querySelector('#sections .tiroir-radio .centre');
-        if (centre) centre.insertBefore(marque, centre.firstChild);
+        loger(languette, rangee, rangee ? rangee.firstChild : null);
+        loger(marque, centre, centre ? centre.firstChild : null);
       }
     }
-    placerMarque();
-    if (seuil.addEventListener) seuil.addEventListener('change', placerMarque);
+    placer();
+    if (seuil.addEventListener) seuil.addEventListener('change', placer);
+    /* Le tronc repose sa rangee au fil de ses redessins : la replacer alors,
+       sans quoi le lecteur redescendrait dans le menu sur grand ecran. */
+    var bac = document.getElementById('sections');
+    if (bac) new MutationObserver(placer).observe(bac, { childList: true });
     marque.setAttribute('role', 'link');
     marque.setAttribute('tabindex', '0');
     function partir() { window.location.assign('https://mi.roots.bj/onboard.html'); }
@@ -265,7 +254,7 @@
     });
   }
 
-  /* ---- LE FILM DE L'ACCUEIL. Il ne part que si le mouvement n'est pas
+  /* ---- LE FILM DE LA SCÈNE. Il ne part que si le mouvement n'est pas
      réduit et que la connexion n'est pas déclarée économe ; la commande
      l'arrête et le relance, et elle est le seul chemin quand il ne part pas
      seul. */
@@ -282,93 +271,13 @@
     function arreter() { film.pause(); film.classList.remove('joue'); }
     cmd.classList.remove('cache');
     cmd.addEventListener('click', function () {
-      if (film.paused) { jouer(); if (!horlogeMot) lancerDiaporama(document.getElementById('motAccueil')); }
-      else { arreter(); arreterDiaporama(); }
+      if (film.paused) jouer();
+      else arreter();
     });
     if (!reduit && !econome) jouer();
   }
 
-  /* ---- LE DIAPORAMA DU MOT. Les cinq termes se succedent dans un ordre
-     battu a chaque visite, chacun tenu une duree fixe, l'entree et la sortie
-     en fondu sur la courbe du systeme. Sous mouvement reduit rien ne defile :
-     le premier mot reste pose. La commande du film arrete aussi le diaporama —
-     ce qui demarre seul doit pouvoir s'arreter d'un seul geste. */
-  var TENUE_MOT = 4000;
-  var horlogeMot = null;
-  function battre(liste) {
-    var t = liste.slice(), i, j, x;
-    for (i = t.length - 1; i > 0; i--) {
-      j = Math.floor(Math.random() * (i + 1));
-      x = t[i]; t[i] = t[j]; t[j] = x;
-    }
-    return t;
-  }
-  function lancerDiaporama(h1) {
-    var suite = battre(MOTS.map(function (m) { return m.dit; }));
-    var i = 0;
-    var ou = document.getElementById('ouAccueil');
-    horlogeMot = setInterval(function () {
-      h1.classList.add('passe');
-      if (ou) ou.classList.add('passe');
-      setTimeout(function () {
-        i = (i + 1) % suite.length;
-        h1.textContent = suite[i];
-        accorderOu(suite[i]);
-        h1.classList.remove('passe');
-        if (ou) ou.classList.remove('passe');
-      }, 240);
-    }, TENUE_MOT);
-    return suite[0];
-  }
-  function arreterDiaporama() { clearInterval(horlogeMot); horlogeMot = null; }
-
-  /* ---- LA LIGNE DE DESTINATION. Le visiteur qui arrive du dehors est
-     accueilli au Benin ; celui qui est deja au pays est accueilli au Roots.
-     Le fuseau horaire de l'appareil est le seul indice qu'une page immobile
-     detient : il ne quitte pas le navigateur et peut se tromper — un voyageur
-     au fuseau d'ailleurs est accueilli comme de l'exterieur. La ligne parle
-     la langue de la page : elle porte une cle de dit et suit la bascule. */
-  function poserDestination() {
-    var ou = document.getElementById('ouAccueil');
-    if (!ou) return;
-    var dedans = false;
-    try { dedans = Intl.DateTimeFormat().resolvedOptions().timeZone === 'Africa/Porto-Novo'; }
-    catch (e) { dedans = false; }
-    ou.dataset.ts = dedans ? 'ouRoots' : 'ouBenin';
-    var h1 = document.getElementById('motAccueil');
-    accorderOu(h1 ? h1.textContent : '');
-  }
-
-  /* La ligne de destination s'accorde au mot d'accueil pose : s'il porte une
-     langue, elle parle la sienne ; sinon celle de la page. */
-  function accorderOu(mot) {
-    var ou = document.getElementById('ouAccueil');
-    if (!ou || !ou.dataset.ts) return;
-    var porteuse = '', i;
-    for (i = 0; i < MOTS.length; i++) {
-      if (MOTS[i].dit === mot && MOTS[i].langue) porteuse = MOTS[i].langue;
-    }
-    ou.textContent = DITS[porteuse || langue()][ou.dataset.ts];
-  }
-
-  function poserAccueil() {
-    var h1 = document.getElementById('motAccueil');
-    var reduit = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var premier;
-    if (h1 && !reduit) premier = lancerDiaporama(h1);
-    else premier = battre(MOTS.map(function (m) { return m.dit; }))[0];
-    if (h1) h1.textContent = premier;
-    document.body.dataset.module = premier;
-    poserDestination();
-    var titre = document.querySelector('.chrome-titre');
-    if (titre) titre.addEventListener('click', function (e) {
-      e.preventDefault();
-      window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
-    });
-  }
-
   document.addEventListener('DOMContentLoaded', function () {
-    poserAccueil();
     poserDits();
     surveiller();
     tenirAPropos();
