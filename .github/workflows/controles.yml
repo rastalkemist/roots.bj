@@ -1,0 +1,56 @@
+name: Contrôles
+
+# Se déclenche à chaque poussée et à chaque proposition de fusion sur `main`.
+# Ce dépôt ne porte pas de coque : la VERSION n'a rien à y suivre, et seule
+# la vérification des jetons, couleurs, tailles et commentaires s'y joue.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  controles:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Épreuve du contrôle
+        run: |
+          python ci/verifier.py --epreuve | tee epreuve.txt
+          {
+            echo '## Épreuve du contrôle'
+            echo '```'
+            cat epreuve.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Syntaxe JavaScript
+        run: |
+          set -e
+          for f in $(git ls-files '*.js'); do
+            node --check "$f" && echo "  ✓ $f" || exit 1
+          done
+
+      - name: Jetons, couleurs, tailles, commentaires
+        run: |
+          set +e
+          python ci/verifier.py . | tee controles.txt
+          code=${PIPESTATUS[0]}
+          {
+            echo '## Contrôles du dépôt'
+            echo '```'
+            cat controles.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          exit $code

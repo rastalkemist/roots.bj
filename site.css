@@ -1,0 +1,165 @@
+/* ==========================================================================
+   ROOTS BENIN — la feuille propre au site d'une page.
+   Elle ne redéclare aucun composant du tronc : elle pose les pièces que le
+   site est seul à porter — le nav des cinq noms, l'accueil filmé, la jauge
+   d'univers de la loupe — et remappe les jetons d'univers au fil du
+   défilement. Exige : roots-tokens.css, roots.css et roam.css avant elle.
+   ========================================================================== */
+
+/* ---- LA BASCULE DE MONDE. La page appartient structurellement au monde
+   rouge ; le haut de page parle le monde vert. La classe .monde-vert remappe
+   les jetons d'univers ; la retirer rend la main aux jetons du monde rouge.
+   Toute couleur suit ces jetons : la bascule est UNE classe, jamais une
+   couleur écrite. ---- */
+/* La part rouge de la loupe : publiee par le script entre 0 et 1, nulle au
+   chargement. */
+:root{--part-rouge:0}
+
+body.p-site.monde-vert{
+  --univers:var(--roots-vert);
+  --univers-rgb:var(--vert-e2-rgb);
+  --univers-selection:rgba(var(--univers-rgb),.08);
+  --univers-e1:var(--vert-e1);
+  --univers-e1-rgb:var(--vert-e1-rgb);
+  --univers-e3:var(--vert-e3);
+  --univers-e3-rgb:var(--vert-e3-rgb);
+  --univers-e4:var(--vert-e4);
+  --univers-e5:var(--vert-e5);
+  --ombre-teinte:var(--vert-e1-rgb);
+  --encre-ll-h1:var(--encre);
+  --encre-ll-h3:var(--encre);
+  --encre-ll-h5:var(--encre);
+  --encre-ll-h2:var(--univers-e3);
+  --encre-ll-h4:var(--univers-e3);
+  --encre-ll-h6:var(--univers-e3);
+  --encre-ll-chapo:var(--univers-e3)}
+.chrome-haut,.chrome-titre,.site-nom{transition:color var(--mvt-ample) var(--courbe-etat),border-color var(--mvt-ample) var(--courbe-etat)}
+
+/* ---- LA BARRE DU SITE. Trois zones sur grand écran : la marque à gauche —
+   l'ankh et son nom —, la quête au centre, les cinq noms et la pastille à
+   droite. La barre du tronc est une grille à trois colonnes taillée pour
+   l'app ; le site la passe en ligne souple et l'élargit à son rail. Quand la
+   nav est visible, l'ouverture de menu se retire : une seule entrée vers les
+   mêmes noms. Sous le seuil, la grille du tronc reprend la main et les noms
+   vivent dans le menu, avec la porte vers l'espace personnel. ---- */
+.site-noms{display:none}
+@media(max-width:1023.98px){body.p-site .chrome-inner>.chrome-titre{display:none}}
+@media(min-width:1024px){
+  body.p-site .chrome-inner{display:flex;align-items:center;gap:var(--esp-4);width:min(92%,1200px)}
+  body.p-site .chrome-inner>.quete-groupe{margin-inline:auto}
+  body.p-site .chrome-inner>.site-noms{order:1}
+  body.p-site .chrome-inner>.chrome-droite{order:2}
+  body.p-site .chrome-burger{display:none}
+  .site-noms{display:flex;align-items:center}
+  /* L'ecart entre les noms est la ligne d'interface pleine — le cran des
+     barres des tenors — et il se plie avec le mot au rangement. */
+  .site-nom{display:inline-flex;align-items:center;gap:var(--esp-1);min-height:var(--cible-min);max-width:220px;margin-inline-end:var(--esp-6);border:none;background:none;padding:0;cursor:pointer;font-family:var(--font-corps);font-weight:var(--w-bold);font-size:var(--t-body);color:var(--encre);text-decoration:none;transition:color var(--mvt-ample) var(--courbe-etat),max-width var(--mvt-ample) var(--courbe-etat),margin var(--mvt-ample) var(--courbe-etat),opacity var(--mvt-ample) var(--courbe-etat)}
+  .site-noms .site-apropos .site-nom{margin-inline-end:0}
+  .site-nom.actif{color:var(--univers-e3)}
+  .site-nom:hover{color:var(--univers-e4)}
+  .site-nom:active{color:var(--univers-e1)}
+  /* Des le premier defilement, les quatre mots d'ancre se rangent : seuls
+     demeurent celui de la section en vue — au troisieme echelon de son
+     univers —, le deroulant et la pastille. Le rang ne se redeploie qu'au
+     survol ou au clavier ; remonter ne suffit pas. Le pliage reprend la
+     recette du tiret : largeur et encre s'effacent ensemble. */
+  body.noms-ranges .site-noms:not(:hover):not(:focus-within) .site-nom[data-cible]:not(.actif){max-width:0;margin-inline-end:0;opacity:0;overflow:hidden}
+}
+.site-chevron{width:16px;height:16px;transform:rotate(90deg);transition:transform var(--mvt-court) var(--courbe-etat)}
+.site-apropos{position:relative}
+.site-apropos[data-ouvert] .site-chevron{transform:rotate(-90deg)}
+.site-apropos-menu[hidden]{display:none}
+.site-apropos-menu{position:absolute;top:calc(100% + var(--esp-2));right:0;min-width:280px;background:var(--blanc);border:1px solid var(--gris-service);border-radius:var(--rayon-carte);box-shadow:0 8px 24px rgba(var(--ombre-teinte),.18);padding:var(--esp-3) 0;display:flex;flex-direction:column;z-index:20}
+/* Les lignes du panneau s'alignent a droite, comme celles du feuillet : le
+   meme bord d'ancrage sur les deux ecrans. */
+.site-apropos-ligne{display:flex;align-items:center;justify-content:flex-end;text-align:right;min-height:var(--cible-min);padding:0 var(--esp-5);color:var(--encre);white-space:nowrap}
+/* La ligne revele son tiret et son nom au survol : le mot arrive, il ne
+   saute pas. Sous mouvement reduit la regle generale coupe la transition et
+   le nom reste pose. */
+/* Replie, le tiret garde sa ligne unique : sans cela le texte cache
+   s'empile dans la largeur nulle et gonfle la hauteur de sa ligne. */
+.site-apropos-ligne .tiret-mot{opacity:0;max-width:0;overflow:hidden;white-space:nowrap;margin-inline-start:var(--esp-1);transition:opacity var(--mvt-ample) var(--courbe-entree),max-width var(--mvt-ample) var(--courbe-entree);color:var(--univers-e3)}
+.site-apropos-ligne:hover .tiret-mot,.site-apropos-ligne:focus-within .tiret-mot{opacity:1;max-width:220px}
+@media(prefers-reduced-motion:reduce){.site-apropos-ligne .tiret-mot{opacity:1;max-width:220px}}
+
+/* ---- LA PASTILLE MI. Sur grand écran elle vit à droite, avant l'ouverture
+   du menu, et elle est la porte vers l'espace personnel. Sous le seuil des
+   cinq noms elle quitte la barre — la porte du menu la remplace — pour que
+   la barre étroite ne dispute l'attention qu'entre la quête et la
+   réservation. ---- */
+body.p-site #marque .reste{display:none}
+body.p-site #marque{cursor:pointer}
+@media(max-width:1023.98px){body.p-site .chrome-droite #marque{display:none}}
+
+/* ---- L'ACCUEIL FILMÉ. La scène tient la fenêtre sous la barre ; l'affiche
+   porte l'image tant que le film n'a pas le droit de partir. ---- */
+.site-accueil{position:relative;min-height:calc(100svh - var(--entete-h-rendue,64px));display:grid;place-items:center;overflow:hidden;margin:0 calc(50% - 50vw) var(--air-i6)}
+.site-scene,.site-film{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.site-film{opacity:0;transition:opacity var(--mvt-long) var(--courbe-etat)}
+.site-film.joue{opacity:1}
+.site-accueil-dit{position:relative;text-align:center;max-width:min(85%,640px)}
+/* Les deux lignes de l'accueil parlent au meme niveau de l'echelle — le
+   barreau du h2, l'interligne qui lui repond, le barreau d'eclat. */
+/* Aucune encre unique ne tient sur une image qui varie : les deux lignes
+   portent le meme cerne — huit ombres sans flou, deux points d'epaisseur, au
+   premier echelon d'univers — et entrent et sortent en fondu ensemble. */
+.site-mot{margin:0 0 var(--air-i2);font-family:var(--font-eclat);font-weight:var(--w-bold);font-size:var(--t-h2);line-height:var(--lh-28);color:var(--blanc);overflow-wrap:anywhere;
+  text-shadow:2px 0 0 var(--univers-e1),-2px 0 0 var(--univers-e1),0 2px 0 var(--univers-e1),0 -2px 0 var(--univers-e1),1.4px 1.4px 0 var(--univers-e1),-1.4px 1.4px 0 var(--univers-e1),1.4px -1.4px 0 var(--univers-e1),-1.4px -1.4px 0 var(--univers-e1);
+  transition:opacity var(--mvt-ample) var(--courbe-etat)}
+.site-mot.passe{opacity:0}
+.site-ou{margin:0;font-family:var(--font-eclat);color:var(--blanc);font-weight:var(--w-bold);font-size:var(--t-h2);line-height:var(--lh-28);
+  text-shadow:2px 0 0 var(--univers-e1),-2px 0 0 var(--univers-e1),0 2px 0 var(--univers-e1),0 -2px 0 var(--univers-e1),1.4px 1.4px 0 var(--univers-e1),-1.4px 1.4px 0 var(--univers-e1),1.4px -1.4px 0 var(--univers-e1),-1.4px -1.4px 0 var(--univers-e1);
+  transition:opacity var(--mvt-ample) var(--courbe-etat)}
+.site-ou.passe{opacity:0}
+.site-accueil .commande-video{position:absolute;right:var(--esp-5);bottom:var(--esp-5)}
+
+/* ---- LA JAUGE DE LA LOUPE. Le disque de la quête dit le monde : vert dans
+   la zone du café, il se remplit de rouge à mesure que la ligne de fin de
+   l'accueil balaie son cercle, et se regorge de vert en remontant. La part
+   rouge est publiée par le script entre 0 et 1. ---- */
+/* Le glyphe de la loupe est dessine PAR le fond du tronc — le manche et le
+   cercle en couches de degrades. La jauge remplace la seule couche de couleur,
+   masquee au disque, et laisse le glyphe intact au-dessus d'elle. */
+body.p-site .quete-loupe{
+  background:
+    linear-gradient(45deg,transparent calc(50% - 1.7px),var(--blanc) calc(50% - 1.7px) calc(50% + 1.7px),transparent calc(50% + 1.7px)) 23px 23px/9px 9px no-repeat,
+    radial-gradient(circle at 50% 50%,transparent 4.2px,var(--blanc) 4.8px 7px,transparent 7.6px) 12px 12px/15px 15px no-repeat,
+    linear-gradient(to top,var(--rouge-e2) calc(var(--part-rouge,0) * 100%),var(--roots-vert) calc(var(--part-rouge,0) * 100%)) !important;
+  -webkit-mask:radial-gradient(circle at 50% 50%,var(--encre) 18.6px,transparent 19.4px);
+  mask:radial-gradient(circle at 50% 50%,var(--encre) 18.6px,transparent 19.4px)}
+
+/* ---- LE MENU DU SITE. Les cinq noms et le déroulant, dans le tiroir, à la
+   place des sections d'univers que le tronc y verse. Le feuillet s'ancre à
+   droite : ses lignes s'alignent sur ce bord, le sous-menu s'y indente. ---- */
+/* Le feuillet se lit en trois blocs separes par deux filets : la rangee
+   utilitaire, les noms, le pied. Les filets tiennent la largeur du contenu,
+   jamais celle du feuillet. */
+body.p-site #sections{display:flex;flex-direction:column}
+body.p-site #sections .tiroir-radio{order:1}
+body.p-site #sections .site-tiroir{order:2}
+body.p-site #sections .pied-politique{order:3}
+.site-tiroir{display:flex;flex-direction:column;align-items:flex-end;margin-inline:var(--esp-5);padding:var(--esp-4) 0;border-bottom:1px solid var(--gris-service)}
+/* Le pas des lignes dit leur parente : un pas unique pour les cinq noms, et
+   un sous-menu — des lignes inertes, qui ne sont pas des cibles — plus
+   serre. Les pas se composent sur l'echelle : une ligne d'interface plus un
+   demi-cran pour un lien, plus un quart de cran — la moitie — pour une
+   ligne inerte. Les liens gardent toute la largeur du feuillet pour surface
+   de toucher. */
+.site-tiroir a,.site-tiroir .site-tiroir-apropos,.site-tiroir .site-apropos-ligne{color:var(--encre);text-decoration:none;font-weight:var(--w-bold);min-height:calc(var(--air-i4) + var(--esp-2));display:flex;align-items:center;justify-content:flex-end;text-align:right;white-space:normal;padding:0}
+.site-tiroir a{width:100%}
+.site-tiroir a.actif{color:var(--univers-e3)}
+/* Le retrait du sous-menu est un demi-cran : la parente se lit deja a la
+   graisse, la tabulation n'a pas a la redire. */
+.site-tiroir .site-sous{margin:0 var(--esp-2) 0 0;display:flex;flex-direction:column;align-items:flex-end}
+.site-tiroir .site-sous .site-apropos-ligne{font-weight:var(--w-medium);min-height:calc(var(--air-i4) + var(--esp-1))}
+/* Sous le seuil des cinq noms, la pastille reprend son siege de tronc — la
+   rangee de la radio — mais passe a droite de la languette, sur le bord
+   d'ancrage du feuillet, ou s'alignent aussi les noms. La rangee descend
+   sous le filet, en rang utilitaire au-dessus du pied, et tient la largeur
+   du contenu du feuillet — le filet quitte donc le pied pour la coiffer. */
+body.p-site #sections .tiroir-radio .centre{order:2}
+body.p-site #sections .tiroir-radio #marque{order:2}
+body.p-site #sections .tiroir-radio .languette-radio{order:1}
+body.p-site #sections .tiroir-radio{position:static;margin:0 var(--esp-5);padding-bottom:var(--esp-4);border-bottom:1px solid var(--gris-service)}
+/* Un cran plein separe les noms du pied. */
+body.p-site #sections .pied-politique{border-top:none;margin-top:0;padding-top:var(--esp-4)}

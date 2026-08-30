@@ -1,0 +1,79 @@
+/* BANDEAU ROOTS · **RANG : DOCTRINE** · **ÉTAT : vivant**
+   DOCTRINE — le sens fait foi ; aucune valeur chiffrée n'y est déclarée.
+   ⓘ la graisse qui fait loi est le descripteur CSS · ni le nom du fichier ni la table du fichier
+   Le rang vient du registre ; ce bandeau est posé, jamais écrit à la main.
+   FIN BANDEAU */
+
+/* ============================================================================
+   ROOTS — POLICES AUTO-HÉBERGÉES
+
+   Ce fichier déclare les cinq familles servies et rien d'autre. La graisse qui
+   fait loi est celle du descripteur `font-weight` ci-dessous, jamais celle que
+   porte le nom du fichier ni celle que déclare `OS/2 usWeightClass` : les deux
+   divergent sur plusieurs faces.
+
+   Ce qu'il exige : le dossier `fonts/` à côté de ce fichier, et une liaison
+   AVANT toute feuille qui emploie `var(--font-*)`.
+
+   Ce qu'il refuse : une famille déclarée sans son fichier, et une graisse
+   déclarée deux fois pour un même style.
+
+   Ce qui casserait si on le modifiait : retirer `Museo` en 500 romain fait
+   retomber tout `font-weight:500` sur 300 par l'algorithme de repli du CSS —
+   le repli est silencieux et ne se voit sur aucun écran.
+
+   ÉTAT DE LA MATIÈRE, à connaître avant d'employer un signe :
+   · aucune face ne porte U+2007 et U+2212 ensemble ;
+   · U+202F n'est porté par aucune face, repli compris — une espace fine
+     insécable tombe sur une fonte système, dont la chasse échappe au système ;
+   · les chiffres n'ont pas la même largeur et aucune face de texte ne porte de
+     jeu tabulaire : une colonne de montants ne s'aligne pas d'elle-même ;
+   · `subsetMuseo500.woff2` interdit l'incorporation en édition — la
+     conformité PDF/A est à vérifier sur ce seul fichier.
+
+   Crédit : les graisses gratuites de la famille sont dues à exljbris.
+   ============================================================================ */
+@font-face{font-family:'Museo Sans';src:url('fonts/subsetMuseoSans100.woff2') format('woff2');font-weight:100;font-style:normal;font-display:swap}
+@font-face{font-family:'Museo Sans';src:url('fonts/subsetMuseoSans100Italic.woff2') format('woff2');font-weight:100;font-style:italic;font-display:swap}
+@font-face{font-family:'Museo Sans';src:url('fonts/subsetMuseoSans300.woff2') format('woff2');font-weight:300;font-style:normal;font-display:swap}
+@font-face{font-family:'Museo Sans';src:url('fonts/subsetMuseoSans300Italic.woff2') format('woff2');font-weight:300;font-style:italic;font-display:swap}
+@font-face{font-family:'Museo Sans';src:url('fonts/subsetMuseoSans500.woff2') format('woff2');font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'Museo Sans';src:url('fonts/subsetMuseoSans500Italic.woff2') format('woff2');font-weight:500;font-style:italic;font-display:swap}
+@font-face{font-family:'Museo Sans';src:url('fonts/subsetMuseoSans700.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'Museo Sans';src:url('fonts/subsetMuseoSans700Italic.woff2') format('woff2');font-weight:700;font-style:italic;font-display:swap}
+@font-face{font-family:'Museo Sans Display';src:url('fonts/subsetMuseoSansDisplayExtraLight.woff2') format('woff2');font-weight:200;font-style:normal;font-display:swap}
+@font-face{font-family:'Museo Sans Display';src:url('fonts/subsetMuseoSansDisplayLight.woff2') format('woff2');font-weight:300;font-style:normal;font-display:swap}
+@font-face{font-family:'Museo Sans Display';src:url('fonts/subsetMuseoSansDisplayBlack.woff2') format('woff2');font-weight:900;font-style:normal;font-display:swap}
+@font-face{font-family:'Museo Sans Display';src:url('fonts/subsetMuseoSansDisplayExtraBlack.woff2') format('woff2');font-weight:950;font-style:normal;font-display:swap}
+@font-face{font-family:'Museo Slab';src:url('fonts/subsetMuseoSlab100.woff2') format('woff2');font-weight:100;font-style:normal;font-display:swap}
+@font-face{font-family:'Museo Slab';src:url('fonts/subsetMuseoSlab100Italic.woff2') format('woff2');font-weight:100;font-style:italic;font-display:swap}
+@font-face{font-family:'Museo Slab';src:url('fonts/subsetMuseoSlab300.woff2') format('woff2');font-weight:300;font-style:normal;font-display:swap}
+@font-face{font-family:'Museo Slab';src:url('fonts/subsetMuseoSlab300Italic.woff2') format('woff2');font-weight:300;font-style:italic;font-display:swap}
+@font-face{font-family:'Museo Slab';src:url('fonts/subsetMuseoSlab500.woff2') format('woff2');font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'Museo Slab';src:url('fonts/subsetMuseoSlab500Italic.woff2') format('woff2');font-weight:500;font-style:italic;font-display:swap}
+@font-face{font-family:'Museo Slab';src:url('fonts/subsetMuseoSlab700.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'Museo Slab';src:url('fonts/subsetMuseoSlab700Italic.woff2') format('woff2');font-weight:700;font-style:italic;font-display:swap}
+@font-face{font-family:'Museo Slab';src:url('fonts/subsetMuseoSlab900.woff2') format('woff2');font-weight:900;font-style:normal;font-display:swap}
+@font-face{font-family:'Museo Slab';src:url('fonts/subsetMuseoSlab900Italic.woff2') format('woff2');font-weight:900;font-style:italic;font-display:swap}
+@font-face{font-family:'Museo Slab';src:url('fonts/subsetMuseoSlab1000.woff2') format('woff2');font-weight:1000;font-style:normal;font-display:swap}
+@font-face{font-family:'Museo Slab';src:url('fonts/subsetMuseoSlab1000Italic.woff2') format('woff2');font-weight:1000;font-style:italic;font-display:swap}
+@font-face{font-family:'Museo';src:url('fonts/subsetMuseo100.woff2') format('woff2');font-weight:100;font-style:normal;font-display:swap}
+@font-face{font-family:'Museo';src:url('fonts/subsetMuseo100Italic.woff2') format('woff2');font-weight:100;font-style:italic;font-display:swap}
+@font-face{font-family:'Museo';src:url('fonts/subsetMuseo300.woff2') format('woff2');font-weight:300;font-style:normal;font-display:swap}
+@font-face{font-family:'Museo';src:url('fonts/subsetMuseo300Italic.woff2') format('woff2');font-weight:300;font-style:italic;font-display:swap}
+@font-face{font-family:'Museo';src:url('fonts/subsetMuseo500.woff2') format('woff2');font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'Museo';src:url('fonts/subsetMuseo500Italic.woff2') format('woff2');font-weight:500;font-style:italic;font-display:swap}
+@font-face{font-family:'Museo';src:url('fonts/subsetMuseo700.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'Museo';src:url('fonts/subsetMuseo700Italic.woff2') format('woff2');font-weight:700;font-style:italic;font-display:swap}
+@font-face{font-family:'Museo';src:url('fonts/subsetMuseo900.woff2') format('woff2');font-weight:900;font-style:normal;font-display:swap}
+@font-face{font-family:'Museo';src:url('fonts/subsetMuseo900Italic.woff2') format('woff2');font-weight:900;font-style:italic;font-display:swap}
+@font-face{font-family:'MuseoModerno';src:url('fonts/MuseoModerno-var.woff') format('woff-variations');font-weight:100 900;font-style:normal;font-display:swap}
+@font-face{font-family:'MuseoModerno';src:url('fonts/MuseoModerno-Italic-var.woff') format('woff-variations');font-weight:100 900;font-style:italic;font-display:swap}
+@font-face{font-family:'Roboto';src:url('fonts/roboto-latin-100-normal.woff2') format('woff2');font-weight:100;font-style:normal;font-display:swap}
+@font-face{font-family:'Roboto';src:url('fonts/roboto-latin-300-normal.woff2') format('woff2');font-weight:300;font-style:normal;font-display:swap}
+@font-face{font-family:'Roboto';src:url('fonts/roboto-latin-400-normal.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Roboto';src:url('fonts/roboto-latin-500-normal.woff2') format('woff2');font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'Roboto';src:url('fonts/roboto-latin-700-normal.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'Roboto';src:url('fonts/roboto-latin-800-normal.woff2') format('woff2');font-weight:800;font-style:normal;font-display:swap}
+@font-face{font-family:'Roboto Slab';src:url('fonts/roboto-slab-latin-400-normal.woff2') format('woff2');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Roboto Slab';src:url('fonts/roboto-slab-latin-700-normal.woff2') format('woff2');font-weight:700;font-style:normal;font-display:swap}

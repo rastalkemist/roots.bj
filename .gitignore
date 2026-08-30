@@ -1,0 +1,87 @@
+# ─────────────────────────────────────────────────────────────
+# Dépôt public — sert GitHub Pages.
+# Deny-by-default : ce qui n'est pas explicitement destiné au public
+# ne passe pas.
+# ─────────────────────────────────────────────────────────────
+
+# ── Jamais versionné ──
+_internal/
+_internal/**
+
+# Outils de mesure et de relecture : ils portent par nécessité les motifs
+# qu'ils traquent, et la liste de ces motifs décrit ce que l'on protège.
+# Ils vivent à côté du dépôt, jamais dedans.
+design/
+
+# Page de contrôle : écrit dans la vraie base, ne se publie jamais.
+controle.html
+
+# ── Secrets ──
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+secrets.*
+*secret*.json
+*credentials*.json
+service_role*
+*.token
+
+# ── Sauvegardes et exports de base ──
+*.sql.gz
+*.dump
+*.bak
+backup/
+dumps/
+
+# ── Dépendances et build ──
+__pycache__/
+*.pyc
+node_modules/
+dist/
+build/
+.cache/
+*.log
+npm-debug.log*
+
+# ── Systèmes et éditeurs ──
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
+*~
+
+# ── Archives ──
+*.zip
+*.rar
+*.7z
+
+# ── Modes d'emploi et procedures de l'atelier ──
+# Ils decrivent comment nous fabriquons, jamais ce que le site sert. Un depot
+# public en porte la trace pour quiconque le lit, et ils s'adressent a une
+# personne, pas a un lecteur du site.
+MODIFIER-LE-SITE.md
+MODE-EMPLOI*
+PROCEDURE*
+*-atelier.md
+
+# Consignes adressees a un assistant : elles nomment nos habitudes de travail,
+# nos outils et nos garde-fous. Elles se tiennent hors du depot public.
+CLAUDE.md
+AGENTS.md
+.claude/
+.cursorrules
+.github/copilot-instructions.md
+
+# ── Fichiers de travail ──
+brouillon*
+draft*
+*_wip.*
+*_prive.*

@@ -1,0 +1,2132 @@
+/* ==========================================================================
+   ROOTS — feuille de style unique
+   Source unique de tous les ecrans. Aucun ecran ne redefinit une valeur.
+
+   Deux dialectes, un par surface, jamais melanges sur un ecran :
+     A — rond et ambiant   → surface publique   (§4, §5, §7)
+     B — tuiles a plat     → console interne    (§6)
+   Traversent seuls les deux dialectes : la palette, la semantique de statut,
+   les polices, le logo, le code de confirmation.
+
+   Deux surfaces pour le dialecte A, qui ne changent que l'encre du chrome :
+     data-surface="ambiante" → l'accueil, pose sur le jardin
+     data-surface="claire"   → les pages de contenu
+   ========================================================================== *//* ========================================================================== §1 — JETONS. Constantes de marque. Rien ne se code en dur ailleurs. ========================================================================== */ :root{
+ /* LA PISTE ET SA GOUTTIERE — un seul contrat de largeur pour tout le site,
+    et aucun ecran ne choisit le sien. La gouttiere vaut 5 % de chaque cote sur
+    petit ecran, 10 % sur tablette, 15 % sur ordinateur : 5-90-5, 10-80-10,
+    15-70-15.
+
+    `--piste` est la largeur de la PAGE. `--col` est autre chose et ne s'y
+    substitue jamais : c'est la MESURE DE LECTURE, la largeur au-dela de
+    laquelle une ligne de texte cesse d'etre lisible. Un bandeau, une barre,
+    une rangee prennent la piste ; un paragraphe prend la mesure. Confondre les
+    deux, c'est soit etrangler la page, soit rendre le texte illisible. */
+ --marge:5%; --site-w:90%; --col:500px;
+ --marge-chrome:5%; --chrome-w:90%;
+ --grille-colonnes:4; --gouttiere-grille:var(--esp-3); --carte-min:224px;
+ --piste:var(--site-w);
+ /* Le bord est celui du CHROME, non celui de la piste : tout ce qui flotte
+    contre un cote de la fenetre — le tiroir du menu, la barre du bas, les
+    commandes posees sur un film — repond au mobilier de navigation et doit
+    tomber sur sa ligne. Le pointer sur la marge de lecture decrocherait le
+    tiroir du bouton qui l'ouvre. */
+ --bord:var(--marge-chrome);
+ /* Famille froide — une seule teinte, 142,5 deg, cinq tons reguliers.
+    Le Garvey est la derniere marche qui porte le blanc : au-dessus de
+    L* 50 aucune encre claire ne passe, l'encre devient le vert nuit. */
+
+                  /* hors rampe : ce qui est eteint, fini */
+
+ 
+ 
+                 /* l'encre posee sur un aplat de theme */
+
+ 
+
+ 
+ 
+ --safe-bas:env(safe-area-inset-bottom,0px);
+ /* Anneau de focus. Il traverse les quatre mondes : il est en encre, jamais
+    en couleur directrice. Le retrait de 2 px laisse voir le fond derriere
+    l'element, ce qui donne au trait un contraste des deux cotes. Sur la
+    surface ambiante l'encre est claire, le trait suit. */
+   
+ /* Mouvement. Une duree par distance parcourue, pas une par composant. */
+
+ 
+ 
+ /* Echelle typographique — interface, mobile-first, quarte juste x1,333.
+    La taille pose la hierarchie, la graisse donne le ton. */
+
+ /* Lecture longue — editorial, nombre d'or x1,618. Registre distinct de
+    l'echelle d'interface : il sert les pages qui se lisent d'un bout a l'autre.
+    Le corps ne change jamais de taille — la place disponible fait varier
+    l'amplitude des titres et la mesure, pas lui. Les paliers de grand ecran
+    sont poses par l'ecran qui les emploie. */
+
+ /* Rythme de lecture longue : R est la hauteur d'une ligne de corps, et tout
+    ecart entre blocs de ce registre est un multiple de R/2. */
+  
+ /* Graisses livrees. 400 et 600 ne sont dans aucune fonte Museo : les
+    demander fait synthetiser le navigateur. 800 n'existe que sur la
+    variable MuseoModerno. */
+
+ /* Interligne d'un libelle d'une seule ligne. L'interligne d'un palier
+    gouverne le texte qui court ; un libelle qui ne court pas serre sa
+    boite sur son signe, sans la fermer sur les jambages. */
+ 
+ /* Espacement, base 4 — les deux dialectes. */
+
+ /* Cibles tactiles : plancher WCAG universel. */
+ 
+ /* Taille d'un champ de saisie. Elle ne suit aucun registre : sous 16 px,
+    iOS agrandit la page des qu'on entre dans le champ. */
+ 
+ /* Dialecte B — console interne. Presents ici parce que la source est unique ;
+    aucun ecran public ne les emploie. */
+
+ /* Une encre chaude se prend a l'echelon 2 de la terre cuite : l'echelon 3 ne
+    tient pas le seuil AA sur papier clair. Le jeton est --encre-chaude. */
+ 
+ /* Voile pose sur le fond de page par les barres collantes : il doit rendre
+    le texte qui passe dessous illisible sans changer la couleur du fond. */
+ --voile-page:rgba(var(--blanc-rgb),.94);
+ /* Hauteur de l'en-tete : 11 de retrait, 44 de cible, 11 de retrait, 1 de
+    filet. Ce qui se pose sous l'en-tete part de cette valeur, jamais d'un
+    nombre recopie. */
+ --entete-h:67px;
+ /* La hauteur RENDUE de la barre, publiee par le script apres les promotions.
+    Ce qui se pose sous la barre lit celle-ci, jamais celle qui precede : une
+    hauteur ecrite derive du rendu des que la barre porte autre chose. La
+    valeur ci-dessous n'est qu'un repli, pour un rendu sans script. */
+ --entete-h-rendue:var(--entete-h);
+ /* La hauteur RENDUE de la barre basse. Declaree ici pour que la feuille tienne
+    seule ; le chrome la republie a chaque changement de forme, et la pose a zero
+    quand la barre monte dans l'en-tete. */
+ --chrome-bas-h:var(--barre-h);
+ /* Gouttiere de la feuille du bas : elle borne le contenu a gauche et a
+    droite, et elle donne l'air au-dessus comme au-dessous de la croix. */
+ --feuille-marge:18px;
+ /* Encombrement de la poignee, retraits compris. Ce qui se place au-dessous
+    en part. */
+ --poignee-bloc:calc(var(--esp-2) + 4px + var(--esp-1));
+ /* Hauteur de la bande de categories : elle se compose de ses propres
+    retraits et de la cible tactile qu'elle porte. Ce qui se cale dessous
+    en part. */
+ --cat-h:calc(var(--esp-2) + var(--cible-min) + var(--esp-3));
+ /* Elevation. Deux couches par niveau : une ombre de contact, courte et un
+    peu plus dense, qui pose l'objet sur le fond ; une ombre ambiante, large
+    et tres claire, a etalement negatif pour qu'elle ne deborde pas sur les
+    cotes. Teintees au vert nuit et non au noir : sur un fond blanc, le noir
+    pur rend un gris sale. */
+ /* Le filet vient en premiere couche : une ombre portee vers le bas ne
+    dessine aucun bord superieur, et sur un fond blanc le haut d'une
+    pastille disparait — la premiere d'une section n'a rien au-dessus
+    d'elle pour l'en detacher. Le filet ferme les quatre cotes. */
+ --filet-ilot:0 0 0 1px var(--gris-ilot);
+ 
+ --ombre-2:var(--filet-ilot),0 1px 2px rgba(var(--vert-e1-rgb),.06),0 4px 10px -2px rgba(var(--vert-e1-rgb),.09),0 12px 24px -8px rgba(var(--vert-e1-rgb),.07);
+
+ 
+
+ 
+}
+/* ======================================================================== §2 a §4 — SOCLE. Base, champ telephone, chrome partage. ======================================================================== */ *{box-sizing:border-box}
+/* L'AIR D'UNE BARRE FIXE. Un meme cran gouverne trois distances autour de la
+   barre basse : ce qui separe son filet du bord haut de ses icones, ce qui
+   separe d'elle le dernier element de la page, et — double — ce qui separe ce
+   dernier element du filet qui ferme les sections au-dessus de lui. Le filet
+   d'une section porte plus loin que celui d'une barre, d'ou le double.
+   Il se derive de la rampe d'interface : poser un nombre ici couperait le lien
+   avec la ligne, et les trois distances cesseraient de se repondre.
+   La hauteur de la barre n'est PAS ecrivable — elle varie avec le retrait du
+   systeme et avec la forme que prend la barre ; le chrome la publie. */
+:root{--air-barre:var(--air-i1)}
+body{margin:0;min-height:100vh;background:var(--blanc);color:var(--encre);font-family:var(--font-corps);font-weight:var(--w-medium);padding-bottom:calc(var(--chrome-bas-h, 124px) + var(--air-barre) + var(--safe-bas));position:relative}
+svg.i{width:1em;height:1em;vertical-align:-0.12em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+/* ─── L'ARBRE EDITORIAL — un titre porte son ROLE, sur tout ecran ─────────
+   Sans regle, un titre tombe sur la valeur par defaut du navigateur : 32 px
+   pour un h1, 24 pour un h2, 18,72 pour un h3, interligne `normal`. Aucune de
+   ces valeurs n'est un barreau de l'echelle, et aucun de ces interlignes n'est
+   un cran de la table. Un ecran qui oublie de declarer ses titres sortait donc
+   du systeme sans que rien ne le signale.
+   On prend le ROLE, jamais un nombre : le jeu d'ecran change la valeur du role
+   sans qu'une seule regle bouge. L'interligne suit le barreau, et le barreau du
+   h1 change au jeu grand — c'est la seule bascule qu'il faut ecrire.
+   La graisse n'est PAS posee ici : le defaut du navigateur vaut deja 700 pour
+   un titre, ce que la piece prescrit hors ouverture. Une section d'ecran qui
+   veut une autre graisse la declare, et sa declaration l'emporte par l'ordre.
+   Poser une taille ici sans en poser dans une section d'ecran est sans effet
+   sur cette section : `:where()` ne pese rien et l'ordre tranche. */
+h1{font-size:var(--t-h1);line-height:var(--lh-38);font-family:var(--font-eclat);font-weight:var(--w-light);color:var(--encre);text-wrap:balance}
+/* LES TROIS FONTES DU REGISTRE INTERFACE, en alternance de rang.
+   L'eclat aux rangs 1 et 3 ; la fonte de corps aux rangs 2, 4 et 5 ; la fonte
+   de lecture au dernier rang, en italique — la seule serif de l'arbre, et elle
+   ferme la descente. Ce n'est pas un seuil de fonte unique : trois fontes se
+   relaient, et leur releve ne tombe pas sur celle des encres.
+   Chaque graisse demandee vient d'un fichier : l'eclat est variable de 100 a
+   900, la fonte de corps est servie en 100, 200, 300, 500, 700, 900 et 950, la
+   fonte de lecture en 100, 300, 500, 700 et 900, romaine et italique. Aucune
+   n'est simulee par le navigateur.
+   Le registre EDITORIAL garde les siennes — sa section les declare, et sa
+   declaration l'emporte. */
+h2{font-size:var(--t-h2);line-height:var(--lh-28);font-family:var(--font-lecture);font-weight:var(--w-light);color:var(--univers);text-wrap:balance}
+/* L'encre ALTERNE — encre pleine aux rangs impairs, echelon 2
+   de l'univers aux rangs pairs : c'est le procede du registre editorial,
+   transpose d'un echelon vers le fonce, ou l'echelon 3 tombait sous le
+   plancher des qu'un titre se posait sur une surface autre que le papier.
+   La graisse descend d'un cran au h3, puis tient a 700 : un sous-titre se
+   distingue par sa taille, pas par une graisse qui rivalise avec le niveau au
+   dessus. Les graisses 100, 300, 500, 700 sont servies par des fichiers
+   propres — aucune n'est simulee par le navigateur.
+   Les deux derniers rangs empruntent a l'editorial ses deux marques : les
+   capitales espacees, puis l'italique. L'equilibre des lignes vaut pour tous :
+   un titre ne laisse pas un mot seul sur sa derniere ligne. */
+h3{font-size:var(--t-h3);line-height:var(--lh-21);font-family:var(--font-eclat);font-weight:var(--w-bold);color:var(--encre);text-wrap:balance}
+h4{font-size:var(--t-h4);line-height:var(--lh-16);font-family:var(--font-corps);font-weight:var(--w-bold);color:var(--univers);text-wrap:balance}
+h5{font-size:var(--t-h5);line-height:var(--lh-16);font-family:var(--font-corps);font-weight:var(--w-light);color:var(--encre);text-transform:uppercase;letter-spacing:var(--lettrage-capitales);text-wrap:balance}
+h6{font-size:var(--t-h5);line-height:var(--lh-16);font-family:var(--font-lecture);font-weight:var(--w-light);color:var(--univers);font-style:italic;text-wrap:balance}
+@media(max-width:640px){h5{letter-spacing:var(--lettrage-capitales-petites)}}
+@media(min-width:1025px){
+  h1{line-height:var(--lh-51)}
+  h4{line-height:var(--lh-21)}
+}
+
+/* La page prend la PISTE ; la prose garde la mesure de lecture. Un bandeau,
+   une grille et un rail se composent sur la largeur de la page ; un paragraphe
+   cesse d'etre lisible au-dela de la mesure et s'y arrete. Plafonner le
+   conteneur revenait a plafonner la page : sur un grand ecran elle n'occupait
+   plus que 39 % de la fenetre, la ou la gouttiere en sert 70. */
+/* ─── LE BLOC — la gouttiere se reconduit A L'INTERIEUR ────────────────────
+   Un bloc de section reprend, en dedans, la meme part que la gouttiere prend
+   au dehors : 5 % sur petit ecran, 10 % sur tablette, 15 % sur ordinateur,
+   20 % sur tres large. Le texte cesse alors de coller au bord de son propre
+   bloc, quel que soit l'ecran, sans qu'aucune distance ne soit ecrite.
+   La part se lit sur la LARGEUR DU BLOC, pas sur celle de la fenetre : c'est
+   ce qui la rend juste dans une colonne comme dans une pleine largeur.
+   ⛔ ELLE NE SE RECONDUIT QU'UNE FOIS. Un bloc dans un bloc ne se remet pas
+   de gouttiere : deux applications mangeraient la moitie de la piste, et la
+   troisieme la totalite. Retirer la seconde regle casse cette garantie. */
+/* ─── LES ONGLETS — grammaire, pas ecran ──────────────────────────────────
+   Deux ecrans portent une feuille a onglets : la forme cesse d'appartenir a
+   l'un d'eux. Le panneau retenu se montre, les autres se cachent ; l'onglet
+   retenu prend l'aplat d'univers et l'encre blanche. La cible tient le
+   plancher. ⚠ La MECANIQUE — quel onglet est retenu, ou va le foyer, ce que
+   les fleches font — ne vit pas ici : tant qu'elle est ecrite dans chaque
+   ecran, deux implementations d'un meme composant finiront par diverger. */
+.onglets{display:flex;background:var(--gris-ilot);border-radius:var(--rayon-pilule);padding:3px;margin-bottom:var(--air-i3)}
+.onglets button{flex:1;border:none;background:none;color:var(--encre-discrete);padding:var(--esp-2);min-height:var(--cible-min);border-radius:var(--rayon-pilule);font-family:var(--font-corps);font-size:var(--t-sm);font-weight:700;cursor:pointer}
+.onglets button.actif{background:var(--univers);color:var(--blanc)}
+.contenu{display:none}
+.contenu.actif{display:block}
+
+/* ═══════════════ LES GABARITS DE DECOUPAGE ═══════════════════════════════
+   Un ecran ne declare plus une grille : il choisit un gabarit. Sept formes
+   couvrent ce que le produit compose, et chacune n'a qu'une definition.
+
+   LA GRILLE DE REFERENCE : 4 colonnes sous 640, 8 jusqu'a 1024, 12 au-dela.
+   Au-dela de 1024 le nombre ne bouge plus — ce sont les colonnes qui
+   s'elargissent. Un gabarit dit combien de colonnes il occupe, jamais combien
+   la grille en a.
+
+   LA GOUTTIERE DE GRILLE EST FIXE, la marge de page ne l'est pas. Une marge
+   protege du BORD et suit donc l'ecran ; une gouttiere separe deux CONTENUS,
+   et cet ecart n'a aucune raison de grandir avec l'ecran. Deux crans, un
+   jeton. Les confondre est ce qui a produit trois valeurs pour une fonction.
+
+   CE QUI TRAVERSE LA GRILLE passe par `.hors-piste`, et par elle seule. La
+   demi-difference entre la fenetre et la boite atteint le bord sans employer
+   100vw, qui compte la barre de defilement et fait deborder la page. Elle ne
+   depend que du CENTRAGE du bloc, pas de son remplissage : la gouttiere
+   interieure ne la deplace pas. Toute pleine largeur doit en outre etre
+   NOMMEE et motivee au registre des pleines largeurs, sans quoi elle est
+   refusee au depot. */
+.hors-piste{margin-inline:calc(50% - 50vw);width:auto}
+
+/* ① Deux blocs qui se partagent l'ecran, gouttiere au milieu. Sous le palier
+   a 8 colonnes il n'y a pas de quoi couper : ils s'empilent. */
+.g-duo{display:grid;gap:var(--gouttiere-grille)}
+@media(min-width:641px){.g-duo{grid-template-columns:repeat(2,minmax(0,1fr));align-items:center}}
+
+/* ② Une colonne en largeur de page. La prose y garde sa mesure de lecture ;
+   un bandeau, une grille et un rail prennent toute la largeur. */
+.g-colonne{display:grid;gap:var(--gouttiere-grille)}
+.g-colonne > p,.g-colonne > .chapo{max-width:var(--col)}
+
+/* ③ La bande a defilement N'EST PAS un gabarit neuf : c'est `.rail` et sa
+   piste, deja en grammaire. Elle CACHE ce qui depasse et demande un geste ;
+   la grille de cartes montre tout et demande de descendre. Les confondre est
+   le seul piege de ce jeu de gabarits. */
+
+/* ④ La scene pleine largeur — fond ou film distinct du reste de la page. Elle
+   peut contenir les autres gabarits. */
+.g-scene{position:relative;overflow:hidden;margin-inline:calc(50% - 50vw);width:auto}
+
+/* ⑤ La grille de cartes reguliere : les cartes s'enroulent, TOUT est visible
+   sans geste. Le nombre de colonnes suit la grille de reference, borne par un
+   minimum de carte pour qu'une colonne ne descende jamais sous sa lisibilite. */
+.g-cartes{display:grid;gap:var(--gouttiere-grille);
+  grid-template-columns:repeat(auto-fit,minmax(min(var(--carte-min,224px),100%),1fr))}
+
+/* ⑥ Le bandeau d'appel : pleine largeur, aplat d'univers, une seule colonne
+   centree et courte. C'est une cloture, donc un seul geste, et il est plein. */
+.g-appel{margin-inline:calc(50% - 50vw);width:auto;background:var(--univers);
+  color:var(--blanc);padding-block:var(--air-i6);text-align:center}
+.g-appel > *{max-width:var(--col);margin-inline:auto}
+.g-appel :is(h1,h2,h3,h4,h5,h6){color:var(--blanc)}
+
+/* ⑦ La liste depliante : une colonne etroite, chaque rang se deplie. La
+   mecanique du depliant est deja en grammaire ; ce gabarit ne fait que la
+   ranger. */
+.g-liste{display:grid;gap:var(--esp-2);max-width:var(--col)}
+
+/* L'air qui separe deux gabarits empiles. Il vaut une ligne et demie, sauf
+   quand l'un des deux porte son propre remplissage vertical : ce remplissage
+   EST alors la couture, et l'air s'annule. Deux respirations qui s'ajoutent
+   n'en font pas une plus juste.
+   CE QUI CASSE SI ON LE MODIFIE : la seconde regle enumere les gabarits qui
+   portent un `padding-block`. Donner un remplissage vertical a un gabarit sans
+   l'inscrire ici produit une couture double. */
+:is(.g-duo,.g-colonne,.g-scene,.g-cartes,.g-appel,.g-liste,.rail) + :is(.g-duo,.g-colonne,.g-scene,.g-cartes,.g-appel,.g-liste,.rail){margin-block-start:var(--air-i6)}
+.g-appel + :is(.g-duo,.g-colonne,.g-scene,.g-cartes,.g-appel,.g-liste,.rail),:is(.g-duo,.g-colonne,.g-scene,.g-cartes,.g-appel,.g-liste,.rail) + .g-appel{margin-block-start:0}
+
+/* Fenetre basse : le remplissage de la bande d'appel descend d'une ligne et
+   demie a trois quarts de ligne. Le seuil est celui qui dit « couche » partout
+   ailleurs dans la feuille ; en introduire un second garantit qu'ils
+   divergeront.
+   CE QU'IL NE REGLE PAS : une bande qui depasse la moitie de la fenetre le
+   doit a son texte, pas a son remplissage. */
+@media(max-height:599px){.g-appel{padding-block:var(--air-i3)}}
+
+.bloc,:where(body.p-roam) .bloc-sejour,:where(body.p-roam) .rubrique{padding-inline:var(--marge)}
+/* Deux garanties, une seule raison : la part ne se reconduit qu'UNE fois.
+   Un bloc dans un bloc ne se repadde pas — deux applications mangeraient la
+   moitie de la piste, trois la totalite. Un bloc DANS UNE FEUILLE non plus :
+   la feuille porte deja sa marge, et un bloc de section qu'un ecran reemploie
+   dans sa feuille y ajouterait un retrait que rien ne justifie.
+   Le tronc ne sait pas qu'un bloc de section vit dans une feuille ; il n'a pas
+   besoin de le savoir, il l'exclut. */
+/* La marge globale est UNE SEULE ligne, et le rendu doit la poser une seule
+   fois. Un bloc qui vit dans la piste la tient deja de la piste et n'ajoute
+   rien ; seul un bloc qui sort de la piste la reconstitue chez lui, pour que
+   son texte retombe sur la meme ligne que le mobilier du chrome.
+   CE QUI CASSE SI ON LE MODIFIE : rendre le retrait inconditionnel pose une
+   marge dans la marge — un pourcentage de la piste et non de la fenetre — et
+   tout ce qui borde la page cesse d'etre aligne sur le logo et sur le menu. */
+.corps :is(.bloc,.bloc-sejour,.rubrique),
+:is(.bloc,.bloc-sejour,.rubrique) :is(.bloc,.bloc-sejour,.rubrique),
+.feuille-bas :is(.bloc,.bloc-sejour,.rubrique){padding-inline:0}
+.corps :is(.bloc,.bloc-sejour,.rubrique).hors-piste{padding-inline:var(--marge)}
+.corps{width:var(--piste);margin:0 auto;padding:var(--esp-4) 0 0}
+.corps > p,
+.corps > .chapo,
+.corps > .instructions,
+.corps > .note-source,
+.corps > .note-section{max-width:var(--col)}
+
+/* ─── LES DEUX BOUTONS — une forme, une chose dite ────────────────────────
+   Un bouton PLEIN dit un engagement qui mene ailleurs : echelon 2 de
+   l'univers, encre blanche, aucun filet. Il est UNIQUE sur un ecran de
+   dialecte A — deux gestes pleins se disputent la decision et l'affaiblissent.
+   Un bouton en CONTOUR dit une action sur l'ecran courant : papier, filet et
+   encre d'univers. Il peut y en avoir plusieurs, jamais plus saillant que le
+   plein. Ce qui ne fait ni l'un ni l'autre est un lien.
+   Les deux couples sont ceux du deploiement : plein 8,36 sur son papier,
+   contour 8,36 en encre sur papier. Changer l'un des jetons casse le rapport. */
+.bouton-plein,.bouton-contour{display:inline-flex;align-items:center;justify-content:center;gap:var(--esp-2);min-height:var(--cible-min);padding:0 var(--esp-5);border-radius:var(--rayon-pilule);font-family:var(--font-corps);font-weight:var(--w-bold);font-size:var(--t-body);text-decoration:none;cursor:pointer}
+.bouton-plein{background:var(--univers);color:var(--blanc);border:none}
+.bouton-contour{background:var(--blanc);color:var(--univers);border:var(--limite-ep) solid var(--univers)}
+/* ---- LA GRAMMAIRE D'ETATS, appliquee aux deux boutons publics. L'aplat monte
+   d'un cran au survol, descend d'un cran sous le doigt ; le creux s'annonce en
+   se remplissant. Aucune valeur n'est ecrite : tout est un echelon.
+   L'eteint sort de la famille et prend la paire nommee du socle.
+   Exige : un univers dont l'aplat n'a pas d'echelon SOUS lui ne peut pas
+   descendre. Celui-la dit l'appui par un lisere interieur, et redefinit pour
+   cela la paire `--plein-appui-fond` / `--plein-appui-encre` ; la regle, elle,
+   ne se redeclare pas. L'encre transparente est l'etat par defaut : le lisere
+   existe partout et ne se voit que la ou l'univers lui donne une encre. ---- */
+@media (hover:hover){
+  .bouton-plein:hover{background:var(--univers-e3)}
+  .bouton-contour:hover{background:var(--univers);color:var(--encre-bouton);border-color:var(--univers)}
+}
+.bouton-plein:active{background:var(--plein-appui-fond);
+                     box-shadow:inset 0 0 0 var(--foyer-lisere) var(--plein-appui-encre)}
+.bouton-contour:active{background:var(--univers-e1);color:var(--encre-bouton);border-color:var(--univers-e1)}
+.bouton-plein:disabled,.bouton-plein[disabled],
+.bouton-contour:disabled,.bouton-contour[disabled]{
+  background:var(--eteint-fond);color:var(--eteint-encre);border-color:var(--eteint-fond);
+  cursor:not-allowed}
+/* ---- LE LIEN NU. Tout se joue sur LE TRAIT DES CARACTERES, jamais sur un
+   fond : echelon 3 au repos, echelon 4 au survol, echelon 1 sous le doigt. Au
+   foyer le texte ne bouge pas — une bordure de l'echelon 1 l'entoure, posee en
+   ombre portee pour ne rien deplacer dans la ligne.
+   Exige : le survol est un etat de SURBRILLANCE, il ne se lit pas. Son encre
+   rend 2,77 sur le blanc, sous le plancher de texte de 4,5 ; l'etat qui se lit
+   est le repos, a 4,72. L'echelon du survol ne se transpose a aucun etat
+   durable, et il ne sert que sous un pointeur qui survole.
+   Casse si retire : le lien rend au bleu du navigateur. ---- */
+:where(.corps,.bloc,.lecture-longue,p,li,dd) a:not([class]){color:var(--univers-e3)}
+@media (hover:hover){
+  :where(.corps,.bloc,.lecture-longue,p,li,dd) a:not([class]):hover{color:var(--univers-e4)}
+}
+:where(.corps,.bloc,.lecture-longue,p,li,dd) a:not([class]):active{color:var(--univers-e1)}
+html.au-clavier :where(.corps,.bloc,.lecture-longue,p,li,dd) a:not([class]):focus-visible{
+  background-color:transparent!important;color:var(--univers-e3)!important;
+  box-shadow:0 0 0 var(--foyer-lisere) var(--univers-e1)!important;
+  border-radius:var(--rayon-champ)}
+.champ .iti{width:100%;display:block;background:var(--gris-ilot);border:1.5px solid transparent;border-radius:var(--rayon-champ);height:48px}
+.champ .iti:focus-within{border-color:var(--univers);background:var(--blanc)}
+.iti input[type=tel]{width:100%;height:100%;background:transparent;border:none;color:var(--encre);font-family:var(--font-corps);font-size:var(--t-16);padding:0 var(--esp-3)}
+.iti__country-container{display:flex;align-items:center;padding:0 var(--esp-1)}
+.iti__selected-country{display:flex;align-items:center;height:100%;background:transparent}
+.iti__selected-dial-code{font-family:var(--font-corps);color:var(--encre);font-weight:500;font-size:var(--t-16);padding:0 var(--esp-1)}
+.iti__dropdown-content{background:var(--blanc);color:var(--roots-noir)}
+.iti__country-name{color:var(--roots-noir)}
+.iti__dial-code{color:var(--gris-500)}
+.iti__country.iti__highlight{background:rgba(var(--univers-rgb),.10)}
+.chrome-haut{position:sticky;top:0;z-index:20;background:rgba(var(--blanc-rgb),.96);backdrop-filter:blur(8px);border-bottom:1px solid var(--gris-service);padding:var(--esp-3) 0}
+.chrome-inner{width:var(--chrome-w);margin:0 auto;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:var(--esp-2)}
+.chrome-inner>.ankh-home{justify-self:start}
+.chrome-inner>.centre{justify-self:center}
+.chrome-inner>.chrome-droite{justify-self:end}
+/* --- Socle : le SURVOL. Le foyer n'est pas ici : il est declare une seule
+   fois dans la feuille socle, et aucune feuille ne le redefinit. --- */
+.chrome-inner{transition:grid-template-columns var(--mvt-parcours) var(--courbe-entree)}
+.chrome-titre{transition:opacity var(--mvt-apparition) var(--courbe-etat),transform var(--mvt-apparition) var(--courbe-etat)}
+.chrome-droite{transition:opacity var(--mvt-apparition) var(--courbe-etat),transform var(--mvt-apparition) var(--courbe-etat)}
+
+@media(max-width:639px){.chrome-inner.deploie{grid-template-columns:minmax(58px,1fr) auto minmax(0,1fr)}
+.chrome-inner.deploie .centre{gap:0}
+.chrome-inner .chrome-titre,.chrome-inner .chrome-droite{transition:opacity var(--mvt-apparition) var(--courbe-sortie)}
+.chrome-inner.deploie .chrome-titre{opacity:0;pointer-events:none;transform:translateX(-12px);width:0;min-width:0;margin:0;overflow:hidden}
+.chrome-inner.deploie .chrome-droite{opacity:0;pointer-events:none;transform:translateX(-12px);width:0;min-width:0;margin:0;overflow:hidden}
+
+}.chrome-haut{-webkit-tap-highlight-color:transparent}
+/* Le voile que le navigateur pose sur un element touche : les etats actifs
+   de la feuille disent deja ce qu'il faut, et ce voile ne connait pas la
+   palette. */
+*{-webkit-tap-highlight-color:transparent}
+.chrome-haut *{-webkit-tap-highlight-color:transparent}
+.toggle{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:manipulation}
+.ankh-home{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:manipulation}
+.chrome-burger{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:manipulation}
+.lang-btn{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:manipulation}
+.verbe{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:manipulation}
+.centre{display:flex;align-items:center;gap:var(--esp-1)}
+.ankh-home{display:flex;align-items:center;flex-shrink:0;text-decoration:none}
+.ankh-home svg{width:44px;height:44px;display:block}
+/* Le disque de la pastille est une FONCTION de son logotype, pas un nombre
+   pose a cote : em se rapporte a la taille de police du .mot, donc le disque
+   suit tout changement du logotype sans qu'on y revienne. A 44 px autour d'un
+   mot de 16 il ne restait qu'une tache verte.
+   La CIBLE, elle, ne suit pas — un calque invisible la tient au plancher de
+   44 px, sinon la regle des cibles tombe des que le logotype maigrit. */
+.toggle{--pastille-d:calc(2 * var(--t-chrome-titre))}
+.toggle::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:100%;min-width:var(--cible-min);height:var(--cible-min)}
+/* Depliee, la pastille est plus large que le plancher de cible et porte des
+   commandes propres : le calque n'a plus rien a agrandir, et s'il subsistait
+   il recevrait les clics a leur place — la piste et le mot NU deviendraient
+   inatteignables sans que rien ne le signale. */
+.toggle.ouvert::after{content:none}
+.toggle{position:relative;display:flex;align-items:center;height:var(--pastille-d);max-width:var(--pastille-d);overflow:hidden;cursor:pointer;background:var(--univers);border:none;border-radius:var(--rayon-pilule);box-shadow:inset 0 0 0 1.5px var(--univers),0 3px 10px rgba(var(--univers-rgb),.30);transition:max-width var(--mvt-apparition) var(--courbe-sortie),padding-left var(--mvt-apparition) var(--courbe-sortie)}
+/* Deplie, le logotype etait colle a son bord gauche pendant que NU respirait
+   du sien : le retrait de la piste equilibre les deux extremites. Replie, il
+   n'existe pas — le disque doit rester un disque. */
+.toggle.ouvert{padding-left:var(--esp-3)}
+.toggle.ouvert{max-width:300px;transition:max-width var(--mvt-parcours) var(--courbe-entree),padding-left var(--mvt-parcours) var(--courbe-entree)}
+.toggle .mot{width:var(--pastille-d);height:var(--pastille-d);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-eclat);font-weight:700;font-size:var(--t-chrome-titre);color:var(--blanc);line-height:1}
+.toggle .reste{display:flex;align-items:center;gap:var(--esp-2);padding-right:var(--esp-3);flex-shrink:0}
+.reste .sub{font-size:var(--t-label);color:var(--blanc);font-style:italic}
+.switch{width:42px;height:22px;border-radius:var(--rayon-pilule);background:rgba(var(--blanc-casse-rgb),.20);border:1px solid rgba(var(--blanc-casse-rgb),.3);position:relative;cursor:pointer;flex-shrink:0}
+.switch .knob{position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:var(--blanc);transition:left var(--mvt-etat) var(--courbe-etat)}
+.reste .nu{font-family:var(--font-eclat);font-weight:700;font-size:var(--t-body);color:var(--blanc)}
+.chrome-titre{font-family:var(--font-eclat);font-weight:700;font-size:var(--t-chrome-titre);color:var(--univers);letter-spacing:.01em}
+.chrome-droite{display:flex;align-items:center;gap:var(--esp-2)}
+.lang-btn{height:44px;min-width:44px;padding:0 var(--esp-1);border:none;background:none;color:var(--univers);font-family:var(--font-corps);font-weight:700;font-size:var(--t-sm);cursor:pointer}
+.chrome-burger{width:44px;height:44px;border:none;background:none;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--univers-e1)}
+.chrome-burger svg{width:30px;height:30px}
+/* Le dernier meuble du chrome pose son DESSIN sur la ligne de marge, non sa
+   cible : un glyphe plus etroit que sa cible laisse un vide que l'oeil compte
+   comme de la marge, et le bord droit cesse de repondre au bord gauche, dont
+   le dessin remplit sa cible. Le retrait vaut la demi-difference entre les
+   deux ; la cible garde sa taille et deborde vers l'exterieur.
+   CE QUI CASSE SI ON LE MODIFIE : changer la taille du glyphe sans changer ce
+   retrait desaligne les deux bords. */
+.chrome-burger{margin-inline-end:calc(var(--esp-3) * -1)}
+.chrome-titre{position:relative;text-decoration:none;cursor:pointer}
+.chrome-titre::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:100%;min-width:var(--cible-min);height:var(--cible-min)}
+/* La page courante reste dans le menu et s'y marque : une navigation
+   repetee doit garder la meme forme sur chaque ecran. Le marquage est
+   double — la couleur seule ne porte jamais une information. */
+.lien-section.courant{background:var(--vert-lavure)}
+.lien-section.courant .t{color:var(--univers);font-weight:var(--w-bold)}
+.lien-section.courant .fleche{opacity:.35}
+.pied-politique a.courant{font-weight:var(--w-bold);color:var(--univers)}
+.pied-politique{margin-top:var(--air-i3);padding:var(--esp-3) var(--esp-1) var(--esp-1);border-top:1px solid var(--gris-service);display:flex;align-items:center;justify-content:center;gap:var(--esp-3)}
+.pied-politique a{font-size:var(--t-sm);color:var(--encre-discrete);text-decoration:underline;text-underline-offset:3px;display:flex;align-items:center;min-height:44px;padding:0 var(--esp-2)}
+.pied{width:var(--piste);max-width:var(--col);margin:var(--air-i4) auto 0;padding:calc(var(--air-barre) * 2) 0 0;border-top:1px solid var(--gris-service);display:flex;justify-content:center}
+.pied a{font-size:var(--t-sm);color:var(--encre-discrete);text-decoration:underline;text-underline-offset:3px;display:flex;align-items:center;min-height:44px;padding:0 var(--esp-2)}
+/* La barre basse porte des verbes LEGENDES : une barre a etiquettes vaut
+   80 px — le barreau au-dessus de l'icone seule — et le contenu rendu
+   (pastille, demi-ecart, legende, respirations) y tient avec de l'air. Tout
+   ce qui se cale sur la barre lit ce jeton. */
+:root{--barre-h:80px}
+/* Le filet qui borde la barre du bas, et la pastille d'un verbe. Ces deux
+   mesures sont nommees parce qu'une TROISIEME s'en derive : le souffle qui
+   separe le filet du haut des pastilles. Les changer sans passer par ces
+   noms desaccorderait ce qui se cale dessus. */
+:where(body){--filet-barre:2px;--pastille-verbe:52px;
+ --souffle-filet:calc((var(--barre-h) - var(--filet-barre) - var(--pastille-verbe)) / 2)}
+.chrome-bas{position:fixed;left:0;right:0;bottom:0;z-index:15;display:flex;min-height:calc(var(--barre-h) + var(--safe-bas));height:auto;padding-bottom:var(--safe-bas);background:var(--blanc);border-top:var(--filet-barre) solid var(--univers);box-shadow:0 -6px 24px rgba(var(--ombre-teinte),.14);transition:opacity var(--mvt-apparition) var(--courbe-etat)}
+.verbe{flex:1;border:none;background:none;cursor:pointer;position:relative;color:var(--gris-500);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:var(--esp-1)}
+/* La legende du verbe. En bas d'ecran elle se tient sous l'icone ; montee
+   dans la barre, a sa droite. Icone et legende forment un seul bloc : leur
+   ecart d'encre reste nettement sous l'ecart entre verbes, et le logo se
+   tient a une fois et demie l'ecart d'encre entre verbes du bloc.
+   Le verbe courant porte l'encre d'univers, legende comprise. */
+.verbe-dit{font-family:var(--font-corps);font-weight:var(--w-medium);font-size:var(--t-note);line-height:var(--lh-12)}
+.verbe.actif{color:var(--univers)}
+/* Montee dans la barre, les rapports se mesurent a L'ENCRE, pas aux boites :
+   une cible de 44 loge un dessin plus etroit, et l'oeil ne compte que le
+   dessin. La boite de l'icone garde du vide a droite du dessin : boites
+   collees, l'encre icone-legende rend environ 8px, nettement sous l'encre
+   entre verbes, pour que chaque paire se lise d'un bloc. Le logo se tient a
+   une fois et demie l'encre entre verbes. */
+body.nav-haut .verbe{flex-direction:row;gap:0}
+/* Montee dans la barre, seule la legende du verbe COURANT se tient en ligne.
+   Les autres gardent leur nom en infobulle : posee sous l'icone, elle parait
+   au survol ou au foyer clavier apres un court delai, et s'efface sans
+   attendre. Elle reste le texte du bouton — son nom ne change pas de bouche —
+   et, transparente, elle ne prend aucun geste. */
+body.nav-haut .verbe:not(.actif) .verbe-dit{position:absolute;top:calc(100% + var(--esp-1));left:50%;translate:-50% 0;z-index:30;padding:var(--esp-1) var(--esp-3);border-radius:var(--rayon-pilule);background:var(--encre);color:var(--blanc);white-space:nowrap;opacity:0;pointer-events:none;box-shadow:0 4px 14px rgba(var(--ombre-teinte),.28);transition:opacity var(--mvt-etat) var(--courbe-etat)}
+body.nav-haut .verbe:not(.actif):hover .verbe-dit,
+body.nav-haut .verbe:not(.actif):focus-visible .verbe-dit{opacity:1;transition-delay:.45s}
+/* Sur l'aplat transparent, le verbe courant porte sa pastille pleine : c'est
+   ELLE que l'oeil mesure, et elle emplit sa boite la ou le dessin seul s'en
+   retire. Les ecarts se recalent donc sur le bord de la pastille : la marge
+   laterale rend l'ecart d'encre des verbes voisins, l'ecart interieur rend
+   l'encre pastille-legende du rang des autres ecrans. Valeurs mesurees au
+   rendu. */
+body[data-surface="ambiante"].nav-haut .verbe.actif{gap:7px;margin-inline:7px}
+/* L'intervalle d'encre entre verbes a perdu cinq points : les boites se
+   chevauchent d'un demi-point de part et d'autre, et le logo suit son rapport
+   d'une fois et demie sur cette encre reduite. Valeurs mesurees au rendu. */
+body.nav-haut .verbe{margin-inline:-.5px}
+/* La legende du verbe courant serre son icone de 3 px de plus : l'ecart visuel
+   vient du retrait du dessin dans sa boite, pas d'un ecart declare. */
+body.nav-haut .verbe.actif .verbe-dit{margin-inline-start:-3px}
+body.nav-haut .chrome-gauche{gap:16px}
+/* Sur la largeur d'un telephone couche, le groupe de gauche se resserre pour
+   se detacher : l'ecart entre verbes perd deux points, et le logo garde son
+   rapport d'une fois et demie sur cette encre reduite. La pilule de quete
+   cede un cinquieme de sa longueur au profit du groupe central. Valeurs
+   mesurees au rendu. */
+@media(max-width:800px){
+  body.nav-haut .verbe{margin-inline:-1.5px}
+  body.nav-haut .chrome-gauche{gap:14px}
+}
+/* LA BARRE BASSE DU TELEPHONE DEBOUT. Chaque verbe porte l'encre de SON
+   univers, icone et legende. Le verbe courant porte une pastille RONDE du
+   DIAMETRE EXACT de l'icone avant sa selection ; le dessin dedans perd cinq
+   points, en blanc sur l'aplat d'univers — un souffle de deux points et demi
+   entre son rayon et celui du cercle. Toutes les
+   paires gardent la meme taille et le meme alignement : l'air au-dessus des
+   dessins et sous les legendes est celui juge bon (16px d'encre). L'ecart
+   entre le dessin et sa legende se regle par le RETRAIT de la legende, la
+   colonne du verbe ne portant aucun air ici ; ailleurs, c'est l'air de la
+   colonne qui le porte. Les deux valent le meme ecart, et l'une ne se change
+   pas sans l'autre. L'air vit DANS les verbes, pas sur la barre. */
+@media(max-width:639px){
+  body:not(.nav-haut) .chrome-bas{min-height:0;padding:0}
+  body:not(.nav-haut) .verbe{justify-content:flex-start;gap:0;padding-top:var(--air-barre);padding-bottom:calc(9.5px + var(--safe-bas))}
+  body:not(.nav-haut) .verbe .verbe-dit{margin-top:-4px}
+}
+/* LES ENCRES DE LA BARRE BASSE VALENT POUR TOUTES SES FORMES — pleine
+   largeur comme pilule flottante : un seul systeme de cercles, jamais deux
+   rendus pour la meme piece. Trois cercles, UN SEUL CENTRE : le dessin au
+   repos s'inscrit dans un cercle mesure sur son encre ; selectionne, son
+   diametre recule de 4 ; la pastille fait 6 de plus que le repos, donc 10
+   de plus que le dessin selectionne. Le centre est le centre d'encre RENDU
+   du dessin — celui que l'oeil tient pour le centre. Valeurs mesurees. */
+body:not(.nav-haut) .verbe[data-verbe="roots"]{color:var(--vert-e2);--verbe-e1:var(--vert-e1);--p-r:20.9px;--p-cx:-.4px;--p-cy:.4px;--p-svg:39.1px}
+body:not(.nav-haut) .verbe[data-verbe="roam"]{color:var(--rouge-e2);--verbe-e1:var(--rouge-e1);--p-r:22.4px;--p-cx:-.3px;--p-cy:.6px;--p-svg:39.5px}
+body:not(.nav-haut) .verbe[data-verbe="space"]{color:var(--roots-noir);--verbe-e1:var(--noir);--p-r:22.3px;--p-cx:-.3px;--p-cy:.7px;--p-svg:39.4px}
+body:not(.nav-haut) .verbe.actif .ico-rond{color:var(--blanc);background:none;position:relative}
+  /* Le disque suit le centre d'encre du dessin, qui peut approcher le bord de
+     la boite : il se peint sur un calque qui depasse la boite, sans quoi le
+     fond serait rogne. */
+body:not(.nav-haut) .verbe.actif .ico-rond::before{content:'';position:absolute;inset:-8px;z-index:-1;background:radial-gradient(circle at calc(50% + var(--p-cx)) calc(50% + var(--p-cy)),var(--univers) calc(var(--p-r) - .4px),transparent calc(var(--p-r) + .4px))}
+body:not(.nav-haut) .verbe.actif .ico-rond svg{width:var(--p-svg);height:var(--p-svg)}
+/* Correction optique, tranchee a l'oeil : le poids visuel de la pousse tire
+   a droite, son dessin recule de deux points dans sa pastille. */
+body:not(.nav-haut) .verbe[data-verbe="roots"].actif .ico-rond svg{transform:translateX(-2px)}
+/* L'ecart icone-legende se regle a l'ENCRE, verbe par verbe : la carte du
+   verbe Plan rend son encre basse 0,75 px plus haut que la pousse — son
+   dessin descend d'autant, au repos seulement, pour que les deux ecarts
+   se lisent egaux. La legende, elle, ne bouge jamais : les trois partagent
+   leur ligne. */
+body:not(.nav-haut) .verbe[data-verbe="space"]:not(.actif) .ico-rond svg{transform:translateY(0.75px)}
+/* La paire courante se resserre de trois points de plus que les autres. */
+  /* Sur l'aplat transparent, la barre s'efface et chaque piece porte sa
+     propre frontiere, insensible au film : les dessins gardent leur encre
+     d'univers sous l'ombre douce que la surface donne deja a son chrome,
+     la pastille du courant reste nue, et les
+     CARACTERES des legendes se remplissent de blanc sous un contour a
+     l'echelon profond de leur univers. Rien d'autre : ni fond, ni pilule. */
+body[data-surface="ambiante"]:not(.nav-haut) .chrome-bas{background:none;border-top:none;box-shadow:none}
+body[data-surface="ambiante"]:not(.nav-haut) .verbe:not(.actif) .ico-rond{filter:drop-shadow(0 1px 4px rgba(var(--ombre-teinte),.4))}
+body[data-surface="ambiante"]:not(.nav-haut) .verbe .verbe-dit{color:var(--blanc);text-shadow:1px 0 0 var(--verbe-e1),-1px 0 0 var(--verbe-e1),0 1px 0 var(--verbe-e1),0 -1px 0 var(--verbe-e1),.7px .7px 0 var(--verbe-e1),-.7px .7px 0 var(--verbe-e1),.7px -.7px 0 var(--verbe-e1),-.7px -.7px 0 var(--verbe-e1)}
+/* La legende du verbe courant du nav MONTE prend la meme peau sur la surface
+   sans fond : caracteres blancs sous un contour du premier echelon de son
+   univers — le verbe courant EST l'univers courant, son jeton est deja la. */
+body[data-surface="ambiante"].nav-haut .verbe.actif .verbe-dit{color:var(--blanc);text-shadow:1px 0 0 var(--univers-e1),-1px 0 0 var(--univers-e1),0 1px 0 var(--univers-e1),0 -1px 0 var(--univers-e1),.7px .7px 0 var(--univers-e1),-.7px .7px 0 var(--univers-e1),.7px -.7px 0 var(--univers-e1),-.7px -.7px 0 var(--univers-e1)}
+/* Une barre a quete redistribue sa grille : la pilule prend la colonne
+   centrale et s'y etire, le groupe Mi + verbe vit dans la colonne de droite
+   devant le menu. */
+body.nav-quete .chrome-inner{grid-template-columns:auto minmax(0,1fr) auto}
+body.nav-quete .chrome-inner>.fab.quete,body.nav-quete .chrome-inner>.quete-groupe{justify-self:center;width:100%}
+body.nav-quete .chrome-droite{gap:var(--esp-2)}
+/* Sur une barre a quete, le mot d'univers se tait : la pilule et sa phrase
+   suggeree portent le nom du monde — la marque vit au tiroir, dans la rangee
+   du lecteur. */
+body.nav-quete .centre .chrome-titre{display:none}
+/* La colonne de droite d'une barre a quete accepte de se serrer : sans ce
+   plancher nul, la pilule refuse de retrecir et pousse le menu hors de la
+   ligne du chrome sur les largeurs moyennes. */
+body.nav-quete .chrome-droite{min-width:0;justify-self:stretch;justify-content:flex-end}
+.ico-rond{width:var(--pastille-verbe);height:var(--pastille-verbe);border-radius:50%;display:flex;align-items:center;justify-content:center}
+.ico-rond svg{width:44px;height:44px;stroke-width:2}
+.verbe.actif .ico-rond{background:var(--univers);color:var(--blanc)}
+.verbe.dormant{opacity:.55}
+.verbe.dormant::after{content:'';position:absolute;top:9px;right:calc(50% - 28px);width:6px;height:6px;border-radius:50%;background:var(--roots-jaune)}
+
+@media(min-width:640px) and (min-height:600px){.chrome-bas{left:50%;right:auto;transform:translateX(-50%);bottom:calc(18px + var(--safe-bas));width:auto;min-height:0;height:auto;padding:var(--esp-1);border:1.5px solid var(--univers);border-radius:var(--rayon-pilule);box-shadow:0 12px 30px rgba(var(--ombre-teinte),.28)}
+.verbe{flex:0 0 auto;padding:var(--esp-1) var(--esp-1)}
+.ico-rond{width:56px;height:56px}
+
+}.voile-menu{position:fixed;inset:0;z-index:24;background:rgba(var(--ombre-teinte),.22);opacity:0;pointer-events:none;transition:opacity var(--mvt-apparition) var(--courbe-etat)}
+.voile-menu.visible{opacity:1;pointer-events:auto}
+/* Le tiroir et son icone forment un bloc : leurs bords droits sont le meme
+   bord, celui de la piste, et ils se deplacent ensemble quand la gouttiere
+   change de cran. Un bord donne par une formule a part se desaligne au
+   premier changement de gouttiere. Sa hauteur se plafonne de meme sur la
+   barre mesuree, pour ne jamais deborder sous l'ecran. */
+.menu-pop{position:fixed;top:calc(var(--entete-h-rendue) + var(--esp-1));right:var(--bord);z-index:25;width:min(300px,86vw);max-height:calc(100vh - var(--entete-h-rendue) - var(--esp-1) - var(--esp-6));overflow-y:auto;scrollbar-width:none;background:var(--blanc);color:var(--encre);border-radius:var(--rayon-carte);padding:var(--esp-1) var(--esp-3) var(--esp-3);box-shadow:0 18px 44px rgba(var(--ombre-teinte),.28);transform-origin:top right;transform:scale(.9) translateY(-8px);opacity:0;pointer-events:none;transition:transform var(--mvt-apparition) var(--courbe-entree),opacity var(--mvt-etat) var(--courbe-etat)}
+.menu-pop::-webkit-scrollbar{display:none}
+.menu-pop.visible{transform:scale(1) translateY(0);opacity:1;pointer-events:auto}
+.menu-pop .tete{display:flex;justify-content:flex-end;margin-bottom:2px}
+.menu-pop .fermer{background:none;border:none;color:var(--encre-discrete);cursor:pointer;line-height:1;padding:2px var(--esp-1);min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center}
+.lien-section{display:flex;align-items:center;gap:var(--esp-3);text-decoration:none;color:var(--encre);padding:var(--esp-3) var(--esp-2);min-height:44px;border-bottom:1px solid var(--gris-ilot);font-size:var(--t-body);font-weight:700;cursor:pointer}
+.lien-section:last-child{border-bottom:none}
+.lien-section .ico{width:38px;height:38px;flex-shrink:0;border-radius:12px;background:var(--univers-selection);color:var(--univers);display:flex;align-items:center;justify-content:center}
+.lien-section .ico svg{width:19px;height:19px}
+.lien-section .txt{flex:1}
+.lien-section .fleche{width:16px;height:16px;color:var(--encre-discrete);flex-shrink:0}
+.toast{position:fixed;left:50%;bottom:calc(88px + var(--safe-bas));transform:translateX(-50%) translateY(10px);z-index:30;background:rgba(var(--univers-e1-rgb),.95);color:var(--creme);font-size:var(--t-sm);font-weight:700;padding:var(--esp-3) var(--esp-4);border-radius:var(--rayon-pilule);box-shadow:0 8px 24px rgba(var(--ombre-teinte),.4);opacity:0;pointer-events:none;transition:opacity var(--mvt-apparition) var(--courbe-etat),transform var(--mvt-apparition) var(--courbe-entree);text-align:center}
+.toast.visible{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}
+*{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+*::before{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+
+}/* ======================================================================== §4b — Surface ambiante. L'encre du chrome, pas sa geometrie. ======================================================================== */ body[data-surface="ambiante"]{color:var(--blanc-casse);overflow-x:hidden;background:var(--vert-nuit);padding-bottom:initial;position:initial}
+body[data-surface="ambiante"]{--entete-h-ambiante:calc(2 * 12px + 44px);--entete-h-rendue:var(--entete-h-ambiante)}
+body[data-surface="ambiante"] .chrome-haut{position:fixed;left:0;right:0;z-index:6;padding:var(--esp-3) 0;background:initial;backdrop-filter:initial;border-bottom:initial}
+body[data-surface="ambiante"] .ankh-home{filter:drop-shadow(0 1px 3px rgba(var(--ombre-teinte),.4));text-decoration:initial}
+body[data-surface="ambiante"] .toggle{background:rgba(var(--blanc-casse-rgb),.95);backdrop-filter:blur(6px);box-shadow:0 3px 12px rgba(var(--ombre-teinte),.2)}
+body[data-surface="ambiante"] .toggle .mot{color:var(--univers)}
+body[data-surface="ambiante"] .reste .sub{color:var(--encre-discrete)}
+body[data-surface="ambiante"] .switch{background:var(--gris-ilot);border:1px solid var(--gris-service)}
+body[data-surface="ambiante"] .switch .knob{background:var(--univers)}
+body[data-surface="ambiante"] .reste .nu{color:var(--gris-500)}
+body[data-surface="ambiante"] .lang-btn{color:var(--blanc-casse);text-shadow:0 1px 4px rgba(var(--ombre-teinte),.4)}
+body[data-surface="ambiante"] .chrome-burger{color:var(--blanc-casse);filter:drop-shadow(0 1px 4px rgba(var(--ombre-teinte),.4))}
+/* Le fond anime n'a pas de couleur : une encre unique s'y perd a un bout de la
+   plage — le blanc casse rend 19:1 sur une image sombre et 1,15:1 sur une image
+   claire. Le trait porte donc la couleur d'univers autour de chaque lettre, et
+   c'est la PAIRE qui porte la lisibilite : sur la plage des luminosites, le
+   meilleur des deux tombe au plus bas a 2,84:1.
+   CE QUE CELA VAUT, mesure : le plancher applicable au grand texte est 3:1, et
+   ce reglage passe dessous sur la bande de luminosite ou les deux se croisent.
+   L'echelon 1, plus sombre, y rendait 3,70:1 — il ecarte davantage le trait de
+   l'encre. Le choix de la couleur d'univers est un arbitrage porte au registre
+   des decisions.
+   Toute autre couleur de trait, ou toute autre encre de lettre, exige de
+   remesurer la paire — le nombre ci-dessus ne vaut que pour ce couple.
+   Les huit ombres sont SANS FLOU : un trait flou ne borne plus la lettre, et
+   la mesure qui suppose deux aplats devient fausse. */
+:where(body){--trait-nav:1px;--cerne-univers:var(--trait-nav) 0 0 var(--univers),calc(var(--trait-nav) * -1) 0 0 var(--univers),0 var(--trait-nav) 0 var(--univers),0 calc(var(--trait-nav) * -1) 0 var(--univers),var(--trait-nav) var(--trait-nav) 0 var(--univers),calc(var(--trait-nav) * -1) calc(var(--trait-nav) * -1) 0 var(--univers),var(--trait-nav) calc(var(--trait-nav) * -1) 0 var(--univers),calc(var(--trait-nav) * -1) var(--trait-nav) 0 var(--univers)}
+body[data-surface="ambiante"] .chrome-titre{color:var(--blanc-casse);text-shadow:var(--cerne-univers)}
+
+body[data-surface="ambiante"] .chrome-bas{z-index:6;box-shadow:0 -6px 24px rgba(var(--ombre-teinte),.18)}
+
+@media(min-width:640px) and (min-height:600px){body[data-surface="ambiante"] .chrome-bas{box-shadow:0 12px 34px rgba(var(--ombre-teinte),.4)}
+
+}body[data-surface="ambiante"] .menu-pop{z-index:15;background:var(--blanc);box-shadow:0 18px 44px rgba(var(--ombre-teinte),.38)}
+body[data-surface="ambiante"] .toast{bottom:calc(156px + var(--safe-bas));z-index:20}
+
+/* ═══ Harmonise — ce que tous les ecrans disaient a l'identique ═══════════
+   Une declaration ecrite deux fois n'est pas un choix, c'est une copie. Ces
+   regles vivaient dans chaque section d'ecran, mot pour mot ; elles vivent
+   ici, une fois. Une section d'ecran qui suit peut toujours les surcharger :
+   :where() ne pese rien, et c'est l'ordre qui tranche a specificite egale. */
+.hors-ecran{white-space:nowrap;padding:0;width:1px;position:absolute;clip:rect(0 0 0 0);overflow:hidden;height:1px;border:0;margin:-1px}
+.saut-contenu{min-height:44px;display:flex;left:-9999px;text-decoration:none;padding:var(--esp-3) var(--esp-4);align-items:center;position:absolute;background:var(--univers);font-weight:700;border-radius:0 0 var(--rayon-champ) 0;font-family:var(--font-corps);color:var(--blanc);top:0;font-size:var(--t-sm);z-index:100}
+.saut-contenu:focus{left:0}
+/* Bandeau de phase. Il dit ce que la page est, en tete, avant tout le reste.
+   Un dispositif que l'on croit operationnel sans qu'il le soit est plus
+   dangereux que son absence — meme loi que la marque DEMO. */
+.bandeau-phase{display:flex;align-items:center;gap:var(--esp-3);flex-wrap:wrap;margin:0;padding:var(--esp-2) var(--ecran-marge);background:var(--creme);color:var(--encre);font-family:var(--font-corps);font-size:var(--t-sm);line-height:var(--lh-14);position:relative;z-index:99}
+.bandeau-etiquette{flex:none;border-radius:var(--rayon-pilule);padding:2px var(--esp-3);background:var(--encre);color:var(--encre-bouton);font-size:var(--t-label);line-height:var(--lh-12);font-weight:var(--w-bold);letter-spacing:.07em}
+/* Un exemple de format se DIT au lecteur d'ecran : un indice de saisie ne porte
+   aucun nom accessible et disparait a la frappe. */
+.aide-champ{display:block;margin-top:var(--air-i1);color:var(--encre);font-size:var(--t-note);line-height:var(--lh-12)}
+/* Le depliant. Il se replie parce qu'il ne concerne qu'une partie des
+   acheteurs : deploye pour tous, il rallongerait le paiement de tous. Son
+   libelle dit donc a qui il s'adresse, et la fleche suit l'etat que le bouton
+   declare. Aligne a gauche : ce qu'il contient se lit en phrases et en champs,
+   pas en libelles centres. */
+.depliant{margin:var(--air-i4) 0 0;text-align:left}
+.depliant-bouton{display:flex;align-items:center;justify-content:center;gap:var(--esp-2);width:100%;min-height:var(--cible-min);background:none;border:none;padding:var(--esp-2) 0;font-family:var(--font-corps);font-size:var(--t-sm);line-height:var(--lh-14);font-weight:var(--w-bold);color:var(--univers);cursor:pointer}
+.depliant-bouton::before{content:'';flex:none;width:0;height:0;border-left:7px solid currentColor;border-top:5px solid transparent;border-bottom:5px solid transparent;transition:transform .18s var(--courbe-a)}
+.depliant-bouton[aria-expanded="true"]::before{transform:rotate(90deg)}
+.depliant-corps{padding:var(--esp-3) 0}
+@media (prefers-reduced-motion: reduce){.depliant-bouton::before{transition:none}}
+/* Sur la surface ambiante, et la seule, l'en-tete quitte le flux : le bandeau
+   passerait dessous et l'effacerait. L'ecart se DERIVE de la hauteur d'en-tete
+   ambiante, declaree a cote de la regle qui la produit. */
+body[data-surface="ambiante"] .bandeau-phase{margin-top:var(--entete-h-ambiante)}
+.voile{transition:opacity var(--mvt-apparition) var(--courbe-etat);inset:0;background:rgba(var(--ombre-teinte),.5);opacity:0;pointer-events:none;position:fixed}
+.voile.visible{opacity:1;pointer-events:auto}
+.poignee{height:4px;border-radius:4px;margin:var(--air-i2) auto var(--air-i1);width:38px;background:var(--gris-service)}
+.etiquette{letter-spacing:.07em;font-weight:700;color:var(--encre-discrete);font-size:var(--t-label);margin-bottom:var(--air-i2);display:block;text-transform:uppercase}
+.stepper{align-items:center;display:flex}
+.stepper button{cursor:pointer;display:flex;align-items:center;position:relative;color:var(--encre);background:var(--blanc);border-radius:50%;justify-content:center;width:34px;height:34px;font-size:var(--t-body)}
+.stepper button svg{width:15px;height:15px}
+.stepper button:disabled{opacity:.35;cursor:not-allowed}
+.stepper span{font-size:var(--t-body);min-width:20px}
+.stepper span{font-weight:700;text-align:center}
+.stepper button::after{top:50%;height:44px;width:44px;left:50%;content:'';position:absolute;transform:translate(-50%,-50%)}
+.champ label{margin-bottom:var(--air-i1);display:block;font-weight:700;color:var(--encre-discrete);font-size:var(--t-sm)}
+.champ input{padding:var(--esp-3) var(--esp-3);border:1.5px solid transparent;font-size:var(--t-16);border-radius:var(--rayon-champ);color:var(--encre);font-family:var(--font-corps);width:100%;background:var(--gris-ilot);min-height:44px}
+/* La zone de texte suit la grammaire du champ : meme ilot, meme focus. Sa
+   hauteur se tire a la main, jamais en largeur — la colonne est la colonne. */
+.champ textarea{padding:var(--esp-3) var(--esp-3);border:1.5px solid transparent;font-size:var(--t-16);border-radius:var(--rayon-champ);color:var(--encre);font-family:var(--font-corps);width:100%;background:var(--gris-ilot);min-height:76px;resize:vertical}
+/* Un lien habille en bouton plein reste un lien : le style est celui du
+   bouton, la semantique celle de la navigation — il mene ailleurs. */
+a.bouton-confirmer{display:flex;align-items:center;justify-content:center;text-decoration:none;box-sizing:border-box}
+.iti--fullscreen-popup{z-index:10000}
+/* Le bloc de confidentialite ferme le panneau, sous l'action : la notice puis
+   son lien. Les ecarts de ce groupe sont des multiples du pas de 8. */
+/* La notice de consentement est une NOTE : meme jeton que la description, la
+   mention et l'aide de champ. Son texte vient du serveur — l'ecran ne le
+   compose pas, il l'habille. */
+.consent{font-size:var(--t-note);text-align:center;color:var(--encre-discrete);margin:var(--air-i3) 2px 0;line-height:var(--lh-12)}
+.consent:empty{display:none}
+.consent-lien{margin:var(--air-i2) 2px;text-align:center}
+.consent-lien a{text-underline-offset:3px;text-decoration:underline;padding:0 var(--esp-2);color:var(--encre-discrete);font-size:var(--t-note)}
+.bouton-confirmer{border:none;border-radius:var(--rayon-pilule);min-height:52px;cursor:pointer;background:var(--univers);padding:var(--esp-4);font-size:var(--t-body);font-weight:var(--w-medium);font-family:var(--font-eclat);width:100%;color:var(--blanc)}
+.bouton-confirmer:disabled{cursor:not-allowed;opacity:.35}
+.bouton-confirmer.occupe{cursor:progress;opacity:.7}
+/* Retirer du flux sans retirer du document. Le JS qui revele pose toujours
+   une valeur explicite, qui l'emporte sur cette classe. */
+.cache{display:none}
+.erreur{font-weight:700;line-height:1.4;font-size:var(--t-sm);color:var(--rouge-e2);text-align:center}
+.erreur.visible{display:block}
+.mention{margin-top:var(--air-i2);color:var(--encre-discrete);font-size:var(--t-note);text-align:center}
+/* Bandeau du garde d'ecran. Il se pose en tete du corps quand un ecran n'a pas
+   demarre, donc au-dessus de tout ce que cet ecran aurait du dessiner. Il ne
+   depend d'aucun script de page : ses regles doivent tenir seules. */
+.garde-banniere{position:fixed;top:0;left:0;right:0;z-index:2147483647;
+  margin:0;padding:var(--esp-4);text-align:left;
+  border-bottom:4px solid var(--rouge-e2);background:var(--blanc-casse);
+  box-shadow:0 2px 12px rgba(var(--rouge-e1-rgb), .28)}
+.garde-titre{margin:0;font-size:var(--t-h3);font-weight:var(--w-bold);color:var(--rouge-e2)}
+.garde-dit{margin:var(--air-i2) 0 0;font-size:var(--t-body);color:var(--encre)}
+.garde-detail{margin:var(--air-i2) 0 0;font-size:var(--t-note);color:var(--encre-discrete)}
+.garde-lien{display:inline-flex;align-items:center;min-height:var(--cible-min);
+  margin-top:var(--air-i2);font-size:var(--t-sm);color:var(--encre)}
+/* Plaque legale. Elle porte un registre de voix qui n'est pas celui de
+   l'ecran : elle se met a part au lieu de se fondre, sinon le lecteur la lit
+   comme la parole du produit. Alignee a gauche parce qu'elle se lit en phrases
+   et non en libelle, et adossee a un filet qui en marque la limite. */
+.plaque-legale{margin-top:var(--air-i3);padding:var(--esp-2) var(--esp-3);text-align:left;
+  border-left:3px solid var(--gris-service);background:var(--blanc-casse)}
+.vide-menu{color:var(--encre-discrete);font-size:var(--t-sm)}
+.conf-titre{margin:0;font-size:var(--t-body);font-weight:700}
+.code{letter-spacing:.13em;color:var(--univers);font-weight:700;font-family:var(--font-chiffres);font-size:var(--t-code);margin:var(--air-i2) 0}
+.instructions{font-size:var(--t-sm);margin:0 auto;line-height:1.55;color:var(--encre-discrete);max-width:300px}
+.note-partielle{color:var(--rouge-e2);max-width:300px;font-weight:700;line-height:1.45;font-size:var(--t-label);margin:var(--air-i3) auto 0}
+/* ─── LE GESTE FLOTTANT ET LA FEUILLE DU BAS — grammaire, pas ecran ───────
+   Deux ecrans les emploient : ils cessent d'appartenir a l'un d'eux. Ce qui
+   est ecrit ici est ce que les deux disaient MOT POUR MOT ; ce qui differe
+   — remplissage, filet, taille de texte — reste dans la section de l'ecran,
+   qui surcharge par l'ordre, :where() ne pesant rien.
+
+   Le geste flottant se pose en part de la hauteur d'ecran, par un jeton que
+   l'ecran redefinit selon la place que lui laisse son chrome. Le retrait de
+   securite du bas s'ajoute toujours : sans lui, le geste passe sous la barre
+   systeme d'un telephone a encoche.
+
+   La feuille monte depuis le bas et s'arrete AVANT l'en-tete : une hauteur
+   donnee en part de l'ecran la ferait passer sous le nav, qui est fixe, et le
+   haut de son contenu deviendrait illisible. Sa hauteur se plafonne a l'ecran
+   MOINS l'en-tete, moins le degagement qui separe deja tout contenu de cet
+   en-tete, moins la pose qui la souleve du bas. La hauteur d'en-tete employee
+   est celle que le script MESURE sur la barre rendue ; la valeur ecrite ne
+   sert que de repli, et elle sous-estime la barre des que la pastille de
+   l'antenne porte son anneau. La hauteur dynamique est donnee en second : sur
+   un mobile dont la barre d'outils se retracte, c'est la seule qui suit la
+   zone reellement visible.
+
+   Un champ de la feuille ne descend pas sous 16px : en dessous, un navigateur
+   mobile zoome sur la page a la mise au point et n'en revient pas seul. */
+.fab{position:fixed;left:50%;transform:translateX(-50%);--fab-bas:7.5%;bottom:calc(var(--fab-bas) + var(--safe-bas));z-index:7;min-height:56px;padding:0 var(--esp-8);border:none;font-size:var(--t-21);border-radius:var(--rayon-pilule);background:var(--blanc);color:var(--univers);font-family:var(--font-eclat);font-weight:var(--w-bold);white-space:nowrap;box-shadow:0 12px 30px rgba(var(--ombre-teinte),.42);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:opacity var(--mvt-apparition) var(--courbe-etat)}
+.fab svg{width:26px;height:26px;stroke-width:2.6}
+/* Le geste focal ne parait qu'une fois la barre arbitree : peint d'abord au
+   bas puis remonte, il semblerait clignoter a l'ouverture. La retenue exige
+   la classe de script sur la racine — sans script, rien ne le deplacera, et
+   il se montre d'emble. La levee de la retenue passe par le fondu du geste,
+   jamais par une parution seche : c'est le meme fondu qui adoucit sa
+   parution sur les ecrans ou il ne bouge pas. */
+html.js body:not(.nav-pret) .fab,html.js body:not(.nav-pret) .chrome-bas{opacity:0}
+/* D'un ecran a l'autre, la pastille du verbe courant et sa legende glissent
+   vers leur nouveau porteur au lieu de sauter : la traversee de document
+   s'anime, et s'immobilise pour qui demande moins de mouvement. */
+@view-transition{navigation:auto}
+@media (prefers-reduced-motion:reduce){@view-transition{navigation:none}}
+body.nav-haut .verbe.actif .ico-rond{view-transition-name:pastille-verbe}
+body.nav-haut .verbe.actif .verbe-dit{view-transition-name:legende-verbe}
+/* LE RANG DE PILE D'UNE FEUILLE MODALE. Le voile passe au-dessus de TOUT le
+   chrome — barre du bas comprise —, et la feuille au-dessus du voile. Un
+   element de chrome qui surplombe une feuille `aria-modal` la rend non modale :
+   il reste actionnable, et il recouvre le bas de la feuille, commandes
+   comprises. La barre du bas vaut 15 par defaut et 6 sur surface ambiante : un
+   rang inferieur a 15 ne tenait donc que sur l'ecran qui porte un film.
+   Le tiroir reste au-dessus : il s'ouvre depuis la barre, jamais avec elle. */
+.voile{z-index:21}
+/* Le voile DOUX est celui d'un tiroir, pas d'une feuille : le tiroir s'ancre a
+   la barre du haut et s'ouvre depuis elle. Le couvrir rendrait sa propre
+   commande inatteignable. Il garde donc son rang sous le chrome. */
+.voile.voile-doux{z-index:12}
+/* La page figee sous une modale : le document ne defile plus, la feuille
+   garde son propre defilement interieur. */
+body.page-figee{overflow:hidden}
+.feuille-bas{overscroll-behavior:contain;position:fixed;z-index:22;left:50%;bottom:0;transform:translate(-50%,112%);width:min(450px,100%);--feuille-pose:0px;max-height:calc(100vh - var(--entete-h-rendue) - var(--esp-3) - var(--feuille-pose));max-height:calc(100dvh - var(--entete-h-rendue) - var(--esp-3) - var(--feuille-pose));overflow-y:auto;scrollbar-width:none;background:var(--blanc);color:var(--encre);border-radius:var(--rayon-carte) var(--rayon-carte) 0 0;padding:calc(var(--feuille-marge) - var(--poignee-bloc)) var(--feuille-marge) calc(var(--esp-6) + var(--safe-bas));box-shadow:0 -12px 40px rgba(var(--ombre-teinte),.35);transition:transform var(--mvt-parcours) var(--courbe-entree)}
+.feuille-bas::-webkit-scrollbar{display:none}
+.feuille-bas.visible{transform:translate(-50%,0)}
+.feuille-bas .groupe{margin-bottom:var(--air-i3)}
+.feuille-bas .champ{margin-bottom:var(--air-i3)}
+.feuille-bas .champ input{font-size:var(--t-16)}
+.feuille-bas .iti input[type=tel]{font-size:var(--t-16)}
+@media(min-width:500px){.feuille-bas{--feuille-pose:22px;bottom:var(--feuille-pose);border-radius:var(--rayon-carte)}}
+/* La tete de la feuille et son geste de fermeture appartiennent a la feuille,
+   pas a l'ecran qui l'ouvre. Le geste porte un dessin de 20 px et une cible
+   INVISIBLE de 44 : reduire le dessin a la cible epaissirait le trait, et
+   l'agrandir mangerait le titre voisin. La cible se pose donc en pseudo,
+   centree sur le dessin ; retirer `position:relative` la decroche et la
+   ramene au coin de la page. */
+.feuille-bas .tete{display:flex;align-items:center;justify-content:flex-end;margin:0 0 var(--feuille-marge)}
+.feuille-bas .tete .ou{font-size:var(--t-label);font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--encre-discrete)}
+.fermer{background:none;border:none;color:var(--encre-discrete);cursor:pointer;line-height:1;padding:0;width:20px;height:20px;display:flex;align-items:center;justify-content:center;position:relative}
+.fermer::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:var(--cible-min);height:var(--cible-min)}
+.fermer svg{width:20px;height:20px;stroke-width:2}
+/* ======================================================================== UNIVERS ======================================================================== */
+/* UN POINT DE REFERENCE, TROIS ALIAS. Chaque ecran declare son univers sur
+   <body>, et toute l'interface derive de trois alias — jamais une valeur
+   neuve — parce que la palette garantit qu'a echelon egal les familles
+   portent le meme poids : l'univers change, aucune mesure ne change.
+   Traversent seuls, hors alias : la semantique de statut et l'anneau de
+   focus, qui sont les memes dans tous les univers. */
+:where(body){--plein-appui-fond:var(--univers-e1);--plein-appui-encre:transparent;--univers:var(--roots-vert);--univers-rgb:var(--vert-e2-rgb);--univers-selection:rgba(var(--univers-rgb),.08);--univers-e1:var(--vert-e1);--univers-e1-rgb:var(--vert-e1-rgb);--univers-e3:var(--vert-e3);--univers-e3-rgb:var(--vert-e3-rgb);--univers-e4:var(--vert-e4);--univers-e5:var(--vert-e5)}
+
+/* ------------------------------------------------------------------------ Univers Mi Roam ------------------------------------------------------------------------ */
+/* L'univers de Roam est noir, blanc et rouge : rouge e2 est sa couleur, et
+   tout ce qui portait e2 vert la prend ici. La correspondance vit dans DEUX
+   alias — jamais une valeur neuve — parce que la palette garantit qu'a echelon
+   egal les familles portent le meme poids : l'univers change, aucune mesure ne
+   change. Le nav appartient a l'univers ; le super-nav du bas commute. */
+/* Le trait de foyer se redeclare SUR LE CORPS, la ou le monde pose son encre.
+   Une substitution se resout la ou elle est ecrite : declaree a la racine, elle
+   fige l'encre du premier monde et la garde dans tous les autres. Ecrite ici,
+   elle prend l'encre du monde qui la porte.
+   CE QU'ELLE REFUSE : disparaitre. Un foyer qui ne se voit pas rend l'interface
+   inutilisable au clavier. Elle ne s'affiche qu'au parcours clavier, jamais a
+   l'appui ni au clic. */
+
+/* L'ombre et les voiles portent la teinte de l'encre profonde de l'UNIVERS
+   courant : une piece partagee — voile, feuille, ombre portee — qui garderait
+   la teinte d'un autre univers mentirait sur l'ecran qu'elle sert. Toute
+   couleur d'une piece qui voyage entre univers se declare en jeton d'univers,
+   jamais en valeur figee. */
+:where(body.p-space){--plein-appui-fond:var(--univers);--plein-appui-encre:var(--encre-bouton)}
+:where(body.p-roam){--univers:var(--rouge-e2);--univers-rgb:var(--rouge-e2-rgb);--encre:var(--roots-noir);--univers-e1:var(--rouge-e1);--univers-e1-rgb:var(--rouge-e1-rgb);--univers-e3:var(--rouge-e3);--univers-e3-rgb:var(--rouge-e3-rgb);--univers-e4:var(--rouge-e4);--univers-e5:var(--rouge-e5);--ombre-teinte:var(--rouge-e1-rgb);--encre-ll-h1:var(--encre);--encre-ll-h3:var(--encre);--encre-ll-h5:var(--encre);--encre-ll-h2:var(--univers-e3);--encre-ll-h4:var(--univers-e3);--encre-ll-h6:var(--univers-e3);--encre-ll-chapo:var(--univers-e3)}
+:where(body.p-roam) .entete-sejour{background:var(--univers);border-radius:var(--rayon-carte);padding:var(--esp-6);margin:0 0 var(--air-i4);text-align:left}
+:where(body.p-roam) .entete-sejour h1{margin:0 0 var(--air-i2);color:var(--blanc)}
+:where(body.p-roam) .entete-sejour .sous-titre{margin:0;color:var(--blanc);font-size:var(--t-sm);line-height:var(--lh-14)}
+:where(body.p-roam) .bloc-sejour{margin:0 0 var(--air-i4)}
+:where(body.p-roam) .bloc-sejour > .etiquette{display:block;margin-bottom:var(--air-i2);font-weight:700;color:var(--encre-discrete);font-size:var(--t-sm)}
+/* Les lieux de la flotte. Un lieu ouvert est un lien qui mene au geste ; un
+   lieu a venir est une carte muette, sans etat interactif — un statut n'est
+   pas une action. Le blanc pur les detache du sol blanc casse. */
+:where(body.p-roam) .cartes-lieux{display:grid;gap:var(--esp-3)}
+:where(body.p-roam) .carte-lieu{display:block;background:var(--blanc);border:1.5px solid var(--gris-ilot);border-radius:var(--rayon-carte);padding:var(--esp-4);color:var(--encre);text-decoration:none}
+:where(body.p-roam) .carte-lieu .tete{display:flex;justify-content:space-between;align-items:baseline;gap:var(--esp-3);flex-wrap:wrap}
+:where(body.p-roam) .carte-lieu .nom{font-size:var(--t-body);line-height:var(--lh-16);font-weight:700}
+:where(body.p-roam) .carte-lieu .ou{font-size:var(--t-sm);line-height:var(--lh-14);color:var(--encre-discrete)}
+:where(body.p-roam) .carte-lieu .dit{display:block;margin-top:var(--air-i2);font-size:var(--t-sm);line-height:var(--lh-14);color:var(--encre-discrete)}
+:where(body.p-roam) .carte-lieu .geste{display:inline-flex;align-items:center;min-height:var(--cible-min);margin-top:var(--air-i1);font-size:var(--t-sm);line-height:var(--lh-14);font-weight:700;color:var(--univers)}
+:where(body.p-roam) .carte-lieu.ouverte{border-color:var(--univers)}
+:where(body.p-roam) .carte-lieu .avenir{display:block;margin-top:var(--air-i2);font-size:var(--t-note);line-height:var(--lh-12);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--encre-discrete)}
+:where(body.p-roam) .cartes-logement{display:grid;gap:var(--esp-3)}
+:where(body.p-roam) .carte-logement{display:block;width:100%;text-align:left;background:var(--gris-ilot);border:1.5px solid var(--limite-controle);border-radius:var(--rayon-carte);padding:var(--esp-4);cursor:pointer;font-family:var(--font-corps);color:var(--encre);min-height:var(--cible-min)}
+:where(body.p-roam) .carte-logement .nom{display:block;font-size:var(--t-body);line-height:var(--lh-16);font-weight:700}
+:where(body.p-roam) .carte-logement .infos{display:flex;justify-content:space-between;gap:var(--esp-3);margin-top:var(--air-i1)}
+:where(body.p-roam) .carte-logement .cap{font-size:var(--t-sm);line-height:var(--lh-14);color:var(--encre-discrete)}
+:where(body.p-roam) .carte-logement .nuitee{font-size:var(--t-sm);line-height:var(--lh-14);color:var(--encre);font-family:var(--font-chiffres)}
+:where(body.p-roam) .carte-logement.choisi{background:rgba(var(--univers-rgb), .07);border-color:var(--univers)}
+/* Une colonne de grille a pour largeur minimale celle de son contenu : deux
+   colonnes en `1fr` ne se partagent donc PAS toujours la place, elles la
+   depassent des que le contenu ne rentre pas, et la page defile a
+   l'horizontale. `minmax(0, 1fr)` rend la colonne compressible. */
+:where(body.p-roam) .rangee-dates{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--esp-3)}
+:where(body.p-roam) .ligne-nuits{margin:var(--air-i2) 0 0;font-size:var(--t-sm);line-height:var(--lh-14);font-weight:700;color:var(--univers)}
+:where(body.p-roam) .ligne-nuits:empty{display:none}
+/* Le triptyque du prix : trois lignes, celle du jour en plus fort — c'est elle
+   que le geste engage. Le total reste le premier mot : rien ne s'ajoute apres
+   lui. Le montant s'ecrit en encre, jamais dans la couleur d'univers. */
+:where(body.p-roam) .recap-sejour{display:none;background:var(--blanc);border:1.5px solid var(--univers);border-radius:var(--rayon-carte);padding:var(--esp-4);margin:0 0 var(--air-i3)}
+:where(body.p-roam) .recap-sejour.visible{display:block}
+:where(body.p-roam) .recap-sejour .ligne{display:flex;justify-content:space-between;gap:var(--esp-3);font-size:var(--t-sm);line-height:var(--lh-14);color:var(--encre-discrete);padding:var(--esp-1) 0}
+:where(body.p-roam) .recap-sejour .ligne .montant{font-family:var(--font-chiffres);color:var(--encre)}
+:where(body.p-roam) .recap-sejour .ligne.forte{font-size:var(--t-body);line-height:var(--lh-16);font-weight:700;color:var(--encre)}
+:where(body.p-roam) .recap-sejour .ligne.forte .montant{font-size:var(--t-h3);line-height:var(--lh-chiffre);font-weight:700}
+:where(body.p-roam) .confirmation{background:var(--blanc);border-radius:var(--rayon-carte);box-shadow:var(--ombre-posee);padding:var(--esp-6);margin-top:var(--air-i4)}
+
+/* ══════════════ ECRAN — Mi Roam : hero, cartes de bien, numeros ══════════════
+   Aucune valeur n'est ecrite ici : tout passe par un jeton. La reserve d'image
+   emploie l'accord creme sur l'echelon 1 de l'univers, qui rend 12,17 — au-dessus
+   du plancher AAA de 7. Changer l'un des deux jetons casse ce rapport. */
+
+/* La hauteur se prend sur la hauteur RENDUE du chrome, publiee par le script,
+   et jamais sur la valeur ecrite : une valeur declaree derive du rendu sans
+   que rien ne le signale. Chrome + scene ne depassent pas la moitie haute de
+   l'ecran. `dvh` remplace `vh` la ou il existe : sur un telephone, la barre du
+   navigateur se retracte et `vh` mesure alors une fenetre qui n'est plus la.
+
+   La scene sort de la colonne et prend toute la largeur. Les marges
+   negatives valent la demi-difference entre la fenetre et la colonne : elles
+   atteignent le bord SANS employer 100vw, qui compte la barre de defilement
+   et ferait deborder la page a l'horizontale sur un ecran large. Le titre, la
+   phrase et le geste, eux, restent dans la colonne. */
+
+:where(body.p-roam) .etiquette.sous{margin-top:var(--air-i4)}
+:where(body.p-roam) .cat.actif{border-color:var(--univers);background:var(--univers-selection);color:var(--univers)}
+
+/* La carte deborde du bord : c'est le seul signifiant qui survit a
+   l'absence de barre de defilement. Une carte d'attente ne porte ni verbe ni
+   chevron — elle n'est pas actionnable, et sa forme le dit. */
+:where(body.p-roam) .carte-bien{display:block;width:15rem;flex:0 0 auto;background:var(--blanc);border:var(--limite-ep) solid var(--limite-controle);border-radius:var(--rayon-carte);overflow:hidden;color:var(--encre);text-decoration:none}
+:where(body.p-roam) .carte-bien .vignette{display:block;aspect-ratio:4/3;background:var(--gris-ilot)}
+:where(body.p-roam) .carte-bien .vignette img{width:100%;height:100%;object-fit:cover;display:block}
+:where(body.p-roam) .carte-bien .vignette.reserve{display:flex;align-items:center;justify-content:center;background:var(--univers-e1);color:var(--creme)}
+:where(body.p-roam) .carte-bien .vignette.reserve .i-reserve{width:38%;height:38%;fill:currentColor}
+:where(body.p-roam) .carte-bien .tete{display:flex;flex-direction:column;gap:2px;padding:var(--esp-4) var(--esp-4) 0}
+:where(body.p-roam) .carte-bien .nom{font-size:var(--t-body);line-height:var(--lh-16);font-weight:700}
+:where(body.p-roam) .carte-bien .dit{display:block;padding:var(--air-i1) var(--esp-4) 0;font-size:var(--t-sm);line-height:var(--lh-14);color:var(--encre-discrete)}
+:where(body.p-roam) .carte-bien .avenir{display:block;padding:var(--air-i1) var(--esp-4) var(--esp-4);font-size:var(--t-note);line-height:var(--lh-12);font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--encre-discrete)}
+
+/* Un fait pratique se lit comme une definition : son sujet, puis ce qu'il dit.
+   Il se pose sur la surface CHAUDE — creme et encre pleine —, celle des blocs
+   doux ; la grille des numeros garde l'ilot neutre. Deux matieres, deux
+   fonctions : ce qu'on lit en preparant un voyage n'est pas ce qu'on compose
+   dans l'urgence. Les deux grilles se rangent en colonnes des que la page en
+   offre la place, sans qu'un nombre de colonnes soit ecrit. */
+:where(body.p-roam) .grille-infos{list-style:none;margin:0;padding:0;display:grid;gap:var(--esp-2);grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+:where(body.p-roam) .grille-infos li{padding:var(--esp-4);background:var(--creme);border-radius:var(--rayon-carte)}
+:where(body.p-roam) .info-quoi{display:block;font-size:var(--t-sm);line-height:var(--lh-14);font-weight:700;color:var(--encre)}
+:where(body.p-roam) .info-dit{display:block;margin-top:var(--air-i1);font-size:var(--t-sm);line-height:var(--lh-14);color:var(--encre)}
+:where(body.p-roam) .grille-numeros{list-style:none;margin:0;padding:0;display:grid;gap:var(--esp-2);grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+:where(body.p-roam) .grille-numeros li{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:var(--esp-3);min-height:var(--cible-min);padding:var(--esp-2) var(--esp-3);background:var(--gris-ilot);border-radius:var(--rayon-carte)}
+:where(body.p-roam) .num-quoi{font-size:var(--t-sm);line-height:var(--lh-14)}
+:where(body.p-roam) .num-tel{font-family:var(--font-chiffres);font-size:var(--t-body);font-weight:700}
+:where(body.p-roam) .num-repli{font-family:var(--font-chiffres);font-size:var(--t-sm);color:var(--encre-discrete)}
+:where(body.p-roam) .note-source{margin:var(--air-i2) 0 0;font-size:var(--t-note);line-height:var(--lh-12);color:var(--encre-discrete)}
+
+/* La commande du film vit DANS la scene du hero, pas sur un fond plein ecran :
+   sans taille propre elle tombe a 29 x 21. Elle reprend le plancher de 44. */
+
+/* ---- Titres de section et notes. Registre INTERFACE : h2 38, h3 28 sur le jeu
+   grand. La note de section emprunte le barreau 12, comme toute description. */
+:where(body.p-roam) .bloc-sejour + .bloc-sejour .titre-section{margin-top:var(--air-i6)}
+:where(body.p-roam) .titre-sous{margin:var(--air-i4) 0 var(--air-i2)}
+:where(body.p-roam) .vide-rubrique{margin:0;padding:var(--esp-4);background:var(--gris-ilot);border-radius:var(--rayon-carte);font-size:var(--t-sm);line-height:var(--lh-14);color:var(--encre-discrete)}
+
+/* ---- Le bien en vedette. La scene sort de la colonne et prend toute la
+   largeur ; le nom, la phrase et le geste restent dans la colonne. Les marges
+   negatives valent la demi-difference entre la fenetre et la colonne : elles
+   atteignent le bord sans employer 100vw, qui compte la barre de defilement et
+   ferait deborder la page a l'horizontale. */
+:where(body.p-roam) .vedette{margin:0 0 var(--air-i4)}
+/* La scene ne depasse pas la moitie haute de l'ecran, chrome compris : la
+   contrainte posee pour le film d'ouverture vaut pour l'element qui le porte.
+   La hauteur se prend sur la hauteur RENDUE du chrome, jamais sur la valeur
+   ecrite ; `dvh` passe avant `vh`, la barre du navigateur se retractant au
+   defilement. La scene est sa propre commande : l'appui bascule la lecture. */
+:where(body.p-roam) .vedette-scene{position:relative;overflow:hidden;background:var(--univers-e1);margin:0 calc(50% - 50vw) var(--air-i3);width:auto;height:calc(50vh - var(--entete-h-rendue, var(--entete-h)));height:calc(50dvh - var(--entete-h-rendue, var(--entete-h)))}
+:where(body.p-roam) .vedette-scene video{cursor:pointer}
+/* Sur un grand ecran, la scene cesse d'etre pleine largeur : elle prend la
+   moitie de la page et le propos prend l'autre. Une scene pleine largeur y
+   coute toute la hauteur visible pour une seule image, et repousse hors de
+   l'ecran ce qui suit ; en deux colonnes, le nom, le geste et la phrase
+   entrent avec elle. La scene tient la gauche : le regard part de l'image et
+   finit sur le texte, ou se trouve le geste. */
+@media(min-width:641px){
+  :where(body.p-roam) .vedette{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--esp-6);align-items:center}
+  :where(body.p-roam) .vedette-scene{grid-row:1 / span 2;margin:0;width:auto;height:auto;aspect-ratio:4/3}
+  :where(body.p-roam) .vedette-tete{align-self:end;margin:0 0 var(--air-i2)}
+  :where(body.p-roam) .vedette-dit{align-self:start;margin:0}
+}
+:where(body.p-roam) .vedette-scene video{width:100%;height:100%;object-fit:cover;display:block;transition:opacity var(--mvt-apparition) var(--courbe-sortie)}
+:where(body.p-roam) .vedette-scene video.fondu-affiche{opacity:0}
+:where(body.p-roam) .vedette-scene .commande-video{position:absolute;right:var(--esp-3);bottom:var(--esp-3);width:var(--cible-min);height:var(--cible-min);border-radius:50%;display:flex;align-items:center;justify-content:center;border:var(--limite-ep) solid var(--creme);background:rgba(var(--univers-e1-rgb),.72);color:var(--creme)}
+:where(body.p-roam) .vedette-scene .commande-video svg.i{width:20px;height:20px}
+/* Le nom du lieu et le geste tiennent la meme ligne, le geste au bord oppose
+   et centre sur l'axe horizontal du bloc qu'il accompagne. Sans cette regle le
+   geste tombe a la ligne suivante, au bord gauche, ou rien ne l'attend. */
+:where(body.p-roam) .vedette-dit{margin:0 0 var(--air-i3);font-size:var(--t-body);line-height:var(--lh-16);color:var(--encre);max-width:var(--col)}
+/* ---- Le geste flottant et la feuille du bas sont de la grammaire : seul ce
+   qui differe de la forme commune s'ecrit ici. Le filet remplace l'aplat plein
+   parce que la feuille de cet ecran s'ouvre au-dessus d'un contenu clair. */
+/* Le geste flottant est le bouton PLEIN de cet ecran : un engagement qui mene
+   ailleurs, un seul par page. Le contour y est reserve a ce qui agit sur
+   l'ecran courant. L'accueil garde le sien en papier : il se pose sur un film,
+   ou un aplat d'univers ne se detacherait d'aucune image. */
+:where(body.p-roam) .fab{background:var(--univers);color:var(--blanc);border:none;gap:var(--esp-2)}
+
+/* ---- La feuille d'exploration : trois pas, un seul ouvert. Un pas fermé se
+   replie sur une rangée qui montre ce qu'il porte ; le pas ouvert est une
+   carte claire posée sur le fond de la feuille. La valeur répondue passe de
+   l'encre discrète à l'encre pleine — la couleur ne porte aucun rang, c'est le
+   mot qui change, l'encre ne fait que suivre. */
+:where(body.p-roam) .explorer{display:grid;gap:var(--esp-2);margin-bottom:var(--air-i3)}
+:where(body.p-roam) .etape{background:var(--gris-ilot);border-radius:var(--rayon-carte);overflow:hidden}
+:where(body.p-roam) .etape.ouverte{background:var(--blanc);box-shadow:0 6px 18px rgba(var(--ombre-teinte),.14)}
+:where(body.p-roam) .etape-tete{display:flex;align-items:center;justify-content:space-between;gap:var(--esp-3);width:100%;min-height:var(--cible-min);padding:var(--esp-2) var(--esp-4);background:none;border:none;cursor:pointer;font-family:var(--font-corps);text-align:left}
+:where(body.p-roam) .etape-quoi{font-size:var(--t-sm);line-height:var(--lh-14);font-weight:700;color:var(--encre)}
+:where(body.p-roam) .etape-valeur{font-size:var(--t-sm);line-height:var(--lh-14);color:var(--encre-discrete);text-align:right}
+:where(body.p-roam) .etape-valeur.rempli{color:var(--encre);font-weight:700}
+:where(body.p-roam) .etape-titre{margin:0 0 var(--air-i2)}
+:where(body.p-roam) .etape-corps .rangee-dates{grid-template-columns:repeat(2,minmax(0,1fr))}
+
+/* ---- Le pas « Où » : les zones tiennent sur deux colonnes au lieu de défiler.
+   Repliées, elles s'atteignent toutes d'un seul appui, sans glissement — le
+   défilement latéral n'offre aucun chemin sans glisser vers ce qui sort du
+   cadre. Les quatre pastilles font alors 142 x 44 : la cible tient le plancher
+   sur toute la largeur de la demi-colonne. */
+:where(body.p-roam) .etape-corps .pastilles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));overflow-x:visible;margin-bottom:var(--air-i2)}
+:where(body.p-roam) .etape-corps .pastilles .cat{width:100%;text-align:center}
+
+/* ---- Les lieux du pas « Où » : deux colonnes, la vue d'abord. Le nom d'un
+   lieu casse en trois lignes au-delà de deux colonnes sur un écran de 360.
+   La carte retenue prend la bordure d'univers ET une pastille : la présence
+   d'une forme porte le choix, la couleur ne fait que la suivre. */
+:where(body.p-roam) .cartes-logement{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--esp-3)}
+:where(body.p-roam) .carte-logement{position:relative;padding:0;overflow:hidden}
+:where(body.p-roam) .carte-logement .vignette{display:block;aspect-ratio:4/3;background:var(--univers-e1);overflow:hidden}
+:where(body.p-roam) .carte-logement .vignette img{width:100%;height:100%;object-fit:cover;display:block}
+:where(body.p-roam) .carte-logement .tete-logement{display:block;padding:var(--esp-3) var(--esp-3) 0}
+:where(body.p-roam) .carte-logement .nom{font-size:var(--t-sm);line-height:var(--lh-14)}
+:where(body.p-roam) .carte-logement .infos{flex-direction:column;align-items:flex-start;gap:0;margin-top:2px;padding:0 var(--esp-3) var(--esp-3)}
+:where(body.p-roam) .carte-logement .marque{position:absolute;top:var(--esp-2);inset-inline-end:var(--esp-2);width:22px;height:22px;border-radius:50%;background:var(--univers);border:var(--limite-ep) solid var(--creme);display:none}
+:where(body.p-roam) .carte-logement .marque::after{content:"";position:absolute;inset:4px;border-radius:50%;background:var(--creme)}
+:where(body.p-roam) .carte-logement.choisi .marque{display:block}
+:where(body.p-roam) .carte-logement.choisi{background:var(--blanc);border-color:var(--univers)}
+:where(body.p-roam) .titre-feuille{margin:0 0 var(--air-i3)}
+/* ======================================================================== ECRAN — accueil ======================================================================== */ :where(body.p-accueil) svg.brand{fill:currentColor;stroke:none}
+/* L'image d'attente est portee par la feuille, pas par l'element video :
+   un element video ne prend qu'une seule affiche, et il en faut deux —
+   une par orientation. Le degrade reste dessous : il tient l'ecran tant
+   que l'image n'est pas arrivee, et quand aucune n'est servie. */
+:where(body.p-accueil) .video-fond{position:fixed;inset:0;z-index:0;overflow:hidden;background:linear-gradient(160deg,var(--vert-e3),var(--vert-e2) 55%,var(--vert-e1));background-image:url(media/hero.jpg),linear-gradient(160deg,var(--vert-e3),var(--vert-e2) 55%,var(--vert-e1));background-size:cover;background-position:center}
+@media(orientation:portrait){:where(body.p-accueil) .video-fond{background-image:url(media/hero-portrait.jpg),linear-gradient(160deg,var(--vert-e3),var(--vert-e2) 55%,var(--vert-e1))}}
+/* La video occupe le fond entier, recadree par le centre. Sous elle il n'y a
+   que l'image d'attente et son degrade, portes par la feuille : rien d'anime
+   ne se superpose au film. Quand la video ne se pose pas — connexion econome,
+   mouvement reduit, format refuse — l'image d'attente tient seule l'ecran.
+
+   Le fond se prend au doigt : la zone de contenu de cet ecran est vide et
+   couvre tout, elle laisse donc passer le geste, et ses propres enfants le
+   reprennent. Sans cela, aucun appui n'atteindrait jamais le film. */
+:where(body.p-accueil) .video-fond video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+:where(body.p-accueil) main{pointer-events:none}
+:where(body.p-accueil) main > *{pointer-events:auto}
+/* La commande d'arret est VISIBLE et permanente : une image qui part seule
+   doit pouvoir s'arreter sans chercher. Sa plaque porte l'encre d'univers a
+   forte opacite pour tenir sur n'importe quelle image dessous. */
+/* Le fond se met en pause d'un appui sur l'image elle-meme. Cette commande
+   est le meme geste rendu au clavier : elle vit hors de l'ecran et ne
+   revient qu'au foyer. La retirer laisserait la mise en pause au seul
+   pointeur, ce qu'aucun usager au clavier ne peut atteindre.
+   Elle se pose alors sur une image que rien ne contraint : aucune couleur
+   unique ne s'en detache a coup sur. Le disque plein et l'anneau clair
+   forment donc une paire — pour toute luminosite d'image, l'un des deux
+   passe le seuil de 3:1. Rendre le disque translucide ou retirer
+   l'anneau supprime cette garantie. */
+:where(body.p-accueil) .commande-video{position:fixed;left:-9999px;--pose-gauche:var(--bord);bottom:calc(90px + var(--safe-bas));z-index:7;width:var(--cible-min);height:var(--cible-min);border:2px solid var(--creme);border-radius:50%;background:var(--univers-e1);color:var(--creme);display:flex;align-items:center;justify-content:center;cursor:pointer}
+:where(body.p-accueil) .commande-video:focus-visible,
+:where(body.p-accueil) .commande-video:focus{left:var(--pose-gauche)}
+:where(body.p-accueil) .commande-video svg{width:20px;height:20px}
+@media(min-width:640px) and (min-height:600px){:where(body.p-accueil) .commande-video{bottom:calc(138px + var(--safe-bas))}}
+/* Les deux gestes du code. Ce sont des actions secondaires : un seul bouton
+   plein par ecran, et il est ailleurs. La cible tient le plancher de 44. */
+.gestes-code{display:flex;gap:var(--esp-2);justify-content:center;margin-top:var(--air-i3);flex-wrap:wrap}
+.geste-code{min-height:var(--cible-min);padding:0 var(--esp-4);border:2px solid var(--gris-ilot);border-radius:var(--rayon-pilule);background:transparent;color:var(--encre);font-family:var(--font-corps);font-size:var(--t-sm);font-weight:var(--w-bold);cursor:pointer}
+
+/* Le code et ses deux gestes sur UNE ligne : le trait des icones se lit a
+   80 % de la hauteur VISIBLE des signes du code, centre sur leur axe ; la
+   cible du bouton — invisible — tient le plancher de 44. Le retour
+   « Copié » s'ecrit a la place de l'icone, le temps d'un souffle.
+   0.715 = hauteur d'encre des capitales et chiffres de la fonte des codes,
+   mesuree sur ses metriques ; le trait des icones occupant ~80 % de leur
+   boite, une boite a cette hauteur rend un trait a 80 % des signes.
+   Changer la fonte des codes exige de remesurer ce rapport. */
+.ligne-code{display:flex;align-items:center;justify-content:center;gap:var(--esp-1);margin:var(--air-i2) 0}
+.ligne-code .code{margin:0;line-height:var(--lh-33)}
+.geste-code-ico{display:inline-flex;align-items:center;justify-content:center;min-width:var(--cible-min);min-height:var(--cible-min);padding:0;border:none;background:none;color:var(--encre-discrete);font-family:var(--font-corps);font-size:var(--t-note);font-weight:var(--w-bold);white-space:nowrap;cursor:pointer}
+.geste-code-ico svg.i{width:calc(var(--t-code) * .715);height:calc(var(--t-code) * .715)}
+
+:where(body.p-accueil) main{position:relative;z-index:2;min-height:100vh}
+
+:where(body.p-accueil) .selecteur-espaces{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--esp-2)}
+:where(body.p-accueil) .option-espace{background:var(--gris-ilot);border:2px solid transparent;border-radius:var(--rayon-module);padding:var(--esp-3) var(--esp-1) var(--esp-2);text-align:center;cursor:pointer;font-family:var(--font-corps)}
+:where(body.p-accueil) .option-espace .ico{display:block;height:34px;margin-bottom:var(--air-i1)}
+:where(body.p-accueil) .option-espace .ico svg{height:34px;width:100%}
+:where(body.p-accueil) .option-espace .nom{font-size:var(--t-sm);font-weight:700;color:var(--encre);line-height:1.25}
+:where(body.p-accueil) .option-espace.actif{border-color:var(--univers);background:var(--univers-selection)}
+:where(body.p-accueil) .rangee-chips{display:flex;gap:var(--esp-2);flex-wrap:wrap}
+:where(body.p-accueil) .rangee-choix{display:flex;gap:var(--esp-3);align-items:flex-start}
+:where(body.p-accueil) .rangee-choix .col-creneaux{flex:0 0 65%;min-width:0}
+:where(body.p-accueil) .rangee-choix .col-personnes{flex:1 1 auto;min-width:0}
+:where(body.p-accueil) .rangee-choix .stepper{gap:var(--esp-3);flex-wrap:wrap}
+
+@media(max-width:380px){:where(body.p-accueil) .rangee-choix{display:block}
+:where(body.p-accueil) .rangee-choix .col-creneaux{width:auto}
+:where(body.p-accueil) .rangee-choix .col-personnes{width:auto}
+
+}:where(body.p-accueil) .chip{background:var(--gris-ilot);border:2px solid transparent;border-radius:var(--rayon-pilule);padding:var(--esp-2) var(--esp-4);min-height:44px;font-family:var(--font-corps);font-size:var(--t-sm);color:var(--encre);cursor:pointer;line-height:1.25}
+:where(body.p-accueil) .chip .sous{display:block;font-size:var(--t-sm);color:var(--encre-discrete);text-align:center;font-family:var(--font-chiffres)}
+:where(body.p-accueil) .chip.actif{border-color:var(--univers);background:var(--univers-selection)}
+:where(body.p-accueil) .chip.indispo{opacity:.4;cursor:not-allowed}
+:where(body.p-accueil, body.p-roam) .stepper{gap:var(--esp-3)}
+:where(body.p-accueil, body.p-roam) .stepper button{border:1.5px solid var(--gris-service)}
+:where(body.p-accueil, body.p-roam) .stepper .max{font-size:var(--t-sm);font-weight:500;color:var(--encre-discrete);min-width:0;font-family:var(--font-chiffres)}
+:where(body.p-accueil) .art-compact .btn-plus::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px}
+:where(body.p-accueil) .art-compact .stepper-c button::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:34px;height:44px}
+:where(body.p-accueil) .champ-jour{margin-bottom:0}
+:where(body.p-accueil) .groupe-prenom{margin-bottom:var(--air-i3)}
+:where(body.p-accueil) .groupe-service{margin-top:var(--air-i3)}
+:where(body.p-accueil) .iti--container{z-index:10000}
+:where(body.p-accueil, body.p-roam) .message-ferme{background:var(--rouge-lavure);border:1.5px solid rgba(var(--rouge-e2-rgb),.25);border-radius:var(--rayon-champ);padding:var(--esp-2) var(--esp-3);font-size:var(--t-sm);color:var(--rouge-e2);margin-bottom:var(--air-i3);display:none}
+:where(body.p-accueil, body.p-roam) .message-ferme.visible{display:block}
+:where(body.p-accueil) .jauge{font-size:var(--t-sm);color:var(--encre-discrete);margin:0 2px 0}
+:where(body.p-accueil) .jauge strong{color:var(--encre)}
+/* L'ilot du total suit le motif de toute donnee chiffree du site — intitule et
+   description a gauche, montant a droite, sur une seule pastille. L'ilot
+   retablit trois paliers de l'echelle d'interface que la feuille basse rabaisse
+   pour son propre chrome. */
+:where(body.p-accueil) .recap{background:var(--blanc);border:1.5px solid var(--univers);border-radius:15px;padding:var(--esp-3) var(--esp-4);margin-bottom:var(--air-i3);display:none;grid-template-columns:1fr auto;align-items:end;column-gap:var(--esp-3);row-gap:var(--air-i1)}
+:where(body.p-accueil) .recap.visible{display:grid}
+:where(body.p-accueil) .recap .titre{grid-column:1;grid-row:2;align-self:end;font-size:var(--t-sm);line-height:var(--lh-14);font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--univers)}
+:where(body.p-accueil) .recap #recapTexte{grid-column:1 / -1;grid-row:1;font-size:var(--t-label);color:var(--encre-discrete);line-height:var(--lh-12)}
+:where(body.p-accueil) .recap .total{grid-column:2;grid-row:1 / span 2;justify-self:end;align-self:end;font-size:var(--t-h3);line-height:var(--lh-chiffre);font-weight:700;color:var(--encre);font-family:var(--font-chiffres);white-space:nowrap}
+/* L'ilot de commande n'a pas de description : ses deux elements tiennent la
+   meme ligne, et s'y alignent sur le meme axe plutot que sur leur bas. */
+:where(body.p-accueil) #recapCmd .titre,:where(body.p-accueil) #recapCmd .total{grid-row:1;align-self:center}
+:where(body.p-accueil, body.p-roam) .consent-lien{display:flex;justify-content:center;line-height:1}
+:where(body.p-accueil, body.p-roam) .consent-lien a{line-height:1;position:relative;display:inline-block}
+:where(body.p-accueil, body.p-roam) .consent-lien a::after{content:'';position:absolute;top:50%;left:0;right:0;transform:translateY(-50%);height:44px}
+:where(body.p-accueil, body.p-roam,body.p-carte) .erreur{display:none;margin:var(--air-i2) 2px 0}
+:where(body.p-accueil) #menuCompact{max-height:34vh;overflow-y:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;border-bottom:1px solid var(--gris-ilot)}
+:where(body.p-accueil) #menuCompact::-webkit-scrollbar{display:none}
+:where(body.p-accueil) #menuCompact .cat-compacte:first-child{margin-top:var(--air-i1)}
+:where(body.p-accueil) .cat-compacte{font-size:var(--t-label);font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--gris-500);margin:var(--air-i3) 2px var(--air-i2);padding-left:var(--esp-2);border-left:3px solid var(--vert-e3)}
+:where(body.p-accueil) .art-compact{display:flex;justify-content:space-between;align-items:center;gap:var(--esp-2);padding:var(--esp-2) var(--esp-1);border-bottom:1px solid var(--gris-ilot)}
+:where(body.p-accueil) .art-compact .n{font-size:var(--t-sm);font-weight:700}
+:where(body.p-accueil) .art-compact .p{font-size:var(--t-sm);color:var(--encre-discrete);font-family:var(--font-chiffres)}
+:where(body.p-accueil) .art-compact .btn-plus{width:32px;height:32px;border-radius:50%;border:none;background:var(--univers);color:var(--blanc);font-size:var(--t-body);cursor:pointer;flex-shrink:0;position:relative}
+:where(body.p-accueil) .art-compact .stepper-c{display:flex;align-items:center;gap:var(--esp-2);background:var(--univers-selection);border:2px solid var(--univers);border-radius:var(--rayon-pilule);padding:2px;flex-shrink:0}
+:where(body.p-accueil) .art-compact .stepper-c button{width:27px;height:27px;border-radius:50%;border:none;background:var(--blanc);color:var(--encre);font-size:var(--t-sm);cursor:pointer;position:relative}
+:where(body.p-accueil) .art-compact .stepper-c span{font-weight:700;font-size:var(--t-sm);min-width:14px;text-align:center}
+:where(body.p-accueil) .vide-menu{padding:var(--esp-3) var(--esp-1)}
+:where(body.p-accueil) .lien-detail{display:block;text-align:center;margin-top:var(--air-i3);padding:var(--esp-3) 0;font-size:var(--t-sm);color:var(--univers);font-weight:700;text-decoration:none}
+:where(body.p-accueil, body.p-roam) .confirmation{display:none;text-align:center;padding:var(--esp-3) var(--esp-2) var(--esp-2)}
+:where(body.p-accueil, body.p-roam) .confirmation.visible{display:block}
+:where(body.p-accueil, body.p-roam) .confirmation .soleil-ok{height:46px;margin:0 auto var(--air-i2);display:flex;justify-content:center}
+:where(body.p-accueil, body.p-roam) .confirmation .soleil-ok svg{height:46px;width:46px}
+:where(body.p-accueil, body.p-roam) .quoi-conf{font-size:var(--t-sm);font-weight:700;margin:0 0 var(--air-i2);line-height:1.45}
+:where(body.p-accueil, body.p-roam) .quoi-conf .jour{display:block;font-weight:500;color:var(--encre-discrete);font-size:var(--t-sm)}
+:where(body.p-accueil, body.p-roam) .montant-conf{font-family:var(--font-chiffres);font-weight:700;font-size:var(--t-body);color:var(--encre);margin:var(--air-i3) 0 0}
+/* A qui la facture s'adresse et le geste qui la declenche font UN bloc : le
+   depliant se pose a une demi-ligne du bouton, l'ensemble se detache d'une
+   ligne de ce qui precede. */
+:where(body.p-accueil, body.p-roam) .confirmation .apres{margin-top:var(--air-i2)}
+:where(body.p-accueil) .voile-doux{background:rgba(var(--ombre-teinte),.22)}
+:where(body.p-accueil) .drawer-pied{display:flex;align-items:center;justify-content:flex-end;margin-top:var(--air-i3);padding:0 var(--esp-1)}
+:where(body.p-accueil) .mini-btn{display:flex;align-items:center;gap:var(--esp-2);background:var(--gris-ilot);border:none;border-radius:var(--rayon-pilule);padding:var(--esp-2) var(--esp-3);font-family:var(--font-corps);font-weight:700;font-size:var(--t-sm);color:var(--encre);cursor:pointer}
+:where(body.p-accueil) .mini-btn svg{width:15px;height:15px}
+html:where(:has(body.p-accueil)){background:var(--vert-nuit)}
+:where(body.p-accueil) .marque-wrap{display:flex;align-items:center;gap:var(--esp-2)}
+/* ======================================================================== ECRAN — carte ======================================================================== */ :where(body.p-carte) .iti--container{z-index:10000}
+:where(body.p-carte) .badge-table{display:inline-flex;align-items:center;gap:var(--esp-1);background:var(--univers-selection);border:1.5px solid var(--univers);color:var(--univers);font-size:var(--t-label);font-weight:700;padding:var(--esp-1) var(--esp-3);border-radius:var(--rayon-pilule);margin-bottom:var(--air-i2)}
+:where(body.p-carte) .badge-table svg{width:14px;height:14px}
+:where(body.p-carte) .badge-emporter{display:inline-flex;align-items:center;gap:var(--esp-1);background:var(--gris-ilot);color:var(--encre-discrete);font-size:var(--t-label);font-weight:700;padding:var(--esp-1) var(--esp-3);border-radius:var(--rayon-pilule);margin-bottom:var(--air-i2)}
+:where(body.p-carte) .badge-emporter svg{width:14px;height:14px}
+/* Sans regle, un h1 tombe sur 2em, soit 32 px, qui n'est aucun barreau.
+   Ces ecrans prennent la meme que la carte et retrouver. */
+:where(body.p-carte) h1{margin:0 0 var(--air-i1)}
+:where(body.p-carte) .sous-titre{font-size:var(--t-sm);color:var(--encre-discrete);margin:0 0 var(--air-i3);line-height:1.5}
+/* LE RAIL ET SES DEUX COMMANDES — grammaire, employee par trois familles
+   d'ecrans : les categories de la carte, les rails d'offres, la bande des
+   metiers. Les commandes vivent DANS le rail, jamais dessous, et prennent le
+   plancher de cible. En bout de course elles sont REFUSEES, pas retirees :
+   elles restent perceptibles et focalisables sous le doigt qui les cherche.
+   Le rail ne se voit que si la bande deborde ; sinon les commandes se cachent
+   et le rail n'est plus qu'une boite. */
+/* La bande a defilement. Ses deux commandes se tiennent GROUPEES au-dessus
+   de la piste, jamais posees sur une carte : une commande posee sur le contenu
+   se confond avec lui selon l'image qui passe dessous, et l'appui manque sa
+   cible pour ouvrir la carte. Groupees, elles evitent aussi le trajet d'un
+   bord a l'autre quand on change de sens.
+   CE QU'ELLES EXIGENT : la piste garde son debordement, qui laisse voir le
+   bord de la carte suivante — c'est lui qui dit qu'il y en a d'autres.
+   CE QUI CASSE SI ON LE MODIFIE : rendre les commandes absolues les remet sur
+   les cartes. Leur rangee se replie d'elle-meme quand rien ne defile. */
+.rail{position:relative;display:grid;grid-template-columns:1fr auto auto;column-gap:var(--esp-2);row-gap:var(--esp-2);align-items:center}
+.rail > .categories,.rail > .rail-piste,.rail > .pastilles{grid-column:1 / -1;grid-row:2;min-width:0}
+/* LES COMMANDES SE POSENT PAR-DESSUS LES BORDS DE LA PISTE, jamais a cote.
+   Dans le flux elles prennent deux cibles et deux ecarts — 104 px sur une
+   colonne de 324, soit pres du tiers — et une carte de 240 n'y tient plus.
+   En surimpression, la piste garde toute la colonne. Ce qu'elles recouvrent
+   est le bord d'une carte, qui est deja coupe par le debordement.
+   Le disque clair et son anneau forment une paire : sur une vignette
+   quelconque, l'un des deux se detache toujours. */
+/* La commande garde sa cible au plancher tactile ; le cercle VISIBLE se
+   dessine a part, cinq pixels plus large que la fleche, et les deux sont
+   centres dans la meme boite — la concentricite tient par construction.
+   Rendre au bouton un fond ou un filet dessinerait un second cercle. */
+.rail-cmd[hidden]{display:none}
+.rail-cmd{grid-row:1;position:relative;width:var(--cible-min);height:var(--cible-min);border:none;background:none;color:var(--univers);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.rail-cmd::before{content:"";position:absolute;inset:0;margin:auto;width:25px;height:25px;box-sizing:border-box;border:var(--limite-ep) solid var(--limite-controle);border-radius:50%;background:var(--blanc);box-shadow:0 2px 10px rgba(var(--ombre-teinte),.22)}
+.rail-cmd.prec{grid-column:2}
+.rail-cmd.suiv{grid-column:3}
+/* L'oeil centre un chevron sur son ENCRE, pas sur sa boite : la pointe legere
+   fait paraitre le glyphe decale vers son dos. Chaque fleche avance donc vers
+   sa pointe, d'un pas qui lui est propre — les deux ne sont pas symetriques,
+   et les egaliser rouvrirait l'ecart. Recentrer sur la boite l'annulerait. */
+.rail-cmd svg.i{position:relative;width:20px;height:20px;translate:.5px .5px}
+.rail-cmd.prec svg.i{translate:-.5px .5px}
+.rail-cmd.suiv svg.i{translate:1px .5px}
+.rail-cmd.prec svg.i{transform:rotate(180deg)}
+.rail-cmd[aria-disabled="true"]{opacity:.4;cursor:default}
+.rail-piste{display:flex;gap:var(--esp-3);overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;list-style:none;margin:0;padding:0}
+.rail-piste::-webkit-scrollbar{display:none}
+/* Une bande de pastilles sans collage : meme grammaire que la bande de
+   categories, sans sa position collee. Une seule definition, deux emplois. */
+.pastilles{display:flex;gap:var(--esp-2);overflow-x:auto;overscroll-behavior-x:contain;-webkit-user-select:none;user-select:none;scrollbar-width:none;margin-bottom:var(--air-i3)}
+.pastilles::-webkit-scrollbar{display:none}
+.pastilles.glisse{cursor:grabbing}
+.categories{position:sticky;top:var(--entete-h-rendue);z-index:9;background:var(--voile-page);backdrop-filter:blur(8px);display:flex;gap:var(--esp-2);overflow-x:auto;overscroll-behavior-x:contain;-webkit-user-select:none;user-select:none;padding:var(--esp-2) 0 var(--esp-3);margin-bottom:var(--air-i1);scrollbar-width:none;cursor:grab}
+.categories.glisse{cursor:grabbing}
+.categories::-webkit-scrollbar{display:none}
+.cat{flex-shrink:0;background:var(--gris-ilot);border:2px solid var(--limite-controle);border-radius:var(--rayon-pilule);padding:var(--esp-2) var(--esp-4);min-height:44px;font-family:var(--font-corps);font-size:var(--t-sm);font-weight:700;color:var(--encre);cursor:pointer;white-space:nowrap}
+.cat.actif{background:var(--univers-selection);border-color:var(--univers)}
+/* Le saut vers une section la depose sous la pile collante, pas dessous. */
+:where(body.p-carte) .section-menu{scroll-margin-top:calc(var(--entete-h) + var(--cat-h) + var(--esp-3))}
+:where(body.p-carte) .section-menu h3{font-size:var(--t-h3);line-height:1.3;margin:var(--air-i6) 0 var(--air-i3);padding-left:var(--esp-3);border-left:3px solid var(--vert-e3);display:table}
+:where(body.p-carte) .section-menu:first-of-type h3{margin-top:var(--air-i2)}
+:where(body.p-carte) .article{background:var(--blanc);border-radius:var(--rayon-module);padding:var(--esp-3) var(--esp-4);margin-bottom:var(--air-i2);display:flex;justify-content:space-between;gap:var(--esp-3);align-items:center;box-shadow:var(--ombre-2)}
+:where(body.p-carte) .article .infos{flex:1}
+:where(body.p-carte) .article .nom{font-size:var(--t-sm);font-weight:700}
+:where(body.p-carte) .article .desc{font-size:var(--t-note);color:var(--vert-e3);margin-top:3px;line-height:1.4;font-family:var(--font-lecture);font-weight:300}
+:where(body.p-carte) .article .prix{font-size:var(--t-sm);font-weight:700;color:var(--encre);margin-top:var(--air-i1);font-family:var(--font-chiffres)}
+:where(body.p-carte) .article.rupture{box-shadow:none;background:transparent;border:1px dashed var(--gris-service)}
+:where(body.p-carte) .article.rupture .infos{opacity:.55}
+:where(body.p-carte) .etiquette-rupture{flex-shrink:0;background:var(--gris-ilot);color:var(--encre-discrete);font-size:var(--t-label);font-weight:700;padding:var(--esp-2) var(--esp-3);border-radius:var(--rayon-pilule);white-space:nowrap}
+:where(body.p-carte) .btn-plus{width:38px;height:38px;border-radius:50%;border:none;background:var(--univers);color:var(--blanc);font-size:var(--t-body);cursor:pointer;line-height:1;flex-shrink:0;display:flex;align-items:center;justify-content:center;position:relative}
+:where(body.p-carte) .btn-plus svg{width:17px;height:17px;stroke-width:2}
+:where(body.p-carte) .stepper{gap:var(--esp-3);background:var(--univers-selection);border:2px solid var(--univers);border-radius:var(--rayon-pilule);padding:3px;flex-shrink:0}
+:where(body.p-carte) .stepper button{border:none}
+:where(body.p-carte) .stepper button svg{stroke-width:2}
+:where(body.p-carte) .btn-plus::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:44px;height:44px}
+:where(body.p-carte) .vide-menu{padding:var(--esp-3) 2px}
+:where(body.p-carte) .barre-panier{position:fixed;z-index:16;bottom:calc(78px + var(--safe-bas));left:50%;transform:translateX(-50%);width:min(400px,calc(100% - 32px));background:var(--univers);color:var(--blanc);border:none;border-radius:var(--rayon-pilule);padding:var(--esp-4) var(--esp-6);font-family:var(--font-corps);font-weight:700;font-size:var(--t-sm);cursor:pointer;display:flex;justify-content:space-between;align-items:center;box-shadow:0 10px 30px rgba(var(--vert-e1-rgb),.35);transition:opacity var(--mvt-apparition) var(--courbe-etat),transform var(--mvt-apparition) var(--courbe-entree)}
+:where(body.p-carte) .barre-panier.cachee{opacity:0;pointer-events:none;transform:translateX(-50%) translateY(12px)}
+:where(body.p-carte) .barre-panier .badge{background:var(--blanc);color:var(--univers);border-radius:var(--rayon-pilule);padding:2px var(--esp-2);font-size:var(--t-label);margin-right:var(--esp-2)}
+
+@media(min-width:640px) and (min-height:600px){:where(body.p-carte) .barre-panier{bottom:calc(98px + var(--safe-bas))}
+
+}:where(body.p-carte) .voile{z-index:40}
+:where(body.p-carte) .panneau{position:fixed;z-index:41;left:50%;bottom:0;transform:translate(-50%,112%);width:min(450px,100%);max-height:90vh;overflow-y:auto;scrollbar-width:none;background:var(--blanc);border-radius:var(--rayon-carte) var(--rayon-carte) 0 0;padding:var(--esp-5) var(--esp-5) var(--esp-6);box-shadow:0 -12px 40px rgba(var(--ombre-teinte),.35);transition:transform var(--mvt-parcours) var(--courbe-entree)}
+:where(body.p-carte) .panneau::-webkit-scrollbar{display:none}
+:where(body.p-carte) .panneau.visible{transform:translate(-50%,0)}
+
+@media(min-width:500px){:where(body.p-carte) .panneau{bottom:22px;border-radius:var(--rayon-carte)}
+
+}:where(body.p-carte) .entete-panneau{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:var(--air-i3)}
+:where(body.p-carte) .entete-panneau h2{margin:0 0 3px}
+:where(body.p-carte) .entete-panneau p{font-size:var(--t-sm);color:var(--encre-discrete);margin:0}
+:where(body.p-carte) .ligne-panier{display:flex;justify-content:space-between;align-items:center;gap:var(--esp-2);padding:var(--esp-2) 0;border-bottom:1px solid var(--gris-ilot);font-size:var(--t-sm)}
+:where(body.p-carte) .ligne-panier .qte{color:var(--encre-discrete);font-size:var(--t-sm)}
+:where(body.p-carte) .ligne-panier .montant{font-weight:700;color:var(--encre);white-space:nowrap;font-family:var(--font-chiffres)}
+:where(body.p-carte) .total-ligne{display:flex;justify-content:space-between;padding:var(--esp-3) 0 var(--esp-4);font-size:var(--t-body);font-weight:700}
+:where(body.p-carte) .total-ligne .montant{color:var(--encre);font-size:var(--t-body);font-family:var(--font-chiffres)}
+:where(body.p-carte) .champ{margin-bottom:var(--air-i3)}
+:where(body.p-carte) .etiquette-paiement{display:block;font-size:var(--t-label);color:var(--encre-discrete);font-weight:700;margin-bottom:var(--air-i1)}
+:where(body.p-carte) .paiements{display:flex;gap:var(--esp-2);flex-wrap:wrap;margin-bottom:var(--air-i3)}
+:where(body.p-carte) .paiements .chip-p{background:var(--gris-ilot);border:2px solid transparent;border-radius:var(--rayon-pilule);padding:var(--esp-2) var(--esp-3);min-height:44px;font-family:var(--font-corps);font-size:var(--t-sm);font-weight:700;color:var(--encre);cursor:pointer}
+:where(body.p-carte) .paiements .chip-p.actif{background:var(--univers-selection);border-color:var(--univers)}
+:where(body.p-carte) .consent-lien{text-align:center}
+:where(body.p-carte) .consent-lien a{display:inline-flex;align-items:center;min-height:44px}
+:where(body.p-carte) .ecran-confirmation{display:none;text-align:center;padding:var(--esp-4) var(--esp-1) var(--esp-1)}
+:where(body.p-carte) .ecran-confirmation.visible{display:block}
+:where(body.p-carte) .ecran-confirmation .soleil-ok{height:46px;margin:0 auto var(--air-i2);display:flex;justify-content:center}
+:where(body.p-carte) .ecran-confirmation .soleil-ok svg{height:100%;width:auto}
+/* ======================================================================== ECRAN — retrouver ======================================================================== */ :where(body.p-retrouver) .iti--container{z-index:10000}
+:where(body.p-retrouver) h1{font-weight:var(--w-light);margin:var(--air-i2) 0 var(--air-i1)}
+:where(body.p-retrouver) .sous{color:var(--encre-discrete);margin:0 0 var(--air-i3);font-size:var(--t-sm);line-height:1.5}
+:where(body.p-retrouver) .bloc{background:var(--blanc);border-radius:var(--rayon-carte);padding:var(--esp-5);box-shadow:var(--ombre-2);margin-bottom:var(--air-i3)}
+:where(body.p-retrouver) .champ input{padding:var(--esp-3) var(--esp-3)}
+:where(body.p-retrouver) .champ + .champ{margin-top:var(--air-i3)}
+:where(body.p-retrouver) #code{font-family:var(--font-chiffres);font-weight:700;font-size:var(--t-h3);letter-spacing:.18em;text-transform:uppercase;text-align:center;text-indent:.18em}
+/* Le champ #code est centre : sa mention d'aide l'etait pas, et le bloc
+   se lisait de travers. On ne centre que sur cet ecran — .aide-champ est
+   partagee et reste alignee a gauche partout ailleurs. */
+:where(body.p-retrouver) #codeFormat{text-align:center}
+:where(body.p-retrouver) .principal{width:100%;min-height:52px;border:none;border-radius:var(--rayon-pilule);background:var(--univers);color:var(--blanc);font-family:var(--font-corps);font-weight:700;font-size:var(--t-body);cursor:pointer;margin-top:var(--air-i3)}
+:where(body.p-retrouver) .principal[disabled]{opacity:.35;cursor:not-allowed}
+:where(body.p-retrouver) .secondaire{width:100%;min-height:var(--cible-min);display:flex;align-items:center;justify-content:center;text-decoration:none;border:2px solid var(--gris-ilot);border-radius:var(--rayon-pilule);background:transparent;color:var(--encre-discrete);font-family:var(--font-corps);font-weight:700;font-size:var(--t-sm);cursor:pointer;margin-top:var(--air-i2)}
+:where(body.p-retrouver) .danger{border-color:var(--rouge-e2);color:var(--rouge-e2)}
+:where(body.p-retrouver) .danger.arme{background:var(--roots-rouge);color:var(--blanc);border-color:var(--rouge-e2)}
+:where(body.p-retrouver) .erreur{margin-top:var(--air-i2)}
+:where(body.p-retrouver) .fermer svg{width:20px;height:20px;stroke-width:2}
+:where(body.p-retrouver) .resu .quoi{font-size:var(--t-h3);font-weight:700;margin:0 0 2px}
+:where(body.p-retrouver) .resu .jour{color:var(--encre-discrete);font-size:var(--t-body);margin:0 0 var(--air-i3)}
+:where(body.p-retrouver) .ligne-info{display:flex;justify-content:space-between;gap:var(--esp-3);padding:var(--esp-2) 0;border-top:1px solid var(--gris-ilot);font-size:var(--t-body)}
+:where(body.p-retrouver) .ligne-info .v{font-weight:700}
+:where(body.p-retrouver) .ligne-info .v.chiffre{font-family:var(--font-chiffres)}
+:where(body.p-retrouver) .etat{display:inline-block;padding:var(--esp-1) var(--esp-3);border-radius:var(--rayon-pilule);font-size:var(--t-sm);font-weight:700}
+:where(body.p-retrouver) .etat.retenue{background:var(--roots-jaune);color:var(--roots-noir)}
+:where(body.p-retrouver) .etat.confirmee{background:var(--roots-vert);color:var(--blanc)}
+:where(body.p-retrouver) .etat.arrivee{background:var(--roots-vert);color:var(--blanc)}
+:where(body.p-retrouver) .etat.annulee{background:var(--roots-rouge);color:var(--blanc)}
+:where(body.p-retrouver) .etat.expiree{background:var(--roots-rouge);color:var(--blanc)}
+:where(body.p-retrouver) .etat.no_show{background:var(--roots-rouge);color:var(--blanc)}
+:where(body.p-retrouver) .etat.terminee{background:var(--gris-500);color:var(--blanc)}
+:where(body.p-retrouver) .archive{background:var(--creme);border-radius:var(--rayon-module);padding:var(--esp-3) var(--esp-3);font-size:var(--t-sm);color:var(--encre-discrete);margin-top:var(--air-i3);line-height:1.45}
+/* L'issue d'une annulation n'est ni une erreur ni un statut : c'est une reponse
+   qu'on recoit une fois. Le filet dit la famille, le mot dit le sens — jamais la
+   couleur seule (SC 1.4.1). */
+:where(body.p-retrouver) .issue{margin-top:var(--air-i3);padding:var(--esp-3);border-radius:var(--rayon-module);background:var(--creme);border-left:4px solid var(--vert-e3)}
+:where(body.p-retrouver) .issue .issue-titre{margin:0 0 var(--air-i1);font-size:var(--t-body);font-weight:700;color:var(--encre)}
+:where(body.p-retrouver) .issue .issue-dit{margin:0;font-size:var(--t-sm);line-height:1.5;color:var(--encre)}
+:where(body.p-retrouver) .leCode{font-family:var(--font-chiffres);font-weight:700;font-size:var(--t-code);letter-spacing:.13em;color:var(--univers)}
+:where(body.p-retrouver) .champ .iti{background:var(--gris-ilot)}
+:where(body.p-retrouver) .champ .iti:focus-within{background:var(--blanc)}
+/* ======================================================================== ECRAN — confidentialite ======================================================================== */ :where(body.p-confidentialite) .hors-ecran{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+/* Cet ecran porte le registre de lecture longue, et lui seul sur la surface
+   publique : la page se lit d'un bout a l'autre. La mesure se compte en
+   signes et non en pixels — la colonne est exprimee dans la police de lecture,
+   ce qui la tient entre 65 et 75 signes des que l'ecran le permet. */
+:where(body.p-confidentialite) .lecture{width:var(--site-w);max-width:54ch;margin:0 auto;padding:var(--esp-5) 0 0;font-family:var(--font-lecture)}
+:where(body.p-confidentialite) .lecture h1{font-family:var(--font-lecture);font-weight:var(--w-ll-h1);margin:0 0 var(--ll-rythme);color:var(--encre-ll-h1);text-wrap:balance}
+:where(body.p-confidentialite) .lecture .chapo{font-family:var(--font-chiffres);font-style:var(--style-ll-chapo);font-weight:var(--w-ll-chapo);font-size:var(--t-ll-chapo);line-height:var(--lh-26);color:var(--encre-ll-chapo);margin:0 0 var(--air-lie);text-wrap:balance}
+:where(body.p-confidentialite) .lecture .version{font-family:var(--font-corps);font-weight:700;text-transform:uppercase;letter-spacing:.07em;line-height:1.45;color:var(--encre-discrete);margin:0 0 var(--air-rompu-h2)}
+:where(body.p-confidentialite) .lecture h2{font-family:var(--font-corps);font-weight:var(--w-ll-h2);margin:calc(var(--air-separe) * 2) 0 var(--air-lie);color:var(--encre-ll-h2);text-wrap:balance}
+/* h6 accentue est du texte courant : 16 px en graisse 300 exige 4,5:1. L'accent
+   ne tient ce rapport que sur blanc et blanc casse. Sur creme ou sur aplat gris
+   il tombe sous le seuil. */
+:where(body.p-confidentialite) .lecture h3{font-family:var(--font-corps);font-weight:var(--w-ll-h3);margin:calc(var(--air-separe) * 2) 0 var(--air-lie);color:var(--encre-ll-h3);text-wrap:balance}
+:where(body.p-confidentialite) .lecture h4{font-family:var(--font-corps);font-weight:var(--w-ll-h4);margin:var(--air-separe) 0 var(--air-lie);color:var(--encre-ll-h4);text-wrap:balance}
+:where(body.p-confidentialite) .lecture h5{font-family:var(--font-corps);font-weight:var(--w-ll-h5);text-transform:var(--casse-ll-h5);letter-spacing:var(--lettrage-ll-h5);margin:var(--air-separe) 0 var(--air-lie);color:var(--encre-ll-h5)}
+:where(body.p-confidentialite) .lecture h6{font-family:var(--font-corps);font-weight:var(--w-ll-h6);font-style:var(--style-ll-h6);margin:var(--air-separe) 0 var(--air-lie);color:var(--encre-ll-h6)}
+:where(body.p-confidentialite) .lecture p{font-family:var(--font-lecture);font-weight:300;line-height:var(--lh-prose);color:var(--encre);margin:0 0 var(--air-separe);text-wrap:pretty}
+:where(body.p-confidentialite) .lecture ul{margin:0 0 var(--air-separe);padding-left:var(--esp-5)}
+:where(body.p-confidentialite) .lecture li{font-family:var(--font-lecture);font-weight:300;line-height:var(--lh-prose);color:var(--encre);margin:0 0 var(--air-lie);text-wrap:pretty}
+:where(body.p-confidentialite) .lecture li:last-child{margin-bottom:0}
+:where(body.p-confidentialite) .lecture strong{font-weight:700}
+:where(body.p-confidentialite) .lecture a{color:var(--univers);text-underline-offset:3px}
+:where(body.p-confidentialite) .texte[hidden]{display:none}
+
+/* Seuls l'amplitude des titres et le retrait de tete suivent la place. */
+@media(min-width:1024px){:where(body.p-confidentialite) .lecture{padding-top:var(--esp-8)}
+:where(body.p-confidentialite) .lecture h1{line-height:1.05}
+
+}/* ═══ Utilitaire — champ retire de la vue sans quitter le flux ═══════════════ Sert la garde des ecritures publiques. Ni display:none ni hidden : l'element doit rester un champ ordinaire pour qui lit le document, et disparaitre pour qui le regarde. aria-hidden et tabindex=-1 le tiennent hors du clavier et des technologies d'assistance. */ .hors-champ{
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   §8 — SURVOL. En dernier, et c'est volontaire : ces selecteurs ne pesent
+   rien, seul l'ordre les fait gagner sur les regles d'ecran qui posent les
+   memes aplats. Enferme derriere « l'appareil a un vrai curseur » : sans
+   cette porte, le tactile herite du survol et le garde colle apres l'appui.
+   La regle : l'aplat monte d'un cran dans la famille, rien ne bouge, rien
+   ne grossit.
+   ========================================================================== */
+@media (hover:hover){
+  :where(.bouton-confirmer,.principal,.barre-panier,.btn-plus,.saut-contenu):hover{background:var(--univers-e3)}
+  :where(.cat):hover{background:var(--univers-selection)}
+  :where(.cat.actif):hover{border-color:var(--univers)}
+  :where(a):hover{text-decoration-thickness:2px}
+}
+
+/* ======================================================================== ECRAN — paiement (dialecte A) ========================================================================
+   L'issue d'un paiement n'est PAS un statut. Un statut se consulte ; une issue
+   se recoit, une fois, par quelqu'un d'inquiet. D'ou un composant a part.
+   La couleur ne porte jamais le sens seule (SC 1.4.1) : elle est sur un filet,
+   le sens est dans le titre et la phrase. */
+:where(body.p-paiement, body.p-payer) .scene{width:var(--ecran-bande);max-width:var(--ecran-colonne);margin:0 auto;padding:var(--esp-8) 0}
+:where(body.p-paiement, body.p-payer) .panneau{position:relative;overflow:hidden;background:var(--blanc);border-radius:var(--rayon-carte);padding:var(--esp-8) var(--esp-6) var(--esp-6);box-shadow:var(--ombre-posee);text-align:center}
+:where(body.p-paiement) .panneau::before{content:"";position:absolute;top:0;left:0;right:0;height:var(--esp-1);background:var(--gris-500)}
+:where(body.p-paiement) .panneau[data-issue="payee"]::before{background:var(--vert-e2)}
+:where(body.p-paiement) .panneau[data-issue="refusee"]::before{background:var(--rouge-e2)}
+/* Les trois filets voisins prennent l'echelon 2 de leur famille. Celui-ci
+   prend le jeton de STATUT et non l'echelon : la rampe jaune de
+   roots-tokens.css est fausse sur ses cinq echelons : --jaune-e2 y vaut un
+   brun. --statut-en-attente vaut #FFB000 avant comme apres la correction,
+   et « sans reponse » EST une attente : c'est ici le seul choix qui ne
+   puisse pas etre faux.
+   CE FILET EST EXEMPT DU SEUIL 3:1. Mesure : 1,83:1 contre le panneau blanc.
+   Aucun jaune de la palette officielle n'atteint 3:1 sur un papier clair —
+   la famille jaune est une rampe claire, son echelon 1 est a L*64,1. L'issue
+   est nommee en toutes lettres sous le filet, qui ne porte donc aucune
+   information a lui seul. */
+:where(body.p-paiement) .panneau[data-issue="sans-reponse"]::before{background:var(--statut-en-attente)}
+:where(body.p-paiement) .panneau[data-issue="regularisation"]::before{background:var(--terre-e2)}
+:where(body.p-paiement, body.p-payer) .panneau .titre-issue{font-size:var(--t-h2);line-height:var(--lh-28);font-weight:var(--w-a-h2);color:var(--encre);margin:0 0 var(--air-i3)}
+:where(body.p-paiement, body.p-payer) .panneau .dit{font-size:var(--t-body);line-height:var(--lh-16);font-weight:var(--w-a-corps);color:var(--encre);margin:0 auto var(--air-i4);max-width:34ch}
+:where(body.p-paiement, body.p-payer) .panneau .dit strong{font-weight:var(--w-a-h2)}
+/* Le code s'affiche PENDANT l'attente : c'est lui qui rend la fermeture de
+   l'onglet sans consequence. */
+:where(body.p-paiement) .bloc-code{background:var(--gris-aplat);border-radius:var(--rayon-module);padding:var(--esp-4) var(--esp-3);margin:0 0 var(--air-i4)}
+:where(body.p-paiement) .bloc-code .etiquette{display:block;margin-bottom:var(--air-i1)}
+:where(body.p-paiement) .bloc-code .code{display:block;font-family:var(--font-chiffres);font-size:var(--t-code);line-height:var(--lh-38);font-weight:var(--w-bold);letter-spacing:.13em;color:var(--encre)}
+/* Jauge indeterminee. Elle ne compte pas : un chiffre qui monte fabrique
+   l'angoisse qu'on cherche a eviter. Coupee sous prefers-reduced-motion — et le
+   texte suffit alors, c'est l'alternative statique exigee (DS 5.3). */
+:where(body.p-paiement) .jauge{height:var(--esp-1);border-radius:var(--rayon-pilule);background:var(--gris-aplat);overflow:hidden;margin:0 0 var(--air-i4)}
+:where(body.p-paiement) .jauge i{display:block;height:100%;width:38%;border-radius:var(--rayon-pilule);background:var(--vert-e2);animation:jauge 1.4s var(--courbe-a) infinite}
+@keyframes jauge{0%{transform:translateX(-100%)}100%{transform:translateX(300%)}}
+@media (prefers-reduced-motion: reduce){:where(body.p-paiement) .jauge i{animation:none;width:100%;opacity:.45}}
+:where(body.p-paiement) .avert{background:var(--creme);border-radius:var(--rayon-module);padding:var(--esp-4);margin:0 0 var(--air-i4);font-size:var(--t-sm);line-height:var(--lh-14);color:var(--encre);text-align:center}
+/* Le choix du canal de remise. Deux voix y tiennent : l'ecran propose, la
+   notice engage. La notice s'aligne a gauche parce qu'elle se lit en phrases et
+   non en libelle, et se demarque ainsi de la parole du produit. Le bouton porte
+   le geste qui consent : il est cercle et non plein, la place du bouton plein
+   revenant a l'action principale de l'ecran (DS 3.1). */
+:where(body.p-paiement) .canal{background:var(--gris-aplat);border-radius:var(--rayon-module);padding:var(--esp-4);margin:0 0 var(--air-i4);text-align:center}
+:where(body.p-paiement) .canal .canal-dit{margin:0;font-size:var(--t-sm);line-height:var(--lh-14);color:var(--encre)}
+:where(body.p-paiement) .canal .adresse{display:block;margin-top:var(--air-i1);font-weight:var(--w-bold);overflow-wrap:anywhere}
+:where(body.p-paiement) .canal .consent{text-align:left;margin:var(--air-i3) 0 0;color:var(--encre)}
+:where(body.p-paiement) .canal-bouton{width:100%;min-height:var(--cible-min);margin-top:var(--air-i3);border:2px solid var(--vert-e2);border-radius:var(--rayon-pilule);background:var(--blanc);color:var(--vert-e2);font-family:var(--font-corps);font-weight:var(--w-a-h2);font-size:var(--t-body);line-height:var(--lh-16);padding:var(--esp-3) var(--esp-4);cursor:pointer}
+:where(body.p-paiement) .canal-bouton[disabled]{opacity:.35;cursor:not-allowed}
+:where(body.p-paiement) .canal-issue{margin:var(--air-i3) 0 0;font-size:var(--t-sm);line-height:var(--lh-14);color:var(--encre)}
+/* Un seul bouton plein par ecran (DS 3.1) ; le secondaire est un lien. */
+:where(body.p-paiement, body.p-payer) .principal{width:100%;min-height:var(--cible-min);border:none;border-radius:var(--rayon-pilule);background:var(--vert-e2);color:var(--encre-bouton);font-family:var(--font-corps);font-weight:var(--w-a-h2);font-size:var(--t-body);line-height:var(--lh-16);padding:var(--esp-3) var(--esp-6);cursor:pointer}
+:where(body.p-paiement, body.p-payer) .principal[disabled]{opacity:.35;cursor:not-allowed}
+:where(body.p-paiement, body.p-payer) .lien-second{display:inline-block;margin-top:var(--air-i3);color:var(--encre);font-size:var(--t-sm);line-height:var(--lh-14);font-weight:var(--w-bold)}
+
+/* ======================================================================== ECRAN — encaissement isole (dialecte A) ========================================================================
+   Meme famille que l'ecran d'issue : il en reprend les regles au lieu d'en
+   recopier. Ce qui lui est propre tient en trois choses — il ne porte aucune
+   navigation, parce qu'on n'invite pas a quitter une page pendant qu'on paie ;
+   le montant y est l'information centrale et non une mention ; et son chrome
+   ne charge aucun script, ce qui est la raison d'etre de cet ecran. */
+:where(body.p-payer){background:var(--blanc-casse)}
+:where(body.p-payer) .chrome-haut{position:static}
+/* Le bandeau garde les TROIS colonnes du chrome commun. Une grille a deux
+   colonnes rejette le troisieme bloc sur une seconde rangee : la barre double
+   de hauteur et le bouton de langue passe sous le logo. Ce qui distingue cet
+   ecran est l'absence de menu, pas une autre disposition. */
+:where(body.p-payer) .panneau{text-align:center}
+:where(body.p-payer) .panneau::before{background:var(--vert-e2)}
+:where(body.p-payer) .montant{display:block;font-family:var(--font-chiffres);font-size:var(--t-h1);line-height:var(--lh-38);font-weight:var(--w-bold);color:var(--encre);font-variant-numeric:tabular-nums}
+:where(body.p-payer) #ligneMontant{margin:0 auto var(--air-i4)}
+:where(body.p-payer) .lien-second{display:inline-flex;align-items:center;min-height:var(--cible-min);color:var(--encre)}
+
+/* La cible de 44 px vaut sur tous les ecrans. Ces deux lignes la portent
+   explicitement : sans elle, le lien second et le lien de consentement de cet
+   ecran tombent sous le plancher. */
+:where(body.p-paiement) .lien-second{display:inline-flex;align-items:center;min-height:var(--cible-min);color:var(--encre)}
+:where(body.p-paiement) a.consent-lien{display:flex;justify-content:center;align-items:center;min-height:var(--cible-min)}
+
+/* ======================================================================== ECRAN — facture (dialecte A) ========================================================================
+   La piece est rendue telle que le socle la porte : blocs dans l'ordre,
+   elements de securite compris, aucun montant calcule ici. Les prix sont en
+   encre neutre, jamais en rouge. A l'impression, seule la piece sort : le
+   chrome et les gestes restent a l'ecran. */
+:where(body.p-facture) .scene{width:var(--ecran-bande);max-width:var(--ecran-colonne);margin:0 auto;padding:var(--esp-8) 0}
+:where(body.p-facture) .panneau{position:relative;overflow:hidden;background:var(--blanc);border-radius:var(--rayon-carte);padding:var(--esp-8) var(--esp-6) var(--esp-6);box-shadow:var(--ombre-posee);text-align:center}
+:where(body.p-facture) .panneau .titre-issue{font-size:var(--t-h2);line-height:var(--lh-28);font-weight:var(--w-a-h2);color:var(--encre);margin:0 0 var(--air-i3)}
+:where(body.p-facture) .panneau .dit{font-size:var(--t-body);line-height:var(--lh-16);font-weight:var(--w-a-corps);color:var(--encre);margin:0 auto var(--air-i4);max-width:34ch}
+:where(body.p-facture) .essai{background:var(--creme);border-radius:var(--rayon-module);padding:var(--esp-4);margin:0 0 var(--air-i4);font-size:var(--t-sm);line-height:var(--lh-14);color:var(--encre)}
+/* La piece elle-meme suit le modele des factures normalisees du SFE en
+   ligne : typographie neutre du document, boites filetees, en-tetes de tableau
+   sur aplat bleu pale, nombres a point de milliers. C'est le genre « piece
+   fiscale », distinct du dialecte de l'ecran qui l'entoure. */
+/* L'ACCENT DE LA PIECE — trois valeurs, et rien d'autre a changer.
+   L'aplat est une lavure du vert Roots sur blanc (environ un dixieme) ;
+   c'est une derivation de la rampe, pas un echelon. L'encre et le filet,
+   eux, sont des jetons. L'univers qui emet la piece redefinit ces trois
+   valeurs et rien de plus. */
+:where(body.p-facture) .piece{--accent-aplat:var(--vert-lavure);--accent-encre:var(--encre);--accent-filet:var(--vert-e3);text-align:left;margin:0 0 var(--air-i4);font-family:Arial,Helvetica,sans-serif;font-size:var(--t-piece);line-height:1.35;color:var(--noir);background:var(--blanc);padding:var(--esp-4) var(--esp-2)}
+:where(body.p-facture) .piece p{margin:0}
+:where(body.p-facture) .entete-doc{display:flex;justify-content:space-between;gap:var(--esp-4);margin:0 0 var(--air-i4)}
+:where(body.p-facture) .v-nom{font-weight:700;letter-spacing:.04em}
+:where(body.p-facture) .f-id{text-align:right}
+:where(body.p-facture) .f-type{font-weight:700}
+:where(body.p-facture) .boites-doc{display:flex;flex-wrap:wrap;gap:var(--esp-4);justify-content:space-between;margin:0 0 var(--air-i4)}
+:where(body.p-facture) .boite-doc{border-collapse:collapse;min-width:min(260px,100%)}
+:where(body.p-facture) .boite-doc td{border:1px solid var(--noir);padding:3px var(--esp-2);vertical-align:top}
+:where(body.p-facture) .boite-doc td.lib{font-style:italic;color:var(--encre-discrete);width:5.5em}
+:where(body.p-facture) .boite-client caption{background:var(--accent-aplat);color:var(--accent-encre);border:1px solid var(--noir);border-bottom:none;font-weight:700;text-align:left;padding:3px var(--esp-2)}
+:where(body.p-facture) .montants-doc{margin:0 0 var(--air-i3)}
+:where(body.p-facture) .montants-doc .net{font-weight:700}
+:where(body.p-facture) .table-doc{width:100%;border-collapse:collapse;margin:0 0 var(--air-i3)}
+:where(body.p-facture) .table-doc th{background:var(--accent-aplat);color:var(--accent-encre);border:1px solid var(--accent-filet);font-weight:700;text-align:right;padding:3px var(--esp-2)}
+:where(body.p-facture) .table-doc td{border:1px solid var(--accent-filet);text-align:right;padding:3px var(--esp-2)}
+:where(body.p-facture) .table-doc th.gauche, :where(body.p-facture) .table-doc td.gauche{text-align:left}
+:where(body.p-facture) .sep-doc{text-align:center;margin:var(--air-i3) 0 var(--air-i2);font-style:italic}
+:where(body.p-facture) .vent-doc{display:flex;flex-wrap:wrap;align-items:flex-start;gap:var(--esp-4)}
+:where(body.p-facture) .vent-doc .t-vent{flex:1 1 260px;margin:0}
+:where(body.p-facture) .total-doc{border:1px solid var(--noir);padding:var(--esp-1) var(--esp-3);font-weight:700;letter-spacing:.08em;white-space:nowrap}
+:where(body.p-facture) .securite-doc{display:flex;flex-wrap:wrap;gap:var(--esp-4);align-items:center;border:1px solid var(--accent-filet);padding:var(--esp-3) var(--esp-4);margin:var(--air-i2) 0 0}
+:where(body.p-facture) .qr-doc{width:112px;height:112px;image-rendering:pixelated}
+:where(body.p-facture) .sec-donnees{flex:1 1 220px;min-width:0}
+:where(body.p-facture) .sec-lib{text-align:center}
+:where(body.p-facture) .sec-code{text-align:center;font-weight:700;margin:0 0 var(--air-i2);overflow-wrap:anywhere}
+:where(body.p-facture) .sec-ligne{display:flex;justify-content:space-between;gap:var(--esp-3)}
+:where(body.p-facture) .sec-ligne b{overflow-wrap:anywhere;text-align:right}
+:where(body.p-facture) .lien-verif{display:inline-flex;align-items:center;min-height:var(--cible-min);margin-top:var(--air-i1);color:var(--encre);font-size:var(--t-sm);line-height:var(--lh-14);font-weight:var(--w-bold)}
+:where(body.p-facture) .erreur{margin:0 0 var(--air-i3)}
+:where(body.p-facture) a.consent-lien{display:flex;justify-content:center;align-items:center;min-height:var(--cible-min)}
+:where(body.p-facture) .principal{width:100%;min-height:var(--cible-min);border:none;border-radius:var(--rayon-pilule);background:var(--vert-e2);color:var(--encre-bouton);font-family:var(--font-corps);font-weight:var(--w-a-h2);font-size:var(--t-body);line-height:var(--lh-16);padding:var(--esp-3) var(--esp-6);cursor:pointer}
+:where(body.p-facture) .principal[disabled]{opacity:.35;cursor:not-allowed}
+:where(body.p-facture) .lien-second{display:inline-flex;align-items:center;min-height:var(--cible-min);margin-top:var(--air-i2);color:var(--encre);font-size:var(--t-sm);line-height:var(--lh-14);font-weight:var(--w-bold)}
+@media print{
+  :where(body.p-facture) .chrome-haut, :where(body.p-facture) .chrome-bas,
+  :where(body.p-facture) .menu-pop, :where(body.p-facture) .voile,
+  :where(body.p-facture) .toast, :where(body.p-facture) .saut-contenu,
+  :where(body.p-facture) .apres, :where(body.p-facture) .dit,
+  :where(body.p-facture) .erreur, :where(body.p-facture) .titre-issue,
+  :where(body.p-facture) .lien-verif{display:none}
+  :where(body.p-facture) .scene{max-width:none;width:100%;padding:0}
+  :where(body.p-facture) .panneau{box-shadow:none;border-radius:0;padding:0}
+}
+
+/* ======================================================================== LA BANDE — un seul mecanisme de largeur, trois tailles d'ecran ========================================================================
+   Ce qui manquait, et dont l'absence forcait a improviser une largeur par
+   section : rien ne disait ou une section commence ni ou elle finit. Le chrome
+   se posait sur une largeur, le contenu sur une autre, et cela se voyait des
+   qu'un ecran depassait le telephone.
+
+   DEUX FAMILLES, parce que deux contraintes differentes :
+   · .bande — ce qui se LIT. Sa largeur est gouvernee par la mesure : plafond 80
+     signes, cible 66. Elle ne s'elargit donc pas avec l'ecran ; elle se centre.
+   · .bande-console — ce qui s'OPERE. Aucune prose, donc aucune mesure a tenir :
+     elle prend la place que l'ecran offre, par paliers.
+
+   TROIS PALIERS, et ce sont ceux de l'echelle : ruptures a 640 et 1024. Les
+   memes que les trois jeux de tailles — un seul systeme de paliers, pas deux.
+   Les deux largeurs de console sont des valeurs de mise en page, donc du front ;
+   la mesure et les paliers, eux, viennent de la marque. */
+:root{--bande-moyenne:720px; --bande-large:960px}
+.bande, .bande-console{width:var(--ecran-bande);margin-inline:auto}
+.bande{max-width:var(--ecran-colonne)}
+.bande-console{max-width:var(--ecran-colonne)}
+@media(min-width:641px){.bande-console{max-width:var(--bande-moyenne)}}
+@media(min-width:1025px){.bande-console{max-width:var(--bande-large)}}
+/* Un aplat qui traverse l'ecran garde son CONTENU dans la bande : c'est ce qui
+   aligne le chrome sur le contenu au lieu de les laisser diverger. */
+.pleine-largeur{width:100%}
+.pleine-largeur > .bande, .pleine-largeur > .bande-console{width:var(--ecran-bande)}
+
+/* ======================================================================== ECRAN — caisse (dialecte B) ========================================================================
+   Console interne. Tuiles plates, contraste franc, aucune ombre.
+   LES SIX INTERDITS, et ils ne se negocient pas :
+   1 aucun champ de montant a encaisser — le serveur relit
+   2 aucun champ de total dans un comptage — douze quantites, total en lecture
+   3 aucun cumul de la journee visible a l'operateur
+   4 aucun calcul de monnaie cote client
+   5 une cloture ne se bloque jamais
+   6 aucun ecran ne reecrit un comptage */
+:where(body.p-caisse){background:var(--blanc-casse);color:var(--encre);font-family:var(--font-corps)}
+:where(body.p-caisse) .console{padding:var(--esp-4) 0 var(--esp-8)}
+/* L'aplat traverse l'ecran, son contenu reste dans la bande : c'est ce qui met
+   le nom du poste, l'etat du tiroir et le comptage sur le meme axe. */
+:where(body.p-caisse) .barre-poste{background:var(--noir);color:var(--blanc)}
+:where(body.p-caisse) .barre-poste > .bande-console{display:flex;align-items:center;gap:var(--esp-3);padding:var(--esp-3) 0}
+:where(body.p-caisse) .bandeau-etat{background:var(--blanc-casse);border-bottom:var(--limite-ep-b) solid var(--gris-filet)}
+:where(body.p-caisse) .bandeau-etat > .bande-console{display:flex;align-items:center;gap:var(--esp-3);padding:var(--esp-3) 0}
+:where(body.p-caisse) .barre-poste .poste{font-size:var(--t-16);font-weight:var(--w-bold);letter-spacing:.06em;text-transform:uppercase}
+:where(body.p-caisse) h1{font-weight:var(--w-bold);margin:var(--air-i4) 0 var(--air-i3)}
+:where(body.p-caisse) h2{font-weight:var(--w-bold);margin:var(--air-i4) 0 var(--air-i3)}
+:where(body.p-caisse) .aide{font-size:var(--t-14);line-height:var(--lh-14);color:var(--gris-500);margin:0 0 var(--air-i3)}
+/* Le comptage : douze lignes, une par coupure. Aucun champ de total — il se lit,
+   calcule par la meme fonction que celle qui l'enregistrera. */
+/* Douze lignes sur un telephone, deux colonnes sur une tablette, trois sur un
+   poste : la grille suit les memes ruptures que l'echelle, 640 et 1024. */
+:where(body.p-caisse) .grille-coupures{display:grid;grid-template-columns:1fr;gap:var(--tuile-gouttiere)}
+@media(min-width:641px){:where(body.p-caisse) .grille-coupures{grid-template-columns:repeat(2,1fr);gap:var(--esp-3)}}
+@media(min-width:1025px){:where(body.p-caisse) .grille-coupures{grid-template-columns:repeat(3,1fr)}}
+/* La colonne de la valeur est FIXE : « 10 000 » ne doit pas decaler sa ligne
+   par rapport aux onze autres. Elle se derive du plus long libelle — six
+   chiffres tabulaires plus la separation — et non d'un minimum a l'estime. */
+:where(body.p-caisse) .ligne-coupure{display:grid;grid-template-columns:7ch 1fr;align-items:center;gap:var(--esp-3)}
+:where(body.p-caisse) .ligne-coupure .valeur{font-family:var(--font-chiffres);font-size:var(--t-h3);font-variant-numeric:tabular-nums;text-align:right}
+:where(body.p-caisse) .total-lecture{display:flex;align-items:baseline;justify-content:space-between;gap:var(--esp-3);margin-top:var(--air-i4);padding:var(--esp-4);background:var(--gris-aplat)}
+:where(body.p-caisse) .total-lecture .somme{font-family:var(--font-chiffres);font-size:var(--t-h1);line-height:var(--lh-38);font-variant-numeric:tabular-nums;font-weight:var(--w-bold)}
+:where(body.p-caisse) .du{padding:var(--esp-6) var(--esp-4);background:var(--noir);color:var(--blanc);text-align:center}
+:where(body.p-caisse) .du .somme{display:block;font-family:var(--font-chiffres);font-size:var(--t-display);line-height:var(--lh-68);font-variant-numeric:tabular-nums;font-weight:var(--w-bold)}
+/* La monnaie a rendre s'affiche COUPURE PAR COUPURE : c'est le geste qu'on
+   retire a l'operateur, et la premiere cause d'ecart honnete. */
+:where(body.p-caisse) .monnaie{margin-top:var(--air-i3);padding:var(--esp-4);background:var(--terre-e2);color:var(--encre-e2)}
+:where(body.p-caisse) .monnaie .somme{font-family:var(--font-chiffres);font-size:var(--t-h1);line-height:var(--lh-38);font-weight:var(--w-bold);font-variant-numeric:tabular-nums}
+:where(body.p-caisse) .monnaie ul{list-style:none;margin:var(--air-i3) 0 0;padding:0;display:flex;flex-wrap:wrap;gap:var(--esp-2)}
+:where(body.p-caisse) .monnaie li{background:var(--terre-e1);color:var(--encre-e1);padding:var(--esp-1) var(--esp-3);font-family:var(--font-chiffres);font-size:var(--t-h3);font-weight:var(--w-bold)}
+:where(body.p-caisse) .moyens{display:grid;grid-template-columns:repeat(auto-fill,minmax(var(--tuile-pas),1fr));gap:var(--tuile-gouttiere);margin-bottom:var(--air-i3)}
+:where(body.p-caisse) .action-large{width:100%;margin-top:var(--air-i4)}
+:where(body.p-caisse) .cache{display:none}
+/* Roots Radio. L'antenne se tient seule dans le chrome, sans disque. Elle
+   refuse la selection et le menu contextuel, sans quoi l'appui maintenu ouvre
+   le menu du systeme au lieu d'ouvrir le lecteur.
+
+   Le lecteur ne flotte pas au-dessus de la barre : il en forme une seconde
+   rangee, et la barre grandit quand il s'ouvre. Sa rangee reprend la boite de
+   `.chrome-inner` pour partir du meme bord gauche que le logo. A droite, la
+   commande de lecture ferme l'ilot et tombe sur la DERNIERE ONDE de l'antenne,
+   ni sur sa cible ni sur la boite de son dessin : le retrait vaut la largeur du
+   hamburger, son ecart, le creux entre la cible de l'antenne et son dessin, et
+   la part non encree du dessin, moins le filet de l'ilot. Changer la taille de l'antenne, du hamburger ou de leur ecart
+   sans reprendre ce calcul desaligne l'ilot de son bouton.
+
+   La commande de lecture est plus petite que le plancher de cible : son calque
+   invisible la ramene a 44 px sans grossir l'ilot. Le retirer descend la cible
+   sous le plancher. */
+.radio-pastille{width:var(--cible-min);height:var(--cible-min);border:none;background:none;color:var(--univers);display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:manipulation}
+/* Le retrait est la part du dessin de l'antenne qui n'est pas encree a
+   droite, mesuree sur le trace : la commande de lecture s'aligne sur la
+   DERNIERE ONDE, pas sur la boite. Redessiner l'antenne oblige a
+   remesurer cette part. */
+:where(body){--antenne-dessin:24px;--antenne-retrait:.075}
+.radio-pastille svg{width:var(--antenne-dessin);height:var(--antenne-dessin)}
+.radio-pastille.antenne{color:var(--jaune-e2)}
+:where(body.p-roam) .radio-pastille{color:var(--univers-e1)}
+body[data-surface="ambiante"] .radio-pastille{color:var(--blanc-casse)}
+body[data-surface="ambiante"] .radio-pastille.antenne{color:var(--jaune-e2)}
+/* A L'ANTENNE, L'ILOT PREND L'ENCRE ET LE CONTOUR DE L'ANTENNE.
+   Le voile ne change pas : meme teinte, meme opacite qu'eteint. Seuls l'encre
+   du texte et le trait du contour passent au jaune.
+   CE QUE CELA VAUT, mesure sur le film servi, voile compose et floute : le
+   jaune rend 1,00:1 au pire — un jaune de mi-luminosite croise la luminosite
+   du fond quelque part, et disparait alors entierement. Le plancher applicable
+   est 4,5. Le blanc casse qu'il remplace rendait 1,54.
+   CE QUI RELEVERAIT LA MESURE, et n'a pas ete retenu : fermer le voile en meme
+   temps que l'encre change — echelon 1 a 85 % rendait 5,14:1. Le contour, lui,
+   ne porte pas le texte : il borde la boite, il ne borde pas les lettres.
+   Le jaune suit la surface, comme l'antenne : echelon 2 sur clair, blanc ou
+   film ; echelon 3 sur sombre. La commande de lecture n'est pas un texte et
+   garde la sienne. */
+/* L'ETAT ALLUME. Les pictogrammes seuls prennent le jaune : ils disent l'etat
+   sans avoir a etre lus. Le mot d'antenne et le contour prennent le rouge de
+   l'echelle, le fond un voile du quatrieme echelon de l'univers. Sur une
+   surface sans fond ou sombre, le contour reste celui de la surface — un
+   filet rouge ne tient pas sur une photographie — et le rouge ne s'y pose
+   que sur le mot et la commande de lecture. Le reste du texte ne bouge pas. */
+.languette-radio.antenne{border-color:var(--rouge-e3);background:color-mix(in srgb,var(--univers-e4) 20%,transparent);backdrop-filter:blur(6px)}
+.languette-radio.antenne .lecteur-etat{color:var(--rouge-e3)}
+/* Sur une surface sombre ou sans fond, le mot d'antenne monte d'un echelon de
+   plus : l'echelon 3 se confond avec le voile d'ilot qui le porte. */
+.radio-pastille.antenne{color:var(--jaune-e2)}
+/* Le disque du lecteur : gris eteint au repos, univers translucide et clair
+   allume — la lumiere vient du fond, le pictogramme la porte. */
+.lecteur-btn{background:rgba(var(--gris-500-rgb),.14)}
+:where(body:not([data-surface="ambiante"]):not([data-surface="sombre"])) .languette-radio.antenne .lecteur-btn{background:color-mix(in srgb,var(--univers-e4) 20%,transparent)}
+body[data-surface="sombre"] .radio-pastille{color:var(--univers-e5)}
+/* La surface sombre porte le meme ilot que la surface sans fond : un voile de
+   l'echelon 3, flou compris. */
+body[data-surface="sombre"] .languette-radio{background:rgba(var(--univers-e3-rgb),.20);border-color:rgba(var(--blanc-casse-rgb),.3);color:var(--blanc-casse);backdrop-filter:blur(6px)}
+body[data-surface="sombre"] .lecteur-btn{background:rgba(var(--blanc-casse-rgb),.22);color:var(--blanc-casse)}
+/* A l'antenne, sur les surfaces sans fond et sombres, le CONTOUR reste celui
+   de la surface : un filet rouge ne tient pas sur une photographie. Le rouge
+   ne s'y pose que sur ce qui dit l'etat — le mot d'antenne et la commande de
+   lecture — et le voile du fond suit le quatrieme echelon de l'univers. La
+   pastille d'antenne garde son jaune : il n'a plus que ce sens. */
+body[data-surface="ambiante"] .languette-radio.antenne,
+body[data-surface="sombre"] .languette-radio.antenne{background:color-mix(in srgb,var(--univers-e4) 20%,transparent)}
+body[data-surface="ambiante"] .languette-radio.antenne .lecteur-btn,
+body[data-surface="sombre"] .languette-radio.antenne .lecteur-btn{background:color-mix(in srgb,var(--univers-e4) 20%,transparent);color:var(--rouge-e3)}
+body[data-surface="ambiante"] .radio-pastille.antenne,
+body[data-surface="sombre"] .radio-pastille.antenne{color:var(--jaune-e2)}
+
+.radio-rangee{width:var(--chrome-w);margin:0 auto}
+/* LE LECTEUR. Une seule regle gouverne sa droite : la COMMANDE, toujours a
+   droite, a son centre sur l'AXE VERTICAL de l'antenne. Ce qui depasse a
+   droite est le seul souffle qui boucle la pilule. Le retrait se lit donc de
+   droite a gauche : le hamburger, son ecart, la moitie de la cible de
+   l'antenne — voila l'axe — puis on revient du souffle, du filet et de la
+   moitie de la commande. Changer l'un de ces cinq termes deplace l'axe.
+   L'ilot EPOUSE SON TEXTE : il part de la droite et s'etend vers la gauche
+   autant que ses mots l'exigent, jamais sur toute la piste.
+
+   Le souffle qui boucle la pilule a droite vaut exactement le jeu VERTICAL
+   entre la commande et le bord : les deux arcs deviennent alors concentriques
+   et leurs contours paraissent paralleles. L'elargir casse ce parallelisme. */
+/* L'ILOT APPARTIENT A L'UNIVERS, comme le reste du nav. Son encre prend donc
+   l'echelon 1 du monde courant, jamais l'encre de lecture : les deux se
+   confondent sur un seul univers, et divergent partout ailleurs — un monde
+   rouge affichait le noir d'un autre monde. */
+.languette-radio{margin-top:var(--esp-2);margin-left:auto;width:max-content;max-width:100%;margin-right:calc(var(--cible-min) - var(--esp-3) + var(--esp-2) + var(--cible-min) / 2 - (var(--esp-4) - var(--esp-3)) / 2 - (var(--t-chrome-titre) + var(--esp-3)) / 2);min-height:calc(var(--t-chrome-titre) + var(--esp-4));display:flex;align-items:center;gap:var(--esp-4);padding:0 calc((var(--esp-4) - var(--esp-3)) / 2 - var(--limite-ep)) 0 var(--esp-3);background:var(--gris-ilot);border:var(--limite-ep) solid var(--gris-service);border-radius:var(--rayon-pilule);color:var(--univers-e1);overflow:hidden}
+.languette-radio.cache{display:none}
+/* L'ilot vit au bas du tiroir du menu, juste avant les liens de langue et de
+   politique : il y est TOUJOURS visible — la regle prime sur l'etat range que
+   le script retient pour d'autres poses — et il prend la rangee entiere,
+   l'antenne au bout. */
+/* LA RANGEE COLLANTE DU TIROIR : la marque Mi | NU tient la GAUCHE de la
+   ligne, le lecteur la droite, colles au bas du panneau. L'antenne vit DANS
+   le lecteur, le bouton de lecture n'y a plus d'objet. Le pli est croise :
+   la marque OUVERTE replie le lecteur sur sa pastille d'antenne, et rendre
+   la marque rend le lecteur. La marque ne parle qu'a cette rangee — jamais
+   a la barre du chrome. */
+/* La rangee se tient en LEGER RETRAIT du tableau des entrees du tiroir :
+   2,5-95-2,5 contre la colonne des entrees, qui est son contenant. */
+.menu-pop .tiroir-radio{position:sticky;bottom:var(--esp-2);z-index:1;display:flex;align-items:center;gap:var(--esp-2);margin:var(--esp-3) 2.5% var(--esp-1)}
+/* La boite du centre s'efface dans la rangee : la marque devient l'enfant
+   direct de la ligne, et sa borne en pourcentage se resout contre ELLE —
+   posee sur une boite qui se mesure a son contenu, elle tournerait en rond. */
+.menu-pop .tiroir-radio .centre{display:contents}
+.menu-pop .tiroir-radio .toggle{flex:0 0 auto}
+/* Dans la rangee du tiroir, la pastille de marque prend la hauteur du
+   plancher tactile : celle de l'ilot voisin, qui porte l'antenne, moins ses
+   filets — deux pieces d'une meme rangee se lisent a la meme hauteur. Le mot
+   garde son corps et reste centre : seule la pastille grandit.
+   DEPLOYEE, elle se borne a la place que la rangee lui laisse une fois
+   l'ilot replie sur son antenne : sans cette borne, son etirement creverait
+   les marges internes du panneau. Les deux bornes portent un pourcentage :
+   deux longueurs ne s'animent entre elles que si leurs unites se melangent. */
+.menu-pop .tiroir-radio .toggle{--pastille-d:var(--cible-min)}
+.menu-pop .tiroir-radio .toggle.ouvert{max-width:calc(100% - var(--cible-min) - var(--limite-ep) * 2 - var(--esp-2))}
+/* Deployee dans une rangee etroite, la marque resserre son interieur : les
+   ecarts descendent d'un cran, le mot garde son corps. */
+.menu-pop .tiroir-radio .toggle .reste{gap:var(--esp-1);padding-right:var(--esp-2)}
+.menu-pop .tiroir-radio .toggle.ouvert .mot{width:calc(var(--pastille-d) - var(--esp-2))}
+.menu-pop .tiroir-radio .toggle .sub{font-size:var(--t-note)}
+/* Le pli des DEUX pieces suit la meme horloge, geste par geste : l'aller —
+   la marque s'etire, l'ilot se replie — au mouvement de parcours ; le retour
+   au mouvement d'apparition, plus court. Deux horloges differentes sur une
+   meme rangee font se chevaucher les deux pieces. */
+.menu-pop .languette-radio{display:flex;width:auto;max-width:calc(100% - var(--cible-min) - var(--esp-2));margin:0;opacity:1;transform:none;flex:1 1 auto;min-width:0;box-shadow:0 2px 10px rgba(var(--ombre-teinte),.18);overflow:hidden;transition:max-width var(--mvt-apparition) var(--courbe-sortie),opacity var(--mvt-etat) var(--courbe-etat)}
+/* Replie, l'ilot se resserre sur sa seule antenne : sa largeur est celle de
+   la cible plus un souffle egal des deux cotes — bornee dans les deux sens,
+   sinon la rangee en flexion le retrecirait sous l'antenne et la rognerait. */
+.menu-pop .tiroir-radio:has(.toggle.ouvert) .languette-radio{min-width:calc(var(--cible-min) + var(--limite-ep) * 2);max-width:calc(0% + var(--cible-min) + var(--limite-ep) * 2);opacity:.85;gap:0;padding-left:0;padding-right:0;transition:max-width var(--mvt-parcours) var(--courbe-entree),opacity var(--mvt-etat) var(--courbe-etat)}
+.menu-pop .languette-radio .lecteur-btn{display:none}
+.menu-pop .languette-radio.cache{display:flex}
+.menu-pop .languette-radio.parait{opacity:1;transform:none}
+.menu-pop .languette-radio .lecteur-texte{flex:1 1 auto;min-width:0}
+.menu-pop .radio-pastille{flex:0 0 auto}
+/* Une entree de tiroir sans adresse est un titre en attente : eteinte, sans
+   chevron, sans geste. */
+.menu-pop .lien-section.dormant{cursor:default;opacity:.62}
+/* Sur les surfaces claires de sejour et d'itineraire, l'ilot eteint s'ecrit au
+   noir de marque : son etat calme ne porte aucune couleur. L'ecran du cafe
+   garde l'encre de son univers — son chrome est le seul a la porter partout. */
+:where(body.p-roam,body.p-space) .languette-radio{color:var(--roots-noir)}
+/* L'ilot entre et sort au cran d'apparition d'un bandeau de l'echelle de
+   mouvement. Le decalage part du haut : il descend de sous la pastille qui
+   vient d'etre pressee, d'ou il vient. Le repli de la boite attend la fin de
+   ce mouvement, sinon la sortie ne se verrait pas. */
+.languette-radio{transition:opacity var(--mvt-apparition) var(--courbe-etat),transform var(--mvt-apparition) var(--courbe-etat),gap var(--mvt-parcours) var(--courbe-entree),padding var(--mvt-parcours) var(--courbe-entree),background var(--mvt-etat) var(--courbe-etat),color var(--mvt-etat) var(--courbe-etat),border-color var(--mvt-etat) var(--courbe-etat)}
+/* ANCRE DANS LA BARRE, L'ILOT NE DISPARAIT PAS : IL SE RANGE.
+   Meme pli que le logotype Mi | NU, meme mecanique et memes durees — la boite
+   se ferme sur ce qu'elle garde, elle ne s'efface pas. Ce qu'elle garde ici est
+   l'ANTENNE : c'est le seul element qui reste un geste une fois range, et c'est
+   par lui qu'on rouvre.
+   Ce n'est pas l'ilot qui retrecit mais SON TEXTE : ancre, l'ilot est cale sur
+   son bord droit, et retrecir sa boite couperait l'antenne au lieu du texte.
+   Le texte se ferme donc, et le bord gauche suit.
+   L'asymetrie est celle de la maison : on s'ouvre en parcours, on se referme en
+   apparition. C'est une intention, pas un oubli. */
+.lecteur-texte{max-width:300px;transition:max-width var(--mvt-parcours) var(--courbe-entree),opacity var(--mvt-parcours) var(--courbe-entree)}
+.languette-radio.replie{gap:0;padding-left:0;transition:gap var(--mvt-apparition) var(--courbe-sortie),padding var(--mvt-apparition) var(--courbe-sortie)}
+.languette-radio.replie .lecteur-texte{max-width:0;opacity:0;transition:max-width var(--mvt-apparition) var(--courbe-sortie),opacity var(--mvt-apparition) var(--courbe-sortie)}
+.languette-radio.parait{opacity:0;transform:translateY(calc(var(--esp-2) * -1))}
+/* L'ilot se pose sur un film : ce qu'on lit dedans depend de ce qui passe
+   dessous. Le voile porte l'echelon 3 de l'univers, et son OPACITE est la
+   SEULE chose qui gouverne la lisibilite du texte, puisque les lettres n'ont
+   aucun cerne pour s'en detacher toutes seules.
+   Mesure sur le film servi, voile compose et floute comme ici : le blanc casse
+   rend 1,54:1 au pire. Le plancher applicable est 4,5:1 — les deux textes de
+   l'ilot valent 14 px en 700 et 11,67 px en 500, donc aucun n'est du grand
+   texte. Le reglage passe dessous par arbitrage porte au registre.
+   Monter l'opacite est le seul levier ; a teinte egale l'echelon 3 plafonne
+   sous le plancher meme opaque a 90 %. Un cerne sur les lettres portait la
+   paire a 3,70:1 quelle que soit l'opacite.
+   Changer la teinte, l'opacite ou l'encre exige de remesurer. */
+body[data-surface="ambiante"] .languette-radio{background:rgba(var(--univers-e3-rgb),.20);border-color:rgba(var(--blanc-casse-rgb),.3);color:var(--blanc-casse);backdrop-filter:blur(6px)}
+.lecteur-btn{width:calc(var(--t-chrome-titre) + var(--esp-3));height:calc(var(--t-chrome-titre) + var(--esp-3));border-radius:50%;border:none;color:var(--univers);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;position:relative}
+.lecteur-btn::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:var(--cible-min);height:var(--cible-min)}
+.lecteur-btn svg{width:14px;height:14px}
+body[data-surface="ambiante"] .lecteur-btn{background:rgba(var(--blanc-casse-rgb),.22);color:var(--blanc-casse)}
+.lecteur-texte{display:flex;align-items:baseline;gap:var(--esp-2);min-width:0;font-size:var(--t-sm);line-height:1;white-space:nowrap;overflow:hidden}
+.lecteur-titre{font-weight:700;flex-shrink:0}
+.lecteur-etat{overflow:hidden;text-overflow:ellipsis}
+
+/* La bascule de langue se pose a gauche de la ligne de politique, dans le
+   meme pied ; elle porte l'encre d'univers, comme la bascule du chrome. */
+.pied-politique .point-pied{color:var(--encre-discrete);font-size:var(--t-sm)}
+.pied-politique .lien-langue{min-height:var(--cible-min);min-width:var(--cible-min);border:none;background:none;color:var(--univers);font-family:var(--font-corps);font-weight:700;font-size:var(--t-sm);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+/* UN UNIVERS DONT L'ENCRE PROFONDE EST LE NOIR ne distingue plus sa bascule de
+   langue d'un mot de texte : elle y prend l'ACCENT de l'univers, porte par son
+   echelon 3. Les univers dont l'encre est deja saturee gardent la leur.
+   La portee reste nulle : une surface sans fond passe avant, et doit passer
+   avant — sur une photographie, la bascule se lit en clair. */
+:where(body.p-space) .pied-politique .lien-langue,
+:where(body.p-space) .lang-btn{color:var(--univers-e3)}
+
+/* ---------- LE NAV MESURE, LA FEUILLE COMPOSE ----------
+   Un ecran large mais COURT est un telephone couche, jamais un ordinateur :
+   les paliers de presentation exigent donc largeur ET hauteur. Sans la
+   seconde, un telephone en paysage prend la typographie des grands ecrans et
+   son chrome double de taille.
+
+   Les deux classes de promotion sont posees par la mesure du nav, jamais par
+   une rupture chiffree. `nav-haut` : le super-nav est monte dans la barre.
+   `nav-ilot-ancre` : l'ilot de radio y tient aussi, deplie a demeure, et
+   l'antenne y est descendue — la commande de lecture s'efface alors, un seul
+   bouton portant le geste. */
+
+/* DEUX ECHELLES DE MARGE, une par nature de contenu, sur les memes paliers.
+   La piste de LECTURE se resserre plus vite que la barre de navigation : le
+   contenu se recentre a mesure que la fenetre s'elargit, le chrome garde ses
+   bords. L'ecart entre les deux croit avec l'ecran — c'est voulu, ce n'est pas
+   un desalignement.
+        piste   7.5-85-7.5 · 15-70-15 · 20-60-20 · 23-54-23
+        chrome  7.5-85-7.5 · 10-80-10 · 15-70-15 · 15-70-15
+   Le chrome cesse de bouger au-dela de l'ordinateur ; la piste se resserre
+   encore d'un cran. La condition porte LARGEUR ET HAUTEUR, comme celle de la
+   typographie : un telephone couche garde les marges du telephone.
+   CE QUI CASSE SI ON LE MODIFIE : le mobilier du chrome se cale sur
+   `--chrome-w`, le contenu sur `--piste`. Faire pointer les deux sur le meme
+   jeton supprime le recentrage et ramene une seule echelle. */
+/* Le telephone couche garde un cran a lui : plus large que debout, plus
+   serre que la tablette — piste et chrome ensemble. Il se reconnait a sa
+   LARGEUR autant qu'a sa hauteur : une fenetre large mais courte sur un
+   ordinateur n'est pas un telephone, et lever la borne de largeur lui
+   donnerait les marges d'un telephone couche. */
+@media(min-width:640px) and (max-width:1023px) and (max-height:599px){
+  :root{--marge:7.5%;--site-w:85%;--marge-chrome:7.5%;--chrome-w:85%}
+}
+@media(min-width:640px) and (min-height:600px){
+  :root{--marge:15%;--site-w:70%;--marge-chrome:10%;--chrome-w:80%;--grille-colonnes:8}
+}
+/* Des l'ordinateur, la piste tient son cran le plus serre et ne bouge plus :
+   un seul palier de 1024 aux tres grands ecrans, quelle que soit la hauteur
+   de la fenetre — une fenetre d'ordinateur ancree ou reduite reste un
+   ordinateur. Le chrome garde le sien. */
+@media(min-width:1024px){
+  :root{--marge:23%;--site-w:54%;--marge-chrome:15%;--chrome-w:70%;--grille-colonnes:12;--gouttiere-grille:var(--esp-6)}
+}
+}
+
+/* Ecran couche et court : le chrome garde la taille du telephone. */
+@media(min-width:640px) and (max-width:1023px) and (max-height:599px){
+  :root{--t-chrome-titre:var(--t-16);--t-h3:var(--t-21)}
+}
+
+/* Telephone couche : les deux gestes se rangent aux coins bas, la ou les
+   pouces tombent, au lieu de se disputer le centre. */
+@media(orientation:landscape) and (max-width:1023px) and (max-height:599px){
+  body:not(.nav-haut) .chrome-bas{left:var(--bord);right:auto;transform:none;bottom:calc(var(--esp-3) + var(--safe-bas));width:auto;min-height:0;height:auto;padding:var(--esp-1);background:var(--blanc);border:var(--limite-ep) solid var(--univers);border-radius:var(--rayon-pilule);box-shadow:0 12px 30px rgba(var(--ombre-teinte),.28)}
+  body:not(.nav-haut) .verbe{flex:0 0 auto;padding:var(--esp-1)}
+  body:not(.nav-haut) .ico-rond{width:44px;height:44px}
+  body:not(.nav-haut).p-accueil .commande-video{bottom:calc(var(--esp-3) + var(--cible-min) + var(--esp-3) + var(--safe-bas))}
+  body .fab{font-size:var(--t-21)}
+}
+
+/* Palier 1 — le super-nav a rejoint la barre : il n'est plus une barre, il est
+   une rangee de verbes. */
+body.nav-haut .chrome-bas{position:static;left:auto;right:auto;bottom:auto;transform:none;width:auto;min-height:0;height:auto;padding:0;background:none;border:none;box-shadow:none;display:flex;align-items:center;gap:0}
+body.nav-haut .verbe{flex:0 0 auto;padding:0}
+/* Monte, le disque du verbe se reduit au plancher de cible. L'encre doit se
+   reduire avec lui, sinon le pictogramme touche les bords : la part qu'il
+   occupe est celle de la barre basse sur grand ecran — 44 d'encre dans 56 de
+   disque. Changer l'une des deux tailles en bas oblige a reprendre cette part. */
+:where(body){--verbe-part:.786}
+body.nav-haut .ico-rond{width:var(--cible-min);height:var(--cible-min)}
+body.nav-haut .ico-rond svg{width:calc(var(--cible-min) * var(--verbe-part));height:calc(var(--cible-min) * var(--verbe-part))}
+/* Monte sur un chrome a fond opaque, le verbe courant se marque par SON ENCRE
+   et non par un disque : la couleur d'univers le distingue seule des verbes
+   discrets. CE QUI GARDE LE DISQUE : un chrome sans fond, pose sur un film —
+   aucune encre ne se detache d'une image que rien ne contraint ; le disque y
+   est la garantie de lisibilite. La cible ne bouge pas. */
+body.nav-haut:not([data-surface="ambiante"]) .verbe.actif .ico-rond{background:none;color:var(--univers)}
+
+/* Palier 2 — l'ilot est ancre dans la barre : il ne se replie plus, et
+   l'antenne y remplace la commande de lecture. */
+body.nav-ilot-ancre .radio-rangee{display:none}
+/* Ancre, l'ilot garde la meme largeur flexible et le meme souffle : seule
+   sa marge tombe, puisque la barre le place. */
+body.nav-ilot-ancre .languette-radio{margin:0}
+body.nav-ilot-ancre .lecteur-btn{display:none}
+body.nav-ilot-ancre .languette-radio .radio-pastille{flex-shrink:0}
+.chrome-gauche{display:flex;align-items:center;gap:var(--esp-3)}
+/* Monte dans la barre, le super-nav perd le fond blanc qui detachait ses
+   verbes : sur l'ecran ambiant ils prennent donc l'encre du reste du chrome.
+   Le verbe courant garde son disque, qui se detache seul. */
+body[data-surface="ambiante"].nav-haut .verbe{color:var(--blanc-casse)}
+/* Le geste focal monte d'un barreau typographique LA OU IL SE VISE A LA
+   SOURIS, et nulle part ailleurs : c'est le pointeur fin qui distingue
+   l'ordinateur de la tablette, pas une largeur — une tablette est large et se
+   touche au doigt. Sur doigt, la taille du geste reste celle du pouce. */
+/* Le geste focal reste AU CENTRE. Un appel a l'action cale a gauche est le
+   seul placement que la recherche deconseille : le regard termine sa course au
+   centre ou a droite, jamais au bord gauche.
+
+   SA DISTANCE AU BAS DEPEND DE CE QU'IL Y A EN BAS.
+   La ou une barre pleine largeur occupe le bas, elle est la reference : le
+   geste s'en ecarte du MEME souffle que celui qui separe le filet de cette
+   barre du haut de ses pastilles. Un ecart mesure depuis le bord de l'ecran
+   le poserait DANS la barre.
+   La ou le bas est libre — la barre est montee dans le nav, ou rangee au
+   coin — la reference redevient l'ecran, en PART de sa hauteur : 5 % sur
+   ecran couche et court, 7,5 % sur tablette, 10 % sur ordinateur. Une
+   distance fixe se lit differemment sur un ecran de 360 et sur un de 900 ;
+   une part tient la meme proportion partout.
+   Un telephone couche tombe donc dans le second cas, pas dans le premier :
+   son super-nav monte, son bas est libre, et c'est la part qui vaut — mais
+   sur la part la plus courte, car sa hauteur l'est aussi. */
+:where(body:not(.nav-haut)) .fab{--fab-bas:calc(var(--barre-h) + var(--souffle-filet))}
+@media(min-width:1024px) and (min-height:600px){
+  .fab{--fab-bas:10%}
+}
+@media(orientation:landscape) and (max-width:1023px) and (max-height:599px){
+  .fab{--fab-bas:5%}
+}
+@media(pointer:fine){
+  body.nav-haut .fab{font-size:var(--t-26);min-height:64px}
+}
+
+/* Palier 2 — l'ilot est ancre dans la barre : il ne se replie plus, et
+   l'antenne y remplace la commande de lecture. */
+/* Ancre, l'ilot garde la meme largeur flexible et le meme souffle : seule
+   sa marge tombe, puisque la barre le place. */
+
+/* ══════════════ Mi Roam — deuxieme jeu ══════════════
+   Aucune valeur n'est ecrite ici : tout passe par un jeton. */
+
+/* ---- La rangée d'un pas. Repliée : la question courte à gauche, ce qu'elle
+   attend à droite. Dépliée : la question longue REMPLACE les deux, à la même
+   taille — un texte qui grossit en s'ouvrant déplace tout ce qui le suit. */
+:where(body.p-roam) .etape-ouvert{display:none;font-size:var(--t-sm);line-height:var(--lh-14);font-weight:700;color:var(--encre)}
+:where(body.p-roam) .etape.ouverte .etape-quoi{display:none}
+:where(body.p-roam) .etape.ouverte .etape-ouvert{display:block}
+:where(body.p-roam) .etape.ouverte .etape-valeur{display:none}
+:where(body.p-roam) .etape.ouverte .etape-tete{padding-bottom:var(--esp-2)}
+:where(body.p-roam) .etape-corps{padding:0 var(--esp-4) var(--esp-4)}
+
+/* Le pas « Qui » ouvert tient sur UNE ligne : la question à gauche, le
+   sélecteur à droite, là où se lisait la valeur. La rangée devient une grille
+   à deux colonnes — le libellé est dans un bouton, le sélecteur ne peut donc
+   pas y entrer, mais rien n'empêche les deux de partager la ligne. */
+:where(body.p-roam) .etape.ouverte[data-pas="qui"],
+:where(body.p-roam) .etape.ouverte[data-pas="quiDec"]{display:grid;grid-template-columns:1fr auto;align-items:center}
+:where(body.p-roam) .etape.ouverte[data-pas="qui"] .etape-tete,
+:where(body.p-roam) .etape.ouverte[data-pas="quiDec"] .etape-tete{padding-bottom:var(--esp-2)}
+:where(body.p-roam) .etape.ouverte[data-pas="qui"] .etape-corps,
+:where(body.p-roam) .etape.ouverte[data-pas="quiDec"] .etape-corps{padding:0 var(--esp-4) 0 0}
+
+/* ---- LE LIEN TERTIAIRE. Une seule peau, deux libellés : « Visiter » sur une
+   carte de la page, « Plus d'infos » dans le tiroir. Échelon 2 de l'univers et
+   soulignement — le soulignement est ce qui dit « lien » quand la couleur est
+   retirée, et la couleur seule ne porte aucun rang.
+   Son nom accessible est son texte visible, et il ne varie pas d'un lieu à
+   l'autre : c'est ce qui en fait un composant reconnaissable. Le but du lien
+   se lit dans son contexte — l'élément qui le porte nomme le lieu —, ce que
+   SC 2.4.4 admet au niveau A. */
+:where(body.p-roam) .lien-tertiaire{font-family:var(--font-corps);font-weight:700;color:var(--univers);background:none;border:none;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+/* Porté par un bouton, il descend sous le plancher tactile : un pseudo-élément
+   ramène la cible à 44 sans déplacer le texte. */
+:where(body.p-roam) button.lien-tertiaire{position:relative;font-size:var(--t-sm);line-height:var(--lh-14)}
+:where(body.p-roam) button.lien-tertiaire::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:max(100%,var(--cible-min));height:var(--cible-min)}
+:where(body.p-roam) .ligne-inviter{margin:0 0 var(--air-i3);text-align:center}
+:where(body.p-roam) .paire-invite{margin-top:var(--air-i3);padding-top:var(--air-i3);border-top:1px solid var(--gris-service)}
+
+/* ---- La carte de bien porte le nom, le lieu et le geste. Aucune description :
+   ce qui décrit vit sur la fiche du lieu. Le geste tient la fin de la ligne du
+   nom — un lien, donc souligné : le soulignement est ce qui dit « lien » sans
+   la couleur, que le monochrome retire. */
+:where(body.p-roam) .carte-bien .nom-ligne{display:flex;align-items:baseline;justify-content:space-between;gap:var(--esp-3);min-width:0}
+:where(body.p-roam) .carte-bien .carte-tete{display:flex;flex-direction:column;gap:0;padding:var(--esp-4);text-align:left}
+:where(body.p-roam) .carte-bien .geste{display:inline-flex;align-items:center;flex:0 0 auto;min-height:0;padding:0;font-size:var(--t-sm);line-height:var(--lh-14);font-weight:700;color:var(--univers)}
+:where(body.p-roam) .carte-bien .ou{font-size:var(--t-note);line-height:var(--lh-12);color:var(--encre-discrete)}
+
+/* ---- Le tiroir du pas « Où ». Il vit DANS le flux : ouvert, il repousse les
+   pas suivants vers le bas au lieu de se poser par-dessus eux. Rien ne masque
+   ce qu'on vient de lire, et la feuille garde un seul défilement.
+   Chaque bien y est un ÎLOT : la vignette à gauche, le nom et le lieu au
+   milieu, le montant à droite — somme au-dessus, unité en dessous. Le lien
+   vers la fiche se pose sous l'unité, dans l'angle : il est FRÈRE du bouton,
+   jamais son enfant — une commande dans une commande n'a ni cible ni nom
+   fiables. */
+:where(body.p-roam) .tiroir-lieux{list-style:none;margin:var(--air-i2) 0 0;padding:0;display:grid;gap:var(--esp-2)}
+:where(body.p-roam) .ilot-lieu{position:relative;list-style:none;background:var(--gris-ilot);border-radius:var(--rayon-module)}
+:where(body.p-roam) .ilot-choix{display:flex;align-items:center;gap:var(--esp-3);width:100%;padding:var(--esp-2) var(--esp-4) var(--esp-2) var(--esp-2);background:none;border:none;border-radius:var(--rayon-module);text-align:left;font-family:var(--font-corps);cursor:pointer}
+:where(body.p-roam) .ilot-choix .vignette{flex:0 0 auto;width:72px;aspect-ratio:4/3;display:block;overflow:hidden;border-radius:var(--rayon-champ);background:var(--univers-e1)}
+:where(body.p-roam) .ilot-choix .vignette img{width:100%;height:100%;object-fit:cover;display:block}
+:where(body.p-roam) .ilot-dire{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:0}
+:where(body.p-roam) .ilot-dire .nom{font-size:var(--t-sm);line-height:var(--lh-14);font-weight:700;color:var(--encre);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+:where(body.p-roam) .ilot-dire .ou{font-size:var(--t-note);line-height:var(--lh-12);color:var(--encre-discrete);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+:where(body.p-roam) .ilot-lieu .montant{flex:0 0 auto;align-self:flex-start;display:flex;flex-direction:column;align-items:flex-end;gap:0;text-align:right}
+:where(body.p-roam) .ilot-lieu .somme{font-family:var(--font-chiffres);font-variant-numeric:tabular-nums;font-size:var(--t-sm);line-height:var(--lh-14);font-weight:700;color:var(--encre);white-space:nowrap}
+:where(body.p-roam) .ilot-lieu .unite{font-size:var(--t-note);line-height:var(--lh-12);color:var(--encre-discrete);white-space:nowrap}
+/* Le lien se pose par-dessus le bouton, dans l'angle bas : il n'est pas dedans,
+   donc l'appui qui l'atteint ne retient pas le lieu. Sa cible descend sous le
+   plancher — un pseudo-élément la ramène à 44 sans déplacer le texte. */
+:where(body.p-roam) .ilot-plus{position:absolute;right:var(--esp-4);bottom:var(--esp-2);z-index:1;font-size:var(--t-note);line-height:var(--lh-12)}
+:where(body.p-roam) .ilot-plus::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:max(100%,var(--cible-min));height:var(--cible-min)}
+:where(body.p-roam) .ilot-choix[aria-pressed="true"]{background:var(--univers-selection);box-shadow:inset 0 0 0 var(--limite-ep) var(--univers)}
+:where(body.p-roam) .ilot-choix[aria-pressed="true"] .nom{color:var(--univers)}
+:where(body.p-roam) .ilot-vide{list-style:none;padding:var(--esp-2) var(--esp-3);font-size:var(--t-note);line-height:var(--lh-12);color:var(--encre-discrete)}
+
+/* ---- Le rythme vertical de l'écran. L'air se prend sur la rampe d'interface,
+   jamais sur une valeur neuve : le titre de section colle à ce qui le suit
+   (cran 2, « texte sous son titre »), la note garde l'interligne de son
+   barreau, et le premier titre monte au cran qui sépare deux blocs de même
+   rang plutôt qu'au cran de rupture — rien ne le précède dans la colonne. */
+:where(body.p-roam) .corps{padding-top:var(--air-i3)}
+:where(body.p-roam) .titre-section{margin:0 0 var(--air-i2)}
+:where(body.p-roam) .note-section{margin:0 0 var(--air-i3);font-size:var(--t-note);line-height:var(--lh-14);color:var(--encre-discrete)}
+:where(body.p-roam) .vedette-nom{display:flex;flex-direction:column;gap:0;margin:0;min-width:0;font-size:var(--t-h3);line-height:var(--lh-21)}
+:where(body.p-roam) .vedette-ou{font-size:var(--t-note);line-height:var(--lh-12);font-weight:var(--w-regular);color:var(--encre-discrete)}
+
+/* ---- Le geste de la vedette s'aligne sur le HAUT du bloc qu'il accompagne. */
+:where(body.p-roam) .vedette-tete{display:flex;align-items:flex-start;justify-content:space-between;gap:var(--esp-3);margin:0 0 var(--air-i2)}
+:where(body.p-roam) .vedette-tete .bouton-contour{flex:0 0 auto;align-self:flex-start}
+
+/* ---- Au-delà de la tablette, la vedette occupe la page entière : le film
+   prend exactement la moitié de l'écran, et la colonne qui parle prend l'autre
+   moitié en 5-40-5. Tout y est aligné à gauche, et le geste vient en tête —
+   il tombe au premier tiers de la hauteur du film, là où le regard entre.
+   Le film reste du même côté d'une vedette à l'autre : une suite de blocs dont
+   l'image alterne se balaie moins bien qu'une suite alignée. */
+@media(min-width:820px){
+  /* Au-dela de la tablette, le bien en vedette se partage la PISTE en deux
+     colonnes de meme largeur, separees par la gouttiere de grille : le film a
+     gauche, ce qui le dit a droite. Il ne sort pas de la piste — la largeur
+     de page admise est ce qui se partage, pas la fenetre.
+     La colonne de droite se lit de haut en bas : le nom, ce qu'on en dit, puis
+     le geste. Le geste vient APRES la description ; l'ordre du document garde
+     le nom en premier, ce dont le petit ecran a besoin pour poser le nom et le
+     geste sur une meme ligne.
+     CE QUI CASSE SI ON LE MODIFIE : la tete cesse d'etre une boite pour que
+     ses deux enfants deviennent des cases de la meme grille. Lui redonner une
+     boite remet le geste contre le nom. */
+  :where(body.p-roam) .vedette{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:auto auto auto;column-gap:var(--gouttiere-grille);align-items:start;margin:0 0 var(--air-i6);width:auto}
+  :where(body.p-roam) .vedette-scene{grid-column:1;grid-row:1 / span 3;margin:0;width:auto;height:auto;aspect-ratio:4/3}
+  :where(body.p-roam) .vedette-tete{display:contents}
+  :where(body.p-roam) .vedette-nom{grid-column:2;grid-row:1;margin:0 0 var(--air-i2);text-align:left}
+  :where(body.p-roam) .vedette-dit{grid-column:2;grid-row:2;margin:0 0 var(--air-i3);padding:0;max-width:none;text-align:left}
+  :where(body.p-roam) .vedette-tete .bouton-contour{grid-column:2;grid-row:3;justify-self:start;align-self:start;margin:0;order:0}
+  /* La note de section tient sa ligne tant que la page la porte : la mesure de
+     lecture ne s'impose qu'a ce qui depasse. */
+  :where(body.p-roam) .note-section{max-width:none}
+}
+
+/* ---- Le pied : le lien passe AVANT le filet. En bas de page on lit donc le
+   lien, puis le filet, puis le geste flottant — le filet ferme la page au lieu
+   d'ouvrir le pied. */
+:where(body.p-roam) .pied{border-top:none;border-bottom:1px solid var(--gris-service);margin-top:var(--air-i4);padding:var(--esp-1) 0 var(--esp-4)}
+
+/* ══════════════ LA BARRE DE QUETE ══════════════
+   Sur l'ecran de sejour au chrome monte, le geste focal quitte le bas de page
+   et devient une pilule de quete au centre de la barre : meme bouton, meme
+   porte, meme feuille — seule la peau change. Le logotype rejoint la droite,
+   l'ilot de radio se replie sur son antenne, et la feuille s'ancre a la barre.
+   CE QUI CASSE SI ON LE MODIFIE : la pilule est le geste focal DEPLACE, jamais
+   un second bouton — deux portes vers une meme feuille divergent. */
+body.nav-quete .fab.quete{position:static;left:auto;bottom:auto;transform:none;z-index:auto;flex:1 1 auto;max-width:288px;min-width:44px;min-width:0;min-height:48px;padding:var(--esp-1) var(--esp-1) var(--esp-1) var(--esp-4);display:flex;align-items:center;justify-content:space-between;gap:var(--esp-3);background:var(--blanc);color:var(--encre-discrete);border:var(--limite-ep) solid var(--gris-service);border-radius:var(--rayon-pilule);font-family:var(--font-corps);font-weight:var(--w-medium);font-size:var(--t-sm);white-space:nowrap;overflow:hidden;box-shadow:0 2px 10px rgba(var(--ombre-teinte),.18);cursor:pointer}
+body.nav-quete .fab.quete:hover{box-shadow:0 4px 16px rgba(var(--ombre-teinte),.28)}
+/* LE GROUPE DE QUETE. L'ecran qui porte l'appareil de quete habille sa pilule
+   en groupe : le geste (le meme bouton, toujours), un champ de saisie qui ne
+   parait qu'a la demande, et le disque a loupe devenu un bouton propre —
+   trois gestes distincts exigent trois cibles. La peau de pilule passe du
+   bouton au groupe ; le bouton, dedans, redevient nu. Un ecran sans appareil
+   garde la pilule d'une piece ci-dessus. */
+body.nav-quete .quete-groupe{display:flex;align-items:center;gap:var(--esp-2);flex:1 1 auto;max-width:288px;min-width:0;min-height:48px;padding:calc(var(--esp-1) / 2) var(--esp-1) calc(var(--esp-1) / 2) var(--esp-4);background:var(--blanc);border:var(--limite-ep) solid var(--gris-service);border-radius:var(--rayon-pilule);box-shadow:0 2px 10px rgba(var(--ombre-teinte),.18);overflow:hidden}
+body.nav-quete .quete-groupe:hover{box-shadow:0 4px 16px rgba(var(--ombre-teinte),.28)}
+body.nav-quete .quete-groupe:focus-within{border-color:var(--univers)}
+body.nav-quete .quete-groupe .fab.quete{flex:1 1 auto;min-width:0;max-width:none;min-height:44px;padding:0;border:none;background:none;box-shadow:none;justify-content:flex-start}
+body.nav-quete .quete-groupe .fab.quete::after{content:none}
+body.nav-quete .quete-groupe .fab.quete.cede{display:none}
+.quete-saisie{flex:1 1 auto;min-width:0;min-height:44px;border:none;background:none;font-family:var(--font-corps);font-weight:var(--w-medium);font-size:var(--t-sm);color:var(--encre);outline:none}
+.quete-saisie::placeholder{color:var(--encre-discrete)}
+/* Le meme disque a loupe que la pilule d'une piece, porte par un bouton :
+   la cible tient le plancher de 44, le disque de 38 reste centre dedans. */
+body.nav-quete .quete-loupe{flex:0 0 auto;width:44px;height:44px;min-height:0;padding:0;border:none;border-radius:50%;cursor:pointer;background:linear-gradient(45deg,transparent calc(50% - 1.7px),var(--blanc) calc(50% - 1.7px) calc(50% + 1.7px),transparent calc(50% + 1.7px)) 23px 23px/9px 9px no-repeat,radial-gradient(circle at 50% 50%,transparent 4.2px,var(--blanc) 4.8px 7px,transparent 7.6px) 12px 12px/15px 15px no-repeat,radial-gradient(circle at 50% 50%,var(--univers) 18.6px,transparent 19.4px)}
+/* Les champs « Ou » et « Quoi » de la feuille se sont fondus dans la barre de
+   quete quand elle est montee : la saisie vit dans la barre, les listes
+   restent a la feuille. Au bas de l'ecran, la feuille garde ses champs. */
+body.nav-quete .feuille-bas[data-pose="barre"] .champ-suggest{display:none}
+body.nav-quete .feuille-bas[data-pose="barre"] .champ-quoi > input{display:none}
+/* Sur la largeur d'un telephone couche, la pilule tient un plafond a elle :
+   plus long que celui que le groupe central lui laissait, plus court que la
+   ligne entiere du telephone droit. Pose apres les regles de base : a poids
+   egal, c'est l'ordre qui tranche. */
+@media(min-width:640px) and (max-width:800px){body.nav-quete .quete-groupe,body.nav-quete .fab.quete{max-width:252px}}
+/* Sur un telephone droit, la barre ne porte que trois pieces, toutes connues :
+   la pilule prend la ligne entiere et laisse 15 px d'ENCRE A ENCRE de part et
+   d'autre — l'ecart se compte du dessin visible de ses voisines, pas de leurs
+   boites : le logo remplit presque la sienne (retrait rendu 1,25 px) quand le
+   glyphe du burger rentre de 11,25 px ; des ecarts de boite egaux paraissent
+   donc inegaux. Les deux marges portent chacune 15 moins le retrait mesure de
+   leur voisine. */
+@media(max-width:639px){
+  body.nav-quete .chrome-inner{column-gap:0}
+  body.nav-quete .chrome-inner > .quete-groupe,body.nav-quete .chrome-inner > .fab.quete{max-width:none;margin-left:13.75px;margin-right:3.75px;justify-self:stretch;width:auto}
+}
+/* Le disque a loupe, dessine aux jetons : un anneau et son manche evides dans
+   un disque d'univers. Il est decoratif — le nom du bouton reste son texte. */
+body.nav-quete .fab.quete::after{content:'';flex:0 0 auto;width:38px;height:38px;border-radius:50%;background:linear-gradient(45deg,transparent calc(50% - 1.7px),var(--blanc) calc(50% - 1.7px) calc(50% + 1.7px),transparent calc(50% + 1.7px)) 20px 20px/9px 9px no-repeat,radial-gradient(circle at 50% 50%,transparent 4.2px,var(--blanc) 4.8px 7px,transparent 7.6px) 9px 9px/15px 15px no-repeat,var(--univers)}
+
+/* La feuille ancree a la barre : meme appareil, autre bord. La ou la barre
+   porte la quete — et devient champ de saisie au deuxieme appui — la feuille
+   se tire vers le bas DEPUIS elle, a toute taille : un panneau qui monte du
+   bas tournerait le dos au champ qui vient de l'appeler. Elle descend comme
+   le tiroir du menu — meme cale sous la barre, meme rayon, meme ombre — et
+   sa poignee, un geste de pouce, n'a plus de sens. Sa largeur est celle de
+   la ligne du chrome, jamais plus que l'ecran ne laisse entre ses deux
+   bords ; son voile passe sous la barre : un panneau ne couvre jamais le
+   meuble qui l'ouvre. */
+.feuille-bas[data-pose="barre"]{bottom:auto;top:calc(var(--entete-h-rendue) + var(--esp-1));left:50%;right:auto;width:min(var(--col),calc(100% - var(--bord) * 2));z-index:19;border-radius:var(--rayon-carte);max-height:calc(100vh - var(--entete-h-rendue) - var(--esp-8));max-height:calc(100dvh - var(--entete-h-rendue) - var(--esp-8));padding-top:var(--feuille-marge);padding-bottom:var(--esp-6);box-shadow:0 18px 44px rgba(var(--ombre-teinte),.28);transform-origin:top center;transform:translate(-50%,-8px);opacity:0;pointer-events:none;transition:transform var(--mvt-apparition) var(--courbe-entree),opacity var(--mvt-etat) var(--courbe-etat)}
+.feuille-bas[data-pose="barre"].visible{transform:translate(-50%,0);opacity:1;pointer-events:auto}
+.feuille-bas[data-pose="barre"] .poignee{display:none}
+/* Sur un telephone couche, la mesure de lecture entiere mange l'ecran court :
+   la feuille se tient aux quatre cinquiemes, toujours centree sous la barre. */
+@media(min-width:640px) and (max-width:1023px) and (max-height:599px){
+  .feuille-bas[data-pose="barre"]{width:min(calc(var(--col) * 4 / 5),calc(100% - var(--bord) * 2))}
+}
+/* Le lien de politique se centre dans la bande qui separe le bas du geste du
+   bas de la feuille : autant d'air au-dessus de lui que le creux de pied en
+   laisse au-dessous. */
+.feuille-bas[data-pose="barre"] .consent-lien{margin-block:var(--esp-6) 0}
+.voile[data-pose="barre"]{z-index:12}
+

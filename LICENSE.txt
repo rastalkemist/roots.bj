@@ -1,0 +1,32 @@
+ROOTS INC. — TOUS DROITS RÉSERVÉS / ALL RIGHTS RESERVED
+Copyright (c) 2026 Roots Inc.
+
+Ce dépôt et son contenu (code, feuilles de style, structure, textes) sont la
+propriété de Roots Inc. Aucune autorisation d'utilisation, de copie, de
+modification, de fusion, de publication, de distribution ou de sous-licence
+n'est accordée sans accord écrit préalable de Roots Inc.
+
+Ce n'est PAS un logiciel open source. La mise à disposition publique du dépôt,
+nécessaire à l'hébergement des pages, ne vaut pas licence d'usage.
+
+ÉLÉMENTS TIERS / THIRD-PARTY ELEMENTS
+
+- Iconographie de marque : © Ame Karaba (voir CREDITS.md). Extraction verbatim
+  de la fresque du Roots ; ne pas redessiner ni réutiliser hors de ce projet
+  sans l'accord de l'artiste et de Roots Inc.
+
+- Polices « Museo », « Museo Sans », « Museo Slab » (exljbris / Jos Buivenga) :
+  soumises à leur propre licence. Ne pas redistribuer les fichiers de polices.
+
+- « MuseoModerno » (SIL Open Font License) et « Roboto » (Apache License 2.0) :
+  sous leurs licences respectives.
+
+- « Cooper Black » : réservée aux logotypes servant le Café, vectorisée.
+
+- « intl-tel-input » (MIT License) : champ téléphone international, embarqué
+  dans vendor/.
+
+- Utilitaires de formatage des numéros dérivés de libphonenumber
+  (Apache License 2.0), embarqués dans vendor/.
+
+Pour toute demande : contact@roots.bj

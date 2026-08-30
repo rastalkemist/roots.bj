@@ -1,0 +1,371 @@
+# Empreinte du fichier de jetons.
+# Un nom, une valeur. Aucune provenance : ce fichier est publiable,
+# la piece dont il descend ne l'est pas.
+# Produit par le generateur. NE PAS EDITER — toute retouche fait
+# refuser le depot, ce qui est exactement son role.
+jeton,rang,valeur
+--air-colle,0,4.6px
+--air-i1,0,calc(var(--t-body) * 1.5 * 0.25)
+--air-i2,0,calc(var(--t-body) * 1.5 * 0.5)
+--air-i3,0,calc(var(--t-body) * 1.5 * 0.75)
+--air-i4,0,calc(var(--t-body) * 1.5 * 1)
+--air-i6,0,calc(var(--t-body) * 1.5 * 1.5)
+--air-lie,0,9.19px
+--air-rompu-h2,0,36.77px
+--air-rompu-h3,0,27.58px
+--air-separe,0,13.79px
+--air-soude,0,0px
+--barre-h,0,72px
+--blanc,0,#FFFFFF
+--blanc-casse,0,#FDFBF6
+--blanc-casse-rgb,0,253, 251, 246
+--blanc-rgb,0,255, 255, 255
+--carte-min,0,224px
+--casse-ll-h5,0,uppercase
+--cible-min,0,44px
+--cible-plancher-aa,0,24px
+--coche-fond,0,var(--blanc)
+--coche-fond,1,var(--vert-e2)
+--coche-fond,2,var(--gris-ilot)
+--coche-fond,3,var(--noir)
+--courbe-a,0,cubic-bezier(0.4, 0.14, 0.3, 1)
+--courbe-a-entree,0,cubic-bezier(0, 0, 0.3, 1)
+--courbe-a-sortie,0,cubic-bezier(0.4, 0.14, 1, 1)
+--courbe-b,0,cubic-bezier(0.2, 0, 0.38, 0.9)
+--courbe-b-entree,0,cubic-bezier(0, 0, 0.38, 0.9)
+--courbe-b-sortie,0,cubic-bezier(0.2, 0, 1, 0.9)
+--courbe-entree,0,var(--courbe-a-entree)
+--courbe-etat,0,var(--courbe-a)
+--courbe-sortie,0,var(--courbe-a-sortie)
+--creme,0,#F8EDDA
+--creme-rgb,0,248, 237, 218
+--ecran-bande,0,90%
+--ecran-colonne,0,500px
+--ecran-gouttiere,0,var(--esp-2)
+--ecran-marge,0,5%
+--encre,0,var(--vert-e1)
+--encre-bouton,0,var(--blanc)
+--encre-chaude,0,var(--terre-e2)
+--encre-discrete,0,var(--gris-500)
+--encre-e1,0,var(--blanc-casse)
+--encre-e2,0,var(--blanc-casse)
+--encre-e3,0,var(--blanc)
+--encre-e4,0,var(--noir)
+--encre-e5,0,var(--noir)
+--encre-jaune,0,var(--noir)
+--encre-ll-chapo,0,var(--vert-e3)
+--encre-ll-h1,0,var(--encre)
+--encre-ll-h2,0,var(--vert-e3)
+--encre-ll-h3,0,var(--encre)
+--encre-ll-h4,0,var(--vert-e3)
+--encre-ll-h5,0,var(--encre)
+--encre-ll-h6,0,var(--vert-e3)
+--encre-statut,0,var(--blanc)
+--encre-statut-jaune,0,var(--encre-jaune)
+--entete-h,0,68px
+--esp-1,0,4px
+--esp-2,0,8px
+--esp-3,0,12px
+--esp-4,0,16px
+--esp-5,0,20px
+--esp-6,0,24px
+--esp-7,0,28px
+--esp-8,0,32px
+--eteint-encre,0,var(--neutre-e2)
+--eteint-fond,0,var(--neutre-e5)
+--focus-degagement-bas,0,calc(var(--barre-h) + var(--esp-3))
+--focus-degagement-haut,0,calc(var(--entete-h) + var(--esp-3))
+--font-chiffres,0,'Museo Slab', 'Roboto Slab', 'Rockwell', serif
+--font-cooper,0,'Cooper Black', 'Cooper Std', 'Cooper BT', serif
+--font-corps,0,'Museo Sans', 'Roboto', system-ui, sans-serif
+--font-eclat,0,'MuseoModerno', var(--font-corps)
+--font-lecture,0,'Museo', 'Roboto Serif', Georgia, serif
+--foyer-encre,0,var(--encre-bouton)
+--foyer-encre,1,var(--univers)
+--foyer-encre,2,var(--encre)
+--foyer-encre,3,var(--encre)
+--foyer-fond,0,var(--tuile-fond)
+--foyer-fond,1,var(--univers)
+--foyer-fond,2,var(--blanc-casse)
+--foyer-fond,3,var(--module-actif)
+--foyer-fond,4,var(--vert-selection)
+--foyer-fond,5,var(--tuile-fond)
+--foyer-lisere,0,calc(var(--limite-ep) * 2)
+--gris-500,0,#635E53
+--gris-500-rgb,0,99, 94, 83
+--gris-aplat,0,var(--gris-ilot)
+--gris-filet,0,var(--gris-ilot)
+--gris-ilot,0,#E4E1DA
+--gris-ilot-rgb,0,228, 225, 218
+--gris-service,0,var(--gris-ilot)
+--jaune-ambre,0,var(--jaune-e1)
+--jaune-e1,0,#CF8F00
+--jaune-e1-rgb,0,207, 143, 0
+--jaune-e2,0,#FFB000
+--jaune-e2-rgb,0,255, 176, 0
+--jaune-e3,0,#FFC840
+--jaune-e3-rgb,0,255, 200, 64
+--jaune-e4,0,#FFDE8B
+--jaune-e4-rgb,0,255, 222, 139
+--jaune-e5,0,#FFF0C9
+--jaune-e5-rgb,0,255, 240, 201
+--jaune-jaune-pur,0,var(--jaune-e2)
+--jaune-jaune-roots,0,var(--jaune-e3)
+--jaune-paille,0,var(--jaune-e4)
+--jaune-voile,0,var(--jaune-e5)
+--lettrage-bas-de-casse,0,normal
+--lettrage-capitales,0,0.07em
+--lettrage-capitales-petites,0,0.1em
+--lettrage-code,0,0.13em
+--lettrage-ll-h5,0,var(--lettrage-capitales)
+--lh-10,0,1.682
+--lh-12,0,1.682
+--lh-13,0,1.414
+--lh-14,0,1.414
+--lh-16,0,1.414
+--lh-20,0,1.189
+--lh-21,0,1.189
+--lh-26,0,1.189
+--lh-28,0,1.189
+--lh-33,0,1.189
+--lh-38,0,1.189
+--lh-42,0,1.189
+--lh-51,0,1
+--lh-68,0,1
+--lh-aere,0,1.682
+--lh-bloc,0,1.189
+--lh-chiffre,0,1
+--lh-corps,0,var(--lh-16)
+--lh-item,0,1.189
+--lh-lecture-ecran,0,1.414
+--lh-lecture-print,0,1.414
+--lh-prose,0,1.414
+--lh-soude,0,1
+--limite-controle,0,var(--gris-500)
+--limite-ep,0,1.5px
+--limite-ep-b,0,2px
+--ll-rythme,0,var(--esp-7)
+--marque-coche,0,url("data:image/svg+xml
+--marque-cochee,0,var(--marque-point)
+--marque-cochee,1,var(--marque-coche)
+--marque-point,0,url("data:image/svg+xml
+--module-actif,0,#EEF4E9
+--module-actif-rgb,0,238, 244, 233
+--mvt-ample,0,240ms
+--mvt-apparition,0,var(--mvt-ample)
+--mvt-court,0,110ms
+--mvt-eclair,0,70ms
+--mvt-etat,0,var(--mvt-court)
+--mvt-long,0,400ms
+--mvt-moyen,0,150ms
+--mvt-parcours,0,var(--mvt-long)
+--neutre-ardoise,0,var(--neutre-e2)
+--neutre-calcaire,0,var(--neutre-e5)
+--neutre-cendre,0,var(--neutre-e3)
+--neutre-e1,0,#2B2B2B
+--neutre-e1-rgb,0,43, 43, 43
+--neutre-e2,0,#4E4E4E
+--neutre-e2-rgb,0,78, 78, 78
+--neutre-e3,0,#737373
+--neutre-e3-rgb,0,115, 115, 115
+--neutre-e4,0,#9B9B9B
+--neutre-e4-rgb,0,155, 155, 155
+--neutre-e5,0,#C5C5C5
+--neutre-e5-rgb,0,197, 197, 197
+--neutre-fumee,0,var(--neutre-e1)
+--neutre-poussiere,0,var(--neutre-e4)
+--noir,0,#1A1A1A
+--noir-rgb,0,26, 26, 26
+--ombre-carte,0,var(--ombre-posee)
+--ombre-flottante,0,0 10px 30px rgba(var(--teinte-ombre-flottante-rgb), 0.35)
+--ombre-posee,0,0 10px 30px rgba(var(--teinte-ombre-posee-rgb), 0.10)
+--ombre-teinte,0,5, 25, 18
+--puce-active,0,#FDF0EB
+--puce-active-rgb,0,253, 240, 235
+--rayon-carte,0,26px
+--rayon-champ,0,12px
+--rayon-module,0,16px
+--rayon-pilule,0,999px
+--rayon-tuile,0,0
+--roots-jaune,0,var(--jaune-e3)
+--roots-noir,0,var(--noir)
+--roots-rouge,0,var(--rouge-e3)
+--roots-terracotta,0,var(--terre-e3)
+--roots-vert,0,var(--vert-e2)
+--rouge-brique,0,var(--rouge-e2)
+--rouge-clair,0,var(--rouge-e4)
+--rouge-e1,0,#5A0B0E
+--rouge-e1-rgb,0,90, 11, 14
+--rouge-e2,0,#9C1218
+--rouge-e2-rgb,0,156, 18, 24
+--rouge-e3,0,#E31B23
+--rouge-e3-rgb,0,227, 27, 35
+--rouge-e4,0,#EF777B
+--rouge-e4-rgb,0,239, 119, 123
+--rouge-e5,0,#F6B4B7
+--rouge-e5-rgb,0,246, 180, 183
+--rouge-lavure,0,#FBEAE7
+--rouge-lavure-rgb,0,251, 234, 231
+--rouge-rose,0,var(--rouge-e5)
+--rouge-sang,0,var(--rouge-e1)
+--rouge-unia,0,var(--rouge-e3)
+--statut-annule,0,var(--rouge-e3)
+--statut-confirme,0,var(--vert-e3)
+--statut-en-attente,0,var(--jaune-e2)
+--statut-en-preparation,0,var(--terre-e3)
+--statut-termine,0,var(--gris-500)
+--style-ll-chapo,0,italic
+--style-ll-h6,0,italic
+--t-10,0,10px
+--t-12,0,12px
+--t-13,0,13px
+--t-14,0,14px
+--t-16,0,16px
+--t-20,0,20px
+--t-21,0,21px
+--t-26,0,26px
+--t-28,0,28px
+--t-33,0,33px
+--t-38,0,38px
+--t-42,0,42px
+--t-51,0,51px
+--t-68,0,68px
+--t-b-h1,0,var(--t-51)
+--t-b-h2,0,var(--t-38)
+--t-body,0,var(--t-16)
+--t-body,1,var(--t-16)
+--t-body,2,var(--t-16)
+--t-chrome-titre,0,var(--t-21)
+--t-chrome-titre,1,var(--t-16)
+--t-chrome-titre,2,var(--t-21)
+--t-chrome-titre,3,var(--t-16)
+--t-code,0,var(--t-33)
+--t-display,0,var(--t-68)
+--t-display,1,var(--t-51)
+--t-h1,0,var(--t-51)
+--t-h1,1,var(--t-38)
+--t-h1,2,var(--t-38)
+--t-h2,0,var(--t-38)
+--t-h2,1,var(--t-28)
+--t-h2,2,var(--t-28)
+--t-h3,0,var(--t-28)
+--t-h3,1,var(--t-21)
+--t-h3,2,var(--t-21)
+--t-h3,3,var(--t-21)
+--t-h4,0,var(--t-21)
+--t-h4,1,var(--t-16)
+--t-h4,2,var(--t-16)
+--t-h5,0,var(--t-16)
+--t-h6,0,var(--t-13)
+--t-label,0,var(--t-12)
+--t-ll-chapo,0,var(--t-26)
+--t-ll-chapo,1,var(--t-20)
+--t-ll-chapo,2,var(--t-26)
+--t-ll-corps,0,var(--t-20)
+--t-ll-corps,1,var(--t-16)
+--t-ll-corps,2,var(--t-20)
+--t-ll-h3,0,var(--t-26)
+--t-ll-h3,1,var(--t-20)
+--t-ll-h3,2,var(--t-26)
+--t-ll-h4,0,var(--t-20)
+--t-ll-h4,1,var(--t-16)
+--t-ll-h4,2,var(--t-20)
+--t-ll-h5,0,var(--t-20)
+--t-ll-h5,1,var(--t-16)
+--t-ll-h5,2,var(--t-20)
+--t-ll-h6,0,var(--t-20)
+--t-ll-h6,1,var(--t-16)
+--t-ll-h6,2,var(--t-20)
+--t-ll-intertitre,0,var(--t-42)
+--t-ll-intertitre,1,var(--t-26)
+--t-ll-intertitre,2,var(--t-42)
+--t-ll-note,0,var(--t-12)
+--t-ll-titre,0,var(--t-68)
+--t-ll-titre,1,var(--t-42)
+--t-ll-titre,2,var(--t-68)
+--t-note,0,var(--t-12)
+--t-piece,0,13px
+--t-prix,0,var(--t-14)
+--t-prix-somme,0,var(--t-21)
+--t-prix-total,0,var(--t-33)
+--t-saisie,0,var(--t-16)
+--t-sm,0,var(--t-14)
+--t-tuile-libelle,0,var(--t-21)
+--t-tuile-libelle-lg,0,var(--t-28)
+--teinte-ombre-flottante,0,#0A190E
+--teinte-ombre-flottante-rgb,0,10, 25, 14
+--teinte-ombre-posee,0,#3C321E
+--teinte-ombre-posee-rgb,0,60, 50, 30
+--terre-argile,0,var(--terre-e4)
+--terre-brique-cuite,0,var(--terre-e2)
+--terre-brune,0,var(--terre-e1)
+--terre-cacao,0,var(--terre-e1)
+--terre-e1,0,#4F1D06
+--terre-e1-rgb,0,79, 29, 6
+--terre-e2,0,#8A3003
+--terre-e2-rgb,0,138, 48, 3
+--terre-e3,0,#C2500D
+--terre-e3-rgb,0,194, 80, 13
+--terre-e4,0,#EE7C41
+--terre-e4-rgb,0,238, 124, 65
+--terre-e5,0,#F0B99F
+--terre-e5-rgb,0,240, 185, 159
+--terre-sable-rose,0,var(--terre-e5)
+--terre-terracotta,0,var(--terre-e3)
+--trait-icone,0,2
+--trait-logo,0,1
+--tuile-action-min,0,96px
+--tuile-fond,0,var(--gris-ilot)
+--tuile-fond,1,var(--rouge-e3)
+--tuile-fond,2,var(--vert-e2)
+--tuile-fond,3,var(--univers-e3)
+--tuile-fond,4,var(--univers-e1)
+--tuile-gouttiere,0,4px
+--tuile-lisere-etat,0,3px
+--tuile-pas,0,96px
+--univers,0,var(--roots-vert)
+--univers-e1,0,var(--vert-e1)
+--univers-e3,0,var(--vert-e3)
+--univers-e4,0,var(--vert-e4)
+--univers-e5,0,var(--vert-e5)
+--vert-clair,0,var(--vert-e4)
+--vert-e1,0,#0C321A
+--vert-e1-rgb,0,12, 50, 26
+--vert-e2,0,#005B22
+--vert-e2-rgb,0,0, 91, 34
+--vert-e3,0,#12853F
+--vert-e3-rgb,0,18, 133, 63
+--vert-e4,0,#14B34F
+--vert-e4-rgb,0,20, 179, 79
+--vert-e5,0,#30E173
+--vert-e5-rgb,0,48, 225, 115
+--vert-garvey,0,var(--vert-e3)
+--vert-lavure,0,#E4EFE7
+--vert-lavure-rgb,0,228, 239, 231
+--vert-nuit,0,var(--vert-e1)
+--vert-roots,0,var(--vert-e2)
+--vert-selection,0,rgba(var(--vert-e2-rgb), .08)
+--vert-vif,0,var(--vert-e5)
+--voile-video-teinte,0,8, 34, 20
+--w-a-corps,0,var(--w-medium)
+--w-a-display,0,var(--w-xbold)
+--w-a-h1,0,var(--w-thin)
+--w-a-h1-appuye,0,var(--w-bold)
+--w-a-h2,0,var(--w-bold)
+--w-a-h3,0,var(--w-light)
+--w-b-min,0,var(--w-medium)
+--w-bold,0,700
+--w-lecture,0,300
+--w-light,0,300
+--w-ll-chapo,0,700
+--w-ll-h1,0,100
+--w-ll-h2,0,500
+--w-ll-h3,0,700
+--w-ll-h4,0,700
+--w-ll-h5,0,300
+--w-ll-h6,0,300
+--w-medium,0,500
+--w-regular,0,400
+--w-thin,0,100
+--w-xbold,0,800
+--zoom-lecture,0,1
