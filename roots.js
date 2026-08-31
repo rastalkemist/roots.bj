@@ -1050,22 +1050,6 @@
       toast(toastVerbe(getLangue(), verbes[v]));
     });
 
-    /* La marque suit l'univers de la surface : Mi Space la porte monochrome,
-       d'une encre unique heritee de ce qui l'entoure ; les autres univers la
-       gardent en couleurs. Le tronc pose le renvoi une fois, aucune page n'a
-       a le savoir. */
-    if (document.body.classList.contains('p-space')) {
-      Array.prototype.forEach.call(
-        document.querySelectorAll('.ankh-home use, .marque-wrap use'),
-        function (u) {
-          var cible = u.getAttribute('href') || u.getAttribute('xlink:href');
-          if (cible === '#i-ankh') {
-            u.setAttribute('href', '#i-ankh-mono');
-            u.removeAttribute('xlink:href');
-          }
-        });
-    }
-
     var voile = document.getElementById('voileMenu');
     var drawer = document.getElementById('drawer');
     var burger = document.getElementById('btnBurger');
