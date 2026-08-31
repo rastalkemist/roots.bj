@@ -28,7 +28,11 @@ body.p-site .chrome-titre,body.p-site .site-nom,body.p-site .chrome-burger,body.
 body.p-site.sur-fond .chrome-droite .lang-btn{color:var(--roots-noir)}
 body.p-site.sur-fond .chrome-titre{color:var(--roots-noir)}
 body.p-site.sur-fond .site-nom{color:var(--encre)}
-body.p-site.sur-fond .chrome-burger{background-image:var(--jauge);-webkit-background-clip:text;background-clip:text;color:transparent}
+/* Le burger est un DESSIN, pas un mot : un fond decoupe au texte n'y decoupe
+   rien, et l'encre transparente qui accompagne ce procede efface son trait. Il
+   prend donc une encre pleine — la seule commande de navigation du telephone
+   ne peut pas disparaitre. */
+body.p-site.sur-fond .chrome-burger{color:var(--encre)}
 body.p-site.sur-fond .site-nom.actif{background-image:var(--jauge);-webkit-background-clip:text;background-clip:text;color:transparent}
 /* La pastille appartient à Space : elle porte le noir Roots, toujours, et ne
    suit aucun univers. Le tronc la borde d'un liseré de l'univers courant et
@@ -56,9 +60,14 @@ body.p-site #marque{background:var(--roots-noir);
    et celui qui n'a pas la parole quitte le flux — sans quoi il tiendrait la
    place de l'autre. */
 @media(max-width:1023.98px){
-  body.p-site .chrome-inner>.chrome-titre{grid-column:2;justify-self:start;margin-inline-start:var(--esp-3)}
-  body.p-site .chrome-inner>.fab.quete,body.p-site .chrome-inner>.quete-groupe{grid-column:2}
-  body.p-site .chrome-inner>[data-retire]{display:none}
+  /* Chaque piece recoit SA case, nommee : la rangee unique ne depend plus de
+     l'ordre d'arrivee ni de ce qui est vu. Le logotype et la quete partagent
+     la case du centre — ils se relaient, jamais tous deux a l'ecran — et ce
+     partage ne pousse personne a la ligne suivante. */
+  body.p-site .chrome-inner>.ankh-home{grid-area:1 / 1}
+  body.p-site .chrome-inner>.chrome-titre{grid-area:1 / 2;justify-self:start;margin-inline-start:var(--esp-3)}
+  body.p-site .chrome-inner>.fab.quete,body.p-site .chrome-inner>.quete-groupe{grid-area:1 / 2}
+  body.p-site .chrome-inner>.chrome-droite{grid-area:1 / 3}
   body.p-site.sur-fond .chrome-inner>.chrome-titre{display:none}
 }
 @media(min-width:1024px){

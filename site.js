@@ -23,15 +23,17 @@
           apProjet: 'Le projet', apEquipe: 'L’équipe', apCommunaute: 'La communauté',
           apVision: 'La vision',
           hautDePage: 'Haut de page',
-          titrePage: 'Roots Bénin',
+          titrePage: 'Roots Bénin - Terre-Mère, terre du futur',
+          nomSite: 'Roots Bénin',
           descriptionPage: 'Terre-Mère, terre du futur' },
     en: { navConnecter: 'Connect', navVisiter: 'Visit', navDecouvrir: 'Discover',
           navRevenir: 'Return', navAPropos: 'About',
           apProjet: 'The project', apEquipe: 'The team', apCommunaute: 'The community',
           apVision: 'The vision',
           hautDePage: 'Back to top',
-          titrePage: 'Roots Benin',
-          descriptionPage: '[Re]connect with the motherland' }
+          titrePage: 'Roots Benin - [re]connect with the Motherland',
+          nomSite: 'Roots Benin',
+          descriptionPage: '[re]connect with the Motherland' }
   };
   /* La langue se lit comme le tronc la lit : la clé si elle existe, sinon la
      langue du navigateur. Sans ce repli, la barre parlerait français pendant
@@ -61,7 +63,9 @@
        seconde version : elles se posent donc toutes ici, en un seul endroit,
        depuis les deux clés du dictionnaire. */
     poserFente('title', d.titrePage);
-    poserFente('meta[property="og:site_name"]', d.titrePage);
+    /* Le nom du site au partage est le NOM, pas le titre : le titre porte
+       l'accroche, le nom ne la porte pas. */
+    poserFente('meta[property="og:site_name"]', d.nomSite);
     poserFente('meta[property="og:title"]', d.titrePage);
     poserFente('meta[name="description"]', d.descriptionPage);
     poserFente('meta[property="og:description"]', d.descriptionPage);
