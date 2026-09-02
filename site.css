@@ -6,40 +6,23 @@
    seules pièces du nav. Exige : roots-tokens.css, roots.css et roam.css.
    ========================================================================== */
 
-/* ---- LA JAUGE DU NAV. Le corps de la page appartient au monde rouge du bout
-   a l'autre : rien n'y bascule. Les pieces de la barre, elles, se REMPLISSENT
-   de rouge — un seul degrade, une seule grandeur, le meme geste que le disque
-   de la quete : la part rouge est la part du cercle que la ligne de fin de la
-   scene a depassee. Le nom de la maison et le mot de la section prennent ce
-   degrade dans leur encre ; la pastille et le disque le prennent en aplat.
-   Ils se remplissent donc ensemble, au meme rythme, dans les deux sens. ---- */
-/* La part rouge : publiee par le script entre 0 et 1, nulle au chargement. */
-:root{--part-rouge:0}
-body.p-site{--part:calc(var(--part-rouge,0) * 100%);
-  --jauge:linear-gradient(to top,var(--rouge-e2) var(--part),var(--roots-vert) var(--part));
-  --jauge-e3:linear-gradient(to top,var(--rouge-e3) var(--part),var(--vert-e3) var(--part));
-  --jauge-e1:linear-gradient(to top,var(--rouge-e1) var(--part),var(--vert-e1) var(--part))}
-/* Le nom de la maison ne suit aucun univers : il est noir Roots, toujours.
-   Seul le mot de la section en vue se remplit avec la jauge. */
+/* ---- LA GRANDEUR DE LA BARRE. Le corps de la page appartient au monde rouge
+   du bout a l'autre : rien n'y bascule. La barre, elle, passe du vert au rouge
+   par une seule grandeur, la part rouge, publiee par le script : la part du
+   cercle de la quete que la ligne de fin de la scene a depassee. Le tronc la
+   lit pour ses voiles ; la feuille ne la declare pas, elle la consomme. ---- */
+/* Le voile du tiroir suit la barre : deux couches, l'une s'efface pendant que
+   l'autre parait, a la meme grandeur. La teinte est l'entree que le tronc
+   offre pour ce voile ; sa regle, elle, reste au tronc. */
+body.p-site{--voile-menu-fond:
+  linear-gradient(rgba(var(--rouge-e1-rgb),calc(.22 * var(--part-rouge,0))),rgba(var(--rouge-e1-rgb),calc(.22 * var(--part-rouge,0)))),
+  linear-gradient(rgba(var(--vert-e1-rgb),calc(.22 * (1 - var(--part-rouge,0)))),rgba(var(--vert-e1-rgb),calc(.22 * (1 - var(--part-rouge,0)))))}
+/* Le nom de la maison ne suit aucun univers : il est noir Roots, toujours. */
 /* Sur la scène, la barre entière parle blanc : rien n'a de fond derrière soi,
    et une encre unique tient l'ensemble. Revenue sur son fond plein, elle
-   reprend le noir de la maison et la jauge du mot de section. */
-body.p-site .chrome-titre,body.p-site .site-nom,body.p-site .chrome-burger,body.p-site .ankh-home,body.p-site .chrome-droite .lang-btn{color:var(--blanc)}
-body.p-site.sur-fond .chrome-droite .lang-btn{color:var(--roots-noir)}
-body.p-site.sur-fond .chrome-titre{color:var(--roots-noir)}
+   reprend le noir de la maison. */
+body.p-site .site-nom{color:var(--blanc)}
 body.p-site.sur-fond .site-nom{color:var(--encre)}
-/* Le burger est un DESSIN, pas un mot : un fond decoupe au texte n'y decoupe
-   rien, et l'encre transparente qui accompagne ce procede efface son trait. Il
-   prend donc une encre pleine — la seule commande de navigation du telephone
-   ne peut pas disparaitre. */
-body.p-site.sur-fond .chrome-burger{color:var(--encre)}
-body.p-site.sur-fond .site-nom.actif{background-image:var(--jauge);-webkit-background-clip:text;background-clip:text;color:transparent}
-/* La pastille appartient à Space : elle porte le noir Roots, toujours, et ne
-   suit aucun univers. Le tronc la borde d'un liseré de l'univers courant et
-   l'assoit sur une ombre de la même teinte ; les deux prennent ici la couleur
-   de la pastille, faute de quoi un cerne rouge l'entourerait dans le vert. */
-body.p-site #marque{background:var(--roots-noir);
-  box-shadow:inset 0 0 0 1.5px var(--roots-noir),0 3px 10px rgba(var(--noir-rgb),.30)}
 
 /* ---- LA BARRE DU SITE. Trois zones sur grand écran : la marque à gauche —
    l'ankh et son nom —, la quête au centre, les cinq noms et la pastille à
@@ -71,11 +54,6 @@ body.p-site #marque{background:var(--roots-noir);
   body.p-site.sur-fond .chrome-inner>.chrome-titre{display:none}
 }
 @media(min-width:1024px){
-  /* Le nom de la maison et le logotype de la pastille disent la même chose
-     au même barreau : ils descendent ensemble d'un cran sur grand écran. Le
-     disque, lui, garde sa mesure — il est une cible, pas un mot. */
-  body.p-site .chrome-titre,body.p-site #marque .mot{font-size:var(--t-16)}
-  body.p-site .chrome-inner{display:flex;align-items:center;gap:var(--esp-4);width:min(92%,1200px)}
   body.p-site .chrome-inner>.quete-groupe{margin-inline:auto}
   body.p-site .chrome-inner>.site-noms{order:1}
   body.p-site .chrome-inner>.chrome-droite{order:2}
@@ -84,21 +62,19 @@ body.p-site #marque{background:var(--roots-noir);
   /* L'ecart entre les deux deroulants est la ligne d'interface pleine — le
      cran des barres des tenors. */
   .site-nom{display:inline-flex;align-items:center;gap:var(--esp-1);min-height:var(--cible-min);max-width:220px;border:none;background:none;padding:0;cursor:pointer;text-decoration:none;transition:color var(--mvt-ample) var(--courbe-etat),max-width var(--mvt-ample) var(--courbe-etat),margin var(--mvt-ample) var(--courbe-etat),opacity var(--mvt-ample) var(--courbe-etat)}
-  /* Le survol et l'appui prennent la meme jauge, aux echelons voisins : aucun
-     etat du nav ne parle un univers que le haut de page ne porte pas. */
-  body.p-site.sur-fond .site-nom:hover{background-image:var(--jauge-e3);-webkit-background-clip:text;background-clip:text;color:transparent}
-  .site-nom:active{background-image:var(--jauge-e1);-webkit-background-clip:text;background-clip:text;color:transparent}
+  /* Le survol et l'appui du nom parlent gris, hors de tout univers : un
+     echelon clair sous la souris, un echelon plus ferme sous le doigt. Sur la
+     scene, ou le nom est blanc, le survol ne change rien. */
+  body.p-site.sur-fond .site-nom:hover{color:var(--neutre-e4)}
+  body.p-site.sur-fond .site-nom:active{color:var(--neutre-e3)}
   /* Des le premier defilement, les quatre mots d'ancre se rangent : seuls
      demeurent celui de la section en vue — au troisieme echelon de son
      univers —, le deroulant et la pastille. Le rang ne se redeploie qu'au
      survol ou au clavier ; remonter ne suffit pas. Le pliage reprend la
      recette du tiret : largeur et encre s'effacent ensemble. */
 }
-/* Le mot du bouton porte la jauge par un fond decoupe au texte, ce qui rend
-   l'encre transparente : le chevron, qui suit l'encre courante, disparaitrait
-   avec elle. Il reprend donc l'encre du texte courant. */
-body.p-site .site-nom .site-chevron{color:var(--blanc)}
-body.p-site.sur-fond .site-nom .site-chevron{color:var(--encre)}
+/* Le chevron suit l'encre courante du nom : blanc sur la scene, noir sur le
+   fond plein, gris sous la souris — sans regle propre. */
 .site-chevron{width:16px;height:16px;transform:rotate(90deg);transition:transform var(--mvt-court) var(--courbe-etat)}
 .site-apropos{position:relative}
 /* Un déroulant de nav n'est pas un tiroir : il ne porte que des mots, il se
@@ -135,15 +111,7 @@ body.p-site.sur-fond .site-nom .site-chevron{color:var(--encre)}
    cinq noms elle quitte la barre — la porte du menu la remplace — pour que
    la barre étroite ne dispute l'attention qu'entre la quête et la
    réservation. ---- */
-/* Le voile que le tiroir jette sur l'écran prendrait la teinte d'ombre de
-   l'univers du corps — le rouge — alors que le haut de page parle vert. Il
-   suit la même grandeur que le reste de la barre : deux couches, l'une
-   s'efface pendant que l'autre paraît. */
-body.p-site .voile{background:
-  linear-gradient(rgba(var(--rouge-e1-rgb),calc(.5 * var(--part-rouge,0))),rgba(var(--rouge-e1-rgb),calc(.5 * var(--part-rouge,0)))),
-  linear-gradient(rgba(var(--vert-e1-rgb),calc(.5 * (1 - var(--part-rouge,0)))),rgba(var(--vert-e1-rgb),calc(.5 * (1 - var(--part-rouge,0)))))}
 body.p-site #marque .reste{display:none}
-body.p-site #marque{cursor:pointer}
 @media(max-width:1023.98px){body.p-site .chrome-droite #marque{display:none}}
 
 /* ---- LE VOILE DE LA SCÈNE. Sur la scène, la barre ne porte aucun fond : un
@@ -152,13 +120,6 @@ body.p-site #marque{cursor:pointer}
    forte en haut et tangente à zéro en bas : la dissolution n'a donc aucun
    point de rupture, et le dégradé se suffit — plus rien ne le masque. Passé la scène, la barre reprend le fond plein du
    tronc et le voile s'efface. ---- */
-body.p-site .chrome-haut{background:transparent;backdrop-filter:none;border-bottom-color:transparent;transition:background var(--mvt-ample) var(--courbe-etat),border-color var(--mvt-ample) var(--courbe-etat)}
-body.p-site .chrome-haut::after{content:'';position:absolute;inset:0 0 auto 0;z-index:-1;pointer-events:none;
-  height:var(--entete-h-rendue,64px);
-  background:linear-gradient(to bottom,rgba(var(--noir-rgb),0.950) 0%,rgba(var(--noir-rgb),0.753) 10%,rgba(var(--noir-rgb),0.581) 20%,rgba(var(--noir-rgb),0.433) 30%,rgba(var(--noir-rgb),0.309) 40%,rgba(var(--noir-rgb),0.207) 50%,rgba(var(--noir-rgb),0.127) 60%,rgba(var(--noir-rgb),0.067) 70%,rgba(var(--noir-rgb),0.028) 80%,rgba(var(--noir-rgb),0.006) 90%,rgba(var(--noir-rgb),0.000) 100%);
-  transition:opacity var(--mvt-ample) var(--courbe-etat)}
-body.p-site.sur-fond .chrome-haut{background:rgba(var(--blanc-rgb),.96);backdrop-filter:blur(8px);border-bottom-color:var(--gris-service)}
-body.p-site.sur-fond .chrome-haut::after{opacity:0}
 
 /* ---- L'ACCUEIL FILMÉ. Barre comprise, la scène tient 85 % de la
    fenêtre : le dixième restant montre qu'il y a une suite. L'affiche porte
@@ -173,9 +134,7 @@ body.p-site.sur-fond .chrome-haut::after{opacity:0}
    lui donne sur son ecran filme : hors champ, elle ne parait qu'au foyer du
    clavier. Le mecanisme reste joignable — une piece en mouvement qui part
    seule doit pouvoir s'arreter — sans peser sur l'image. */
-.site-accueil .commande-video{position:fixed;left:-9999px;bottom:calc(var(--esp-5) + var(--safe-bas,0px));z-index:7;width:var(--cible-min);height:var(--cible-min);border:2px solid var(--creme);border-radius:50%;background:var(--univers-e1);color:var(--creme);display:flex;align-items:center;justify-content:center;cursor:pointer}
 .site-accueil .commande-video:focus,.site-accueil .commande-video:focus-visible{left:var(--esp-5)}
-.site-accueil .commande-video svg{width:20px;height:20px}
 
 /* ---- LE GESTE FOCAL DU ROOTS. Il ne vit pas au bas de la fenetre comme sur
    l'ecran d'ou il vient, mais DANS la scene d'accueil, un cran d'air au-dessus
@@ -190,7 +149,6 @@ body.p-site.sur-fond .chrome-haut::after{opacity:0}
    avant d'etre jugee. La feuille, elle, vaut avant le premier rendu — aucun
    ordre d'arrivee ne peut la prendre de vitesse. Le seuil est le meme que
    celui du fond de barre : la classe sur-fond. */
-body.p-site:not(.sur-fond) .chrome-inner>.fab.quete,body.p-site:not(.sur-fond) .chrome-inner>.quete-groupe{opacity:0;visibility:hidden;pointer-events:none}
 
 /* ---- LE MENU DU SITE. Les cinq noms et le déroulant, dans le tiroir, à la
    place des sections d'univers que le tronc y verse. Le feuillet s'ancre à
@@ -198,7 +156,6 @@ body.p-site:not(.sur-fond) .chrome-inner>.fab.quete,body.p-site:not(.sur-fond) .
 /* Le feuillet se lit en trois blocs separes par deux filets : la rangee
    utilitaire, les noms, le pied. Les filets tiennent la largeur du contenu,
    jamais celle du feuillet. */
-body.p-site #sections{display:flex;flex-direction:column}
 body.p-site #sections .site-tiroir{order:1}
 body.p-site #sections .tiroir-radio{order:2}
 body.p-site #sections .pied-politique{order:3}
@@ -225,9 +182,14 @@ body.p-site #sections .pied-politique{order:3}
 body.p-site #sections .tiroir-radio .centre{order:2}
 body.p-site #sections .tiroir-radio #marque{order:2}
 body.p-site #sections .tiroir-radio .languette-radio{order:1}
-body.p-site #sections .tiroir-radio{position:static;margin:0 var(--esp-5);padding:var(--esp-4) 0;border-bottom:1px solid var(--gris-service)}
-/* Un cran plein separe les noms du pied. */
-body.p-site #sections .pied-politique{border-top:none;margin-top:0;padding-top:var(--esp-4)}
+
+/* ---- LE PIED DE PAGE. Le tiroir ne porte plus que le deroulant : les trois
+   sections se rappellent au pied, avec le lien de politique, sur une seule
+   ligne qui se plie au besoin. Le tronc dessine les liens ; la feuille ne
+   fait que les ranger. Une section rejointe par son ancre s'arrete sous la
+   barre, pas derriere elle. ---- */
+.site-pied-nav{display:flex;flex-wrap:wrap;justify-content:center;gap:0 var(--esp-3)}
+#sejourner,#decouvrir,#infos{scroll-margin-top:calc(var(--entete-h-rendue,64px) + var(--esp-3))}
 
 /* ---- LE RETOUR AU HAUT DE PAGE. Un chevron nu au coin bas droit : ni aplat,
    ni limite, ni mot — le geste le plus discret que la page puisse offrir. Son

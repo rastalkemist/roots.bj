@@ -1498,12 +1498,16 @@
     if (verrousDePage > 1) return;
     var gouttiere = window.innerWidth - document.documentElement.clientWidth;
     if (gouttiere > 0) document.body.style.paddingRight = gouttiere + 'px';
+    /* Le verrou se pose aussi sur la racine : elle coupe deja son debordement
+       horizontal, et un corps fige seul ne retient plus la fenetre. */
+    document.documentElement.classList.add('page-figee');
     document.body.classList.add('page-figee');
   }
   function rendreLaPage() {
     verrousDePage = Math.max(0, verrousDePage - 1);
     if (verrousDePage) return;
     document.body.style.paddingRight = '';
+    document.documentElement.classList.remove('page-figee');
     document.body.classList.remove('page-figee');
   }
 

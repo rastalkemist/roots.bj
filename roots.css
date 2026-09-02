@@ -612,7 +612,12 @@ body.nav-quete .chrome-droite{min-width:0;justify-self:stretch;justify-content:f
 .verbe{flex:0 0 auto;padding:var(--esp-1) var(--esp-1)}
 .ico-rond{width:56px;height:56px}
 
-}.voile-menu{position:fixed;inset:0;z-index:24;background:rgba(var(--ombre-teinte),.22);opacity:0;pointer-events:none;transition:opacity var(--mvt-apparition) var(--courbe-etat)}
+}/* La teinte du voile de menu est une ENTREE, resolue sur le corps de page :
+   par defaut l'ombre de l'univers courant, en leger. Une surface la pose
+   sur son corps pour donner au voile une autre grandeur — la regle du
+   voile, elle, ne se redeclare nulle part. */
+body{--voile-menu-fond:rgba(var(--ombre-teinte),.22)}
+.voile-menu{position:fixed;inset:0;z-index:24;background:var(--voile-menu-fond);opacity:0;pointer-events:none;transition:opacity var(--mvt-apparition) var(--courbe-etat)}
 .voile-menu.visible{opacity:1;pointer-events:auto}
 /* Le tiroir et son icone forment un bloc : leurs bords droits sont le meme
    bord, celui de la piste, et ils se deplacent ensemble quand la gouttiere
@@ -820,7 +825,10 @@ body.nav-haut .verbe.actif .verbe-dit{view-transition-name:legende-verbe}
 .voile.voile-doux{z-index:12}
 /* La page figee sous une modale : le document ne defile plus, la feuille
    garde son propre defilement interieur. */
-body.page-figee{overflow:hidden}
+/* Le verrou tient sur la racine ET sur le corps : la racine coupe son
+   debordement horizontal en permanence, ce qui empeche le corps de lui
+   propager le sien — fige seul, il laisserait la page defiler dessous. */
+html.page-figee,body.page-figee{overflow:hidden}
 .feuille-bas{overscroll-behavior:contain;position:fixed;z-index:22;left:50%;bottom:0;transform:translate(-50%,112%);width:min(450px,100%);--feuille-pose:0px;max-height:calc(100vh - var(--entete-h-rendue) - var(--esp-3) - var(--feuille-pose));max-height:calc(100dvh - var(--entete-h-rendue) - var(--esp-3) - var(--feuille-pose));overflow-y:auto;scrollbar-width:none;background:var(--blanc);color:var(--encre);border-radius:var(--rayon-carte) var(--rayon-carte) 0 0;padding:calc(var(--feuille-marge) - var(--poignee-bloc)) var(--feuille-marge) calc(var(--esp-6) + var(--safe-bas));box-shadow:0 -12px 40px rgba(var(--ombre-teinte),.35);transition:transform var(--mvt-parcours) var(--courbe-entree)}
 .feuille-bas::-webkit-scrollbar{display:none}
 .feuille-bas.visible{transform:translate(-50%,0)}
@@ -2158,3 +2166,93 @@ body.nav-quete .fab.quete::after{content:'';flex:0 0 auto;width:38px;height:38px
 .feuille-bas[data-pose="barre"] .consent-lien{margin-block:var(--esp-6) 0}
 .voile[data-pose="barre"]{z-index:12}
 
+
+/* =========================================================
+   LA SURFACE PUBLIQUE — ce que le corps p-site demande aux pieces du tronc.
+
+   Une surface pose une piece importee — ou elle est, si elle parait, comment
+   elle s'insere — et ne touche jamais a son dessin. Les declarations qui
+   suivent sont du dessin : elles vivent donc ici, et redescendent sur la
+   surface avec le reste de la feuille. Une surface qui les recopierait chez
+   elle divergerait au premier changement d'ici.
+
+   Elles ne rendent que sous le corps p-site ou sous la scene d'accueil :
+   aucun ecran d'application ne porte l'un ni l'autre. Le seuil qui les fait
+   basculer est la classe sur-fond, posee par la surface quand la scene
+   quitte l'ecran.
+   ========================================================= */
+
+body.p-site .chrome-titre,body.p-site .chrome-burger,body.p-site .ankh-home,body.p-site .chrome-droite .lang-btn{color:var(--blanc)}
+body.p-site.sur-fond .chrome-droite .lang-btn{color:var(--roots-noir)}
+body.p-site.sur-fond .chrome-titre{color:var(--roots-noir)}
+
+/* Le burger est un DESSIN, pas un mot : un fond decoupe au texte n'y decoupe
+   rien, et l'encre transparente qui accompagne ce procede efface son trait. Il
+   prend donc une encre pleine — la seule commande de navigation du telephone
+   ne peut pas disparaitre. */
+body.p-site.sur-fond .chrome-burger{color:var(--encre)}
+
+/* La pastille appartient à Space : elle porte le noir Roots, toujours, et ne
+   suit aucun univers. Le tronc la borde d'un liseré de l'univers courant et
+   l'assoit sur une ombre de la même teinte ; les deux prennent ici la couleur
+   de la pastille, faute de quoi un cerne rouge l'entourerait dans le vert. */
+body.p-site #marque{background:var(--roots-noir);
+  box-shadow:inset 0 0 0 1.5px var(--roots-noir),0 3px 10px rgba(var(--noir-rgb),.30)}
+body.p-site #marque{cursor:pointer}
+
+/* Le nom de la maison et le logotype de la pastille disent la même chose au
+   même barreau : ils descendent ensemble d'un cran sur grand écran. Le disque,
+   lui, garde sa mesure — il est une cible, pas un mot. La barre du tronc est
+   une grille de trois colonnes taillee pour l'application ; la surface
+   publique la passe en ligne souple et l'elargit a son rail. */
+@media(min-width:1024px){
+  body.p-site .chrome-titre,body.p-site #marque .mot{font-size:var(--t-16)}
+  body.p-site .chrome-inner{display:flex;align-items:center;gap:var(--esp-4);width:min(92%,1200px)}
+}
+
+/* Sur une scene qui occupe l'ecran, la barre ne porte aucun fond : un voile
+   noir la couvre, plein tout en haut, decroissant jusqu'a zero a son bas. La
+   pente est tangente a zero en bas — sans quoi une arete se verrait sur
+   l'image. Passe le seuil, la barre reprend le fond plein et le voile
+   s'efface. La hauteur du voile suit celle que le tronc mesure et publie ;
+   son repli tient la barre au chargement, avant la premiere mesure. */
+body.p-site .chrome-haut{background:transparent;backdrop-filter:none;border-bottom-color:transparent;transition:background var(--mvt-ample) var(--courbe-etat),border-color var(--mvt-ample) var(--courbe-etat)}
+body.p-site .chrome-haut::after{content:'';position:absolute;inset:0 0 auto 0;z-index:-1;pointer-events:none;
+  height:var(--entete-h-rendue,64px);
+  background:linear-gradient(to bottom,rgba(var(--noir-rgb),0.950) 0%,rgba(var(--noir-rgb),0.753) 10%,rgba(var(--noir-rgb),0.581) 20%,rgba(var(--noir-rgb),0.433) 30%,rgba(var(--noir-rgb),0.309) 40%,rgba(var(--noir-rgb),0.207) 50%,rgba(var(--noir-rgb),0.127) 60%,rgba(var(--noir-rgb),0.067) 70%,rgba(var(--noir-rgb),0.028) 80%,rgba(var(--noir-rgb),0.006) 90%,rgba(var(--noir-rgb),0.000) 100%);
+  transition:opacity var(--mvt-ample) var(--courbe-etat)}
+body.p-site.sur-fond .chrome-haut{background:rgba(var(--blanc-rgb),.96);backdrop-filter:blur(8px);border-bottom-color:var(--gris-service)}
+body.p-site.sur-fond .chrome-haut::after{opacity:0}
+
+/* La commande d'arret d'un film en pleine page se tient hors champ et ne
+   parait qu'au foyer du clavier : une piece en mouvement qui part seule doit
+   pouvoir s'arreter sans peser sur l'image. Elle garde le plancher tactile
+   meme hors champ — une cible qui retrecit hors de vue revient trop petite. */
+.site-accueil .commande-video{position:fixed;left:-9999px;bottom:calc(var(--esp-5) + var(--safe-bas,0px));z-index:7;width:var(--cible-min);height:var(--cible-min);border:2px solid var(--creme);border-radius:50%;background:var(--univers-e1);color:var(--creme);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.site-accueil .commande-video svg{width:20px;height:20px}
+
+/* Une piece de barre retenue par une feuille vaut avant le premier rendu :
+   aucun ordre d'arrivee ne peut la prendre de vitesse. Un script, lui, court
+   APRES la composition de la barre, et la piece parait le temps d'une image
+   avant d'etre jugee. Le seuil est celui du fond de barre. */
+body.p-site:not(.sur-fond) .chrome-inner>.fab.quete,body.p-site:not(.sur-fond) .chrome-inner>.quete-groupe{opacity:0;visibility:hidden;pointer-events:none}
+
+/* Le tiroir de la surface publique se lit en trois blocs separes par deux
+   filets : la rangee utilitaire, les noms, le pied. Les filets tiennent la
+   largeur du contenu, jamais celle du feuillet. L'ordre des blocs se pose sur
+   les enfants ; sans la colonne declaree ici, ces ordres ne s'appliquent
+   pas. */
+body.p-site #sections{display:flex;flex-direction:column}
+
+/* La rangee utilitaire quitte le bas collant du tiroir pour un rang au-dessus
+   du pied, et tient la largeur du contenu du feuillet. Le filet passe donc du
+   pied a cette rangee : deux filets sur trois blocs, jamais deux traits
+   consecutifs. */
+body.p-site #sections .tiroir-radio{position:static;margin:0 var(--esp-5);padding:var(--esp-4) 0;border-bottom:1px solid var(--gris-service)}
+body.p-site #sections .pied-politique{border-top:none;margin-top:0;padding-top:var(--esp-4)}
+
+/* La part rouge : grandeur de 0 a 1 qu'une surface publie pendant que sa
+   scene quitte l'ecran. Elle vaut zero au repos, et les regles qui la lisent
+   portent ce meme repli : une surface qui ne la publie pas rend l'etat de
+   depart, jamais un vide. */
+:root{--part-rouge:0}

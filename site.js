@@ -99,6 +99,10 @@
   function surveiller() {
     var scene = document.getElementById('connecter');
     function poserCourante() {
+      /* La mesure se tait tant que la page est figee sous une modale : le
+         defilement y est bloque et les boites ne disent plus la place vraie.
+         La grandeur garde sa derniere valeur juste, et la barre son etat. */
+      if (document.body.classList.contains('page-figee')) return;
       /* Le seuil se lit sur le disque de la quete : la part de son cercle que
          la ligne de fin de scene a depassee. Quand la quete est retiree, ce
          disque n'a plus de boite — l'ankh prend le relais : meme cercle, meme
@@ -393,7 +397,10 @@
     if (bac) new MutationObserver(placer).observe(bac, { childList: true });
     marque.setAttribute('role', 'link');
     marque.setAttribute('tabindex', '0');
-    function partir() { window.location.assign('https://mi.roots.bj/onboard.html'); }
+    /* La pastille mene a la porte d'installation de l'application, pas a un
+       ecran de compte : c'est l'application posee sur le telephone qui ouvre
+       ensuite l'univers Roots. */
+    function partir() { window.location.assign('https://mi.roots.bj/installer.html'); }
     marque.addEventListener('click', function (e) { e.stopPropagation(); partir(); });
     marque.addEventListener('keydown', function (e) {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); partir(); }

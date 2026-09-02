@@ -3,10 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; object-src 'none'; frame-src 'none'; script-src 'self' 'sha256-zq8VBJJwdYBKfEemUSbHzbOJ8W43mw9ygKAfrEr3tzU=' 'sha256-10j7Tj1GjX8ahrm5S2J+BHqqNxK4EQHxxm1LCO9cZzI=' 'sha256-Pj9ou4kA1BBhHCBaZXUy6cbQi/9XylHhny7c9OKLzCw='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self'; font-src 'self'; connect-src 'self' https://xrqorebcgnixcbqqeoll.supabase.co; manifest-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; base-uri 'none'; form-action 'none'; object-src 'none'; frame-src 'none'; script-src 'self' 'sha256-zq8VBJJwdYBKfEemUSbHzbOJ8W43mw9ygKAfrEr3tzU=' 'sha256-CiCpWtczroGTN87/Jca3XwIeXMTQDJ8AQw6Ozg/TbFs=' 'sha256-Pj9ou4kA1BBhHCBaZXUy6cbQi/9XylHhny7c9OKLzCw='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self'; font-src 'self'; connect-src 'self' https://xrqorebcgnixcbqqeoll.supabase.co; manifest-src 'self'">
 <title>Roots Bénin - Terre-Mère, terre du futur</title>
 <meta name="description" content="Terre-Mère, terre du futur">
 <link rel="canonical" href="https://roots.bj/">
+<link rel="preconnect" href="https://mi.roots.bj">
+<link rel="dns-prefetch" href="https://mi.roots.bj">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Roots Bénin">
 <meta property="og:title" content="Roots Bénin - Terre-Mère, terre du futur">
@@ -599,7 +601,12 @@
 </div>
 
 <footer class="pied">
-  <a href="https://mi.roots.bj/confidentialite.html" data-t="piedPolitique">Politique de confidentialité</a>
+  <nav class="site-pied-nav" aria-label="Sections">
+    <a href="#sejourner" data-t="piedSejourner">Séjourner</a>
+    <a href="#decouvrir" data-t="piedDecouvrir">Découvrir</a>
+    <a href="#infos" data-t="piedInfos">Infos</a>
+    <a href="https://mi.roots.bj/confidentialite.html" data-t="piedPolitique">Politique de confidentialité</a>
+  </nav>
 </footer>
 
 <div class="voile-menu" id="voileMenu"></div>
@@ -657,6 +664,7 @@
       payerFerme: 'Le paiement en ligne est fermé pour le moment. Passe à l’accueil.',
       vide: 'Aucun logement n’est ouvert à la réservation pour le moment. Écris-nous et on t’arrange ça.',
       politique: 'Politique de confidentialité', piedPolitique: 'Politique de confidentialité',
+      piedSejourner: 'Séjourner', piedDecouvrir: 'Découvrir', piedInfos: 'Infos',
       toastNu: 'Le mode NU (communauté) arrive bientôt.',
       h1: 'Mi Roam — séjourner et découvrir au Bénin',
       etSejourner: 'Séjourner',
@@ -762,6 +770,7 @@
       payerFerme: 'Online payment is closed for now. Ask at the front desk.',
       vide: 'No rooms are open for booking right now. Write to us and we will arrange it.',
       politique: 'Privacy policy', piedPolitique: 'Privacy policy',
+      piedSejourner: 'Stay', piedDecouvrir: 'Discover', piedInfos: 'Info',
       toastNu: 'NU, the community side of Roots, is coming soon.',
       h1: 'Mi Roam — stay and discover in Benin',
       etSejourner: 'Stay',
