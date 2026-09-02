@@ -178,10 +178,11 @@
   --teinte-ombre-flottante: #0A190E;/* teinte de l'ombre d'un élément flottant */
 
   /* ---- TEINTES D'OMBRE ET DE VOILE ----
-     Une ombre teintée au noir pur rend un gris sale sur fond blanc : ces deux
-     teintes sont vertes. Elles ne servent QUE sous transparence, et n'ont donc
-     pas de forme hexadécimale. */
-  --ombre-teinte: 5, 25, 18;         /* ombres portées et voiles de panneau */
+     Une ombre teintée au noir pur rend un gris sale sur fond blanc. La teinte
+     d'ombre est l'échelon 1 de l'univers : ce fichier pose celle de l'univers
+     par défaut, et le corps de chaque autre univers redéclare le jeton. Elle ne
+     sert QUE sous transparence, et n'a donc pas de forme hexadécimale. */
+  --ombre-teinte: var(--vert-e1-rgb);           /* la teinte d'ombre est l'échelon 1 de l'univers */
   --voile-video-teinte: 8, 34, 20;   /* voile de lisibilité sur image animée */
 }
 
@@ -204,11 +205,15 @@
   --w-medium: 500; --w-bold: 700; --w-xbold: 800;
   --w-lecture: 300;   /* lecture longue = Museo 300 */
 
-  /* DIALECTE A — surface publique. Une graisse par rôle, jamais une fourchette. */
+  /* DIALECTE A — surface publique. Une graisse par rôle, jamais une fourchette.
+     ⚠ `--w-a-h1`, `--w-a-h2` et `--w-a-h3` sont des ALIAS DE GRAISSE hérités :
+     leur nom ne dit pas la graisse du rang qu'ils nomment. La graisse d'un rang
+     est `--w-h1` … `--w-h6`, lue sur la pièce, plus bas. Ces trois alias ne
+     valent que pour ce qui les emploie déjà, et ne se posent plus sur un titre. */
   --w-a-corps: var(--w-medium);   /* 500 */
-  --w-a-h3: var(--w-light);       /* 300 — respiration */
-  --w-a-h2: var(--w-bold);        /* 700 — l'ossature */
-  --w-a-h1: var(--w-thin);        /* 100 par défaut ; 700 si le ton l'exige */
+  --w-a-h3: var(--w-light);       /* 300 — alias hérité, n'est pas la graisse du rang 3 */
+  --w-a-h2: var(--w-bold);        /* 700 — alias hérité, n'est pas la graisse du rang 2 */
+  --w-a-h1: var(--w-thin);        /* 100 — alias hérité, n'est pas la graisse du rang 1 */
   --w-a-h1-appuye: var(--w-bold);
   --w-a-display: var(--w-xbold);  /* 800, MuseoModerno, avec parcimonie */
   /* ⚠ Graisse fine (100) : autorisée à partir de 21 px, interdite en dessous —
@@ -247,12 +252,12 @@
 
   /* Rôles — INTERFACE, dialecte A. Le jeu GRAND ; les deux autres en §2 bis. */
   --t-display: var(--t-68);   /* graisse 800 · MuseoModerno · avec parcimonie */
-  --t-h1: var(--t-51);        /* graisse 100 en ouverture · 700 sinon */
-  --t-h2: var(--t-38);        /* graisse 700 */
-  --t-h3: var(--t-28);        /* graisse 700 */
-  --t-h4: var(--t-21);        /* graisse 700 */
-  --t-h5: var(--t-16);        /* graisse 700 — l'echelle est epuisee  ⚠ EXCEPTION TRACÉE — voir la pièce */
-  --t-h6: var(--t-13);        /* graisse 700 — le niveau le plus bas de l'interface  ⚠ EXCEPTION TRACÉE — voir la pièce */
+  --t-h1: var(--t-51);        /* graisse 300 · fonte eclat · encre encre */
+  --t-h2: var(--t-38);        /* graisse 300 · fonte lecture · encre univers */
+  --t-h3: var(--t-28);        /* graisse 700 · fonte eclat · encre encre */
+  --t-h4: var(--t-21);        /* graisse 700 · fonte corps · encre univers */
+  --t-h5: var(--t-16);        /* graisse 300 · fonte corps · casse capitales · encre encre — l'echelle est epuisee  ⚠ EXCEPTION TRACÉE — voir la pièce */
+  --t-h6: var(--t-16);        /* graisse 300 · fonte lecture · style italique · encre univers — le niveau le plus bas de l'interface · l'echelle est epuisee : il se dit par la fonte et le style  ⚠ EXCEPTION TRACÉE — voir la pièce */
   --t-body: var(--t-16);      /* graisse 500 */
   --t-sm: var(--t-14);        /* graisse 500 */
   --t-note: var(--t-12);      /* graisse 500 — description · mention · aide de champ · notice de consentement */
@@ -302,6 +307,18 @@
   --w-ll-chapo: 700;
   --style-ll-chapo: italic;
   --encre-ll-chapo: var(--vert-e3);
+
+  /* L'ARBRE DES TITRES D'INTERFACE — graisse, fonte, casse et style viennent
+     de la pièce, un rang après l'autre. L'encre du rang se déclare là où
+     l'univers existe, jamais ici. */
+  --w-h1: 300; --font-h1: var(--font-eclat);
+  --w-h2: 300; --font-h2: var(--font-lecture);
+  --w-h3: 700; --font-h3: var(--font-eclat);
+  --w-h4: 700; --font-h4: var(--font-corps);
+  --w-h5: 300; --font-h5: var(--font-corps);
+  --casse-h5: uppercase; --lettrage-h5: var(--lettrage-capitales);
+  --w-h6: 300; --font-h6: var(--font-lecture);
+  --style-h6: italic;
 
   --t-saisie: var(--t-16);   /* comportement observe de Safari iOS, sans specification publiee ; l'autre correctif viole SC 1.4.4 (AA) */
 
@@ -392,11 +409,16 @@
   --esp-4: 16px; --esp-6: 24px; --esp-8: 32px;
   --esp-5: 20px;   /* ⚠ seule valeur hors base 8 — retrait proposé */
 
-  /* OMBRES. Deux seulement : une ombre et sa version sombre. Aucune ombre en
-     dialecte B, aucune sur une pièce imprimée — un flou se trame et se salit. */
+  /* OMBRES. Une ombre posée, sa version flottante, et une paire pour ce qui
+     s'élève : le contact, court et net, et l'ambiante, longue et diffuse, qui se
+     composent ensemble — `box-shadow: var(--ombre-contact), var(--ombre-ambiante)`.
+     Aucune ombre en dialecte B, aucune sur une pièce imprimée — un flou se trame
+     et se salit. */
   --ombre-posee: 0 10px 30px rgba(var(--teinte-ombre-posee-rgb), 0.10);
   --ombre-flottante: 0 10px 30px rgba(var(--teinte-ombre-flottante-rgb), 0.35);
   --ombre-carte: var(--ombre-posee);                      /* alias transitoire */
+  --ombre-contact: 0 2px 6px rgba(var(--ombre-teinte), .10);
+  --ombre-ambiante: 0 18px 44px rgba(var(--ombre-teinte), .14);
 
   /* CIBLES TACTILES. Le plancher normatif est SC 2.5.8 (AA), 24 × 24 px CSS ;
      44 px est SC 2.5.5 (AAA) et c'est la valeur retenue — gant, plein soleil,

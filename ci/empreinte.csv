@@ -21,6 +21,7 @@ jeton,rang,valeur
 --blanc-casse-rgb,0,253, 251, 246
 --blanc-rgb,0,255, 255, 255
 --carte-min,0,224px
+--casse-h5,0,uppercase
 --casse-ll-h5,0,uppercase
 --cible-min,0,44px
 --cible-plancher-aa,0,24px
@@ -79,6 +80,12 @@ jeton,rang,valeur
 --font-cooper,0,'Cooper Black', 'Cooper Std', 'Cooper BT', serif
 --font-corps,0,'Museo Sans', 'Roboto', system-ui, sans-serif
 --font-eclat,0,'MuseoModerno', var(--font-corps)
+--font-h1,0,var(--font-eclat)
+--font-h2,0,var(--font-lecture)
+--font-h3,0,var(--font-eclat)
+--font-h4,0,var(--font-corps)
+--font-h5,0,var(--font-corps)
+--font-h6,0,var(--font-lecture)
 --font-lecture,0,'Museo', 'Roboto Serif', Georgia, serif
 --foyer-encre,0,var(--encre-bouton)
 --foyer-encre,1,var(--univers)
@@ -117,6 +124,7 @@ jeton,rang,valeur
 --lettrage-capitales,0,0.07em
 --lettrage-capitales-petites,0,0.1em
 --lettrage-code,0,0.13em
+--lettrage-h5,0,var(--lettrage-capitales)
 --lettrage-ll-h5,0,var(--lettrage-capitales)
 --lh-10,0,1.682
 --lh-12,0,1.682
@@ -176,10 +184,12 @@ jeton,rang,valeur
 --neutre-poussiere,0,var(--neutre-e4)
 --noir,0,#1A1A1A
 --noir-rgb,0,26, 26, 26
+--ombre-ambiante,0,0 18px 44px rgba(var(--ombre-teinte), .14)
 --ombre-carte,0,var(--ombre-posee)
+--ombre-contact,0,0 2px 6px rgba(var(--ombre-teinte), .10)
 --ombre-flottante,0,0 10px 30px rgba(var(--teinte-ombre-flottante-rgb), 0.35)
 --ombre-posee,0,0 10px 30px rgba(var(--teinte-ombre-posee-rgb), 0.10)
---ombre-teinte,0,5, 25, 18
+--ombre-teinte,0,var(--vert-e1-rgb)
 --puce-active,0,#FDF0EB
 --puce-active-rgb,0,253, 240, 235
 --rayon-carte,0,26px
@@ -214,6 +224,7 @@ jeton,rang,valeur
 --statut-en-attente,0,var(--jaune-e2)
 --statut-en-preparation,0,var(--terre-e3)
 --statut-termine,0,var(--gris-500)
+--style-h6,0,italic
 --style-ll-chapo,0,italic
 --style-ll-h6,0,italic
 --t-10,0,10px
@@ -256,7 +267,7 @@ jeton,rang,valeur
 --t-h4,1,var(--t-16)
 --t-h4,2,var(--t-16)
 --t-h5,0,var(--t-16)
---t-h6,0,var(--t-13)
+--t-h6,0,var(--t-16)
 --t-label,0,var(--t-12)
 --t-ll-chapo,0,var(--t-26)
 --t-ll-chapo,1,var(--t-20)
@@ -355,6 +366,12 @@ jeton,rang,valeur
 --w-a-h3,0,var(--w-light)
 --w-b-min,0,var(--w-medium)
 --w-bold,0,700
+--w-h1,0,300
+--w-h2,0,300
+--w-h3,0,700
+--w-h4,0,700
+--w-h5,0,300
+--w-h6,0,300
 --w-lecture,0,300
 --w-light,0,300
 --w-ll-chapo,0,700
