@@ -25,7 +25,8 @@
           hautDePage: 'Haut de page',
           titrePage: 'Roots Bénin - Terre-Mère, terre du futur',
           nomSite: 'Roots Bénin',
-          descriptionPage: 'Terre-Mère, terre du futur' },
+          descriptionPage: 'Terre-Mère, terre du futur',
+          porteMot: 'Roots · l’app pour NU' },
     en: { navConnecter: 'Connect', navVisiter: 'Visit', navDecouvrir: 'Discover',
           navRevenir: 'Return', navAPropos: 'About',
           apProjet: 'The project', apEquipe: 'The team', apCommunaute: 'The community',
@@ -33,7 +34,8 @@
           hautDePage: 'Back to top',
           titrePage: 'Roots Benin - [re]connect with the Motherland',
           nomSite: 'Roots Benin',
-          descriptionPage: '[re]connect with the Motherland' }
+          descriptionPage: '[re]connect with the Motherland',
+          porteMot: 'Roots · the NU app' }
   };
   /* La langue se lit comme le tronc la lit : la clé si elle existe, sinon la
      langue du navigateur. Sans ce repli, la barre parlerait français pendant
@@ -69,6 +71,10 @@
     poserFente('meta[property="og:title"]', d.titrePage);
     poserFente('meta[name="description"]', d.descriptionPage);
     poserFente('meta[property="og:description"]', d.descriptionPage);
+    /* La pastille est une porte : le mot qu'elle montre suit la langue, et
+       c'est le tronc qui le lit sur elle. */
+    var porte = document.getElementById('marque');
+    if (porte && d.porteMot) porte.setAttribute('data-porte-mot', d.porteMot);
     /* La langue déclarée au partage suit la langue lue ; l'autre passe en
        langue de rechange. */
     var loc = document.querySelector('meta[property="og:locale"]');
@@ -395,16 +401,8 @@
        sans quoi le lecteur redescendrait dans le menu sur grand ecran. */
     var bac = document.getElementById('sections');
     if (bac) new MutationObserver(placer).observe(bac, { childList: true });
-    marque.setAttribute('role', 'link');
-    marque.setAttribute('tabindex', '0');
-    /* La pastille mene a la porte d'installation de l'application, pas a un
-       ecran de compte : c'est l'application posee sur le telephone qui ouvre
-       ensuite l'univers Roots. */
-    function partir() { window.location.assign('https://mi.roots.bj/installer.html'); }
-    marque.addEventListener('click', function (e) { e.stopPropagation(); partir(); });
-    marque.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); partir(); }
-    });
+    /* La pastille est une porte vers l'installation de l'application : le
+       tronc lit sa destination et son mot sur elle, et porte le geste. */
   }
 
   /* ---- LE FILM DE LA SCÈNE. Il ne part que si le mouvement n'est pas

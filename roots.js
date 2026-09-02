@@ -932,7 +932,47 @@
        parle plus qu'à sa propre rangée : son porteur se relit à CHAQUE geste,
        jamais retenu d'un état ancien. */
     var marque = document.getElementById('marque');
-    if (marque) {
+    /* PORTE : posee avec `data-porte`, la pastille ne bascule rien. Sous un
+       pointeur qui survole elle s'etire et dit ou elle mene ; sous le doigt
+       elle part sans bouger — un etat ouvert qui survivrait au depart
+       replierait la rangee de la radio au retour. Le mot vient de
+       `data-porte-mot` et suit ses changements.
+       LE LOGOTYPE EST LE PREMIER MOT DU NOM, pas une icone posee a cote : ce
+       que la porte ajoute vient APRES lui et le continue. Reecrire ici le
+       logotype le dirait deux fois. Le nom accessible les recoud, faute de
+       quoi un lecteur d'ecran annoncerait la suite sans son debut. */
+    if (marque && marque.getAttribute('data-porte')) {
+      var porte = marque.getAttribute('data-porte');
+      var resteP = marque.querySelector('.reste');
+      if (resteP) {
+        while (resteP.firstChild) resteP.removeChild(resteP.firstChild);
+        var motP = document.createElement('span');
+        motP.className = 'porte-mot';
+        resteP.appendChild(motP);
+      }
+      var direPorte = function () {
+        var m = marque.querySelector('.porte-mot');
+        var logo = marque.querySelector('.mot');
+        var texte = marque.getAttribute('data-porte-mot') || '';
+        if (m) m.textContent = texte;
+        if (texte) marque.setAttribute('aria-label', ((logo && logo.textContent) || '') + ' ' + texte);
+      };
+      direPorte();
+      new MutationObserver(direPorte).observe(marque, { attributes: true, attributeFilter: ['data-porte-mot'] });
+      marque.setAttribute('role', 'link');
+      if (!marque.hasAttribute('tabindex')) marque.setAttribute('tabindex', '0');
+      var survolP = window.matchMedia && matchMedia('(hover: hover)').matches;
+      if (survolP) {
+        marque.addEventListener('mouseenter', function () { marque.classList.add('ouvert'); });
+        marque.addEventListener('mouseleave', function () { marque.classList.remove('ouvert'); });
+        marque.addEventListener('focusin', function () { marque.classList.add('ouvert'); });
+      }
+      marque.addEventListener('focusout', function () { marque.classList.remove('ouvert'); });
+      marque.addEventListener('click', function (e) { e.stopPropagation(); location.assign(porte); });
+      marque.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); location.assign(porte); }
+      });
+    } else if (marque) {
       var sw = document.getElementById('switchMode');
       var nu = marque.querySelector('.nu');
       var repli = null;

@@ -111,7 +111,6 @@ body.p-site.sur-fond .site-nom{color:var(--encre)}
    cinq noms elle quitte la barre — la porte du menu la remplace — pour que
    la barre étroite ne dispute l'attention qu'entre la quête et la
    réservation. ---- */
-body.p-site #marque .reste{display:none}
 @media(max-width:1023.98px){body.p-site .chrome-droite #marque{display:none}}
 
 /* ---- LE VOILE DE LA SCÈNE. Sur la scène, la barre ne porte aucun fond : un

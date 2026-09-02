@@ -154,39 +154,38 @@ svg.i{width:1em;height:1em;vertical-align:-0.12em;fill:none;stroke:currentColor;
    On prend le ROLE, jamais un nombre : le jeu d'ecran change la valeur du role
    sans qu'une seule regle bouge. L'interligne suit le barreau, et le barreau du
    h1 change au jeu grand — c'est la seule bascule qu'il faut ecrire.
-   La graisse n'est PAS posee ici : le defaut du navigateur vaut deja 700 pour
-   un titre, ce que la piece prescrit hors ouverture. Une section d'ecran qui
-   veut une autre graisse la declare, et sa declaration l'emporte par l'ordre.
+   TAILLE, GRAISSE, FONTE, CASSE ET STYLE DE CHAQUE RANG SE LISENT, jamais ne se
+   recopient : `--t-h*`, `--w-h*`, `--font-h*`, `--casse-h5`, `--lettrage-h5`,
+   `--style-h6`. Ecrire ici la valeur d'un rang la fige : elle cesserait de
+   suivre le jeton, et deux rangs diraient deux choses differentes du meme
+   niveau. Seules l'encre et l'equilibre des lignes se posent en clair.
    Poser une taille ici sans en poser dans une section d'ecran est sans effet
-   sur cette section : `:where()` ne pese rien et l'ordre tranche. */
-h1{font-size:var(--t-h1);line-height:var(--lh-38);font-family:var(--font-eclat);font-weight:var(--w-light);color:var(--encre);text-wrap:balance}
-/* LES TROIS FONTES DU REGISTRE INTERFACE, en alternance de rang.
-   L'eclat aux rangs 1 et 3 ; la fonte de corps aux rangs 2, 4 et 5 ; la fonte
-   de lecture au dernier rang, en italique — la seule serif de l'arbre, et elle
-   ferme la descente. Ce n'est pas un seuil de fonte unique : trois fontes se
-   relaient, et leur releve ne tombe pas sur celle des encres.
+   sur cette section : `:where()` ne pese rien et l'ordre tranche. Une section
+   d'ecran qui declare autrement l'emporte par l'ordre. */
+h1{font-size:var(--t-h1);line-height:var(--lh-38);font-family:var(--font-h1);font-weight:var(--w-h1);color:var(--encre);text-wrap:balance}
+/* LES FONTES DU REGISTRE INTERFACE ALTERNENT de rang en rang, et la releve ne
+   tombe pas sur celle des encres. Le rang nomme sa fonte, il ne la choisit pas.
    Chaque graisse demandee vient d'un fichier : l'eclat est variable de 100 a
    900, la fonte de corps est servie en 100, 200, 300, 500, 700, 900 et 950, la
-   fonte de lecture en 100, 300, 500, 700 et 900, romaine et italique. Aucune
-   n'est simulee par le navigateur.
+   fonte de lecture en 100, 300, 500, 700 et 900, romaine et italique. Demander
+   une graisse hors de ces jeux la ferait simuler par le navigateur.
    Le registre EDITORIAL garde les siennes — sa section les declare, et sa
    declaration l'emporte. */
-h2{font-size:var(--t-h2);line-height:var(--lh-28);font-family:var(--font-lecture);font-weight:var(--w-light);color:var(--univers);text-wrap:balance}
+h2{font-size:var(--t-h2);line-height:var(--lh-28);font-family:var(--font-h2);font-weight:var(--w-h2);color:var(--univers);text-wrap:balance}
 /* L'encre ALTERNE — encre pleine aux rangs impairs, echelon 2
    de l'univers aux rangs pairs : c'est le procede du registre editorial,
    transpose d'un echelon vers le fonce, ou l'echelon 3 tombait sous le
    plancher des qu'un titre se posait sur une surface autre que le papier.
-   La graisse descend d'un cran au h3, puis tient a 700 : un sous-titre se
-   distingue par sa taille, pas par une graisse qui rivalise avec le niveau au
-   dessus. Les graisses 100, 300, 500, 700 sont servies par des fichiers
-   propres — aucune n'est simulee par le navigateur.
-   Les deux derniers rangs empruntent a l'editorial ses deux marques : les
-   capitales espacees, puis l'italique. L'equilibre des lignes vaut pour tous :
+   L'encre est la seule chose que ces regles decident : elle depend de l'univers
+   courant, qui n'existe pas la ou les jetons se declarent.
+   Les deux derniers rangs portent des marques que les autres n'ont pas — casse
+   et lettrage au rang 5, style au rang 6 : chacune vient de son jeton, et le
+   rang qui ne l'a pas la recoit vide. L'equilibre des lignes vaut pour tous :
    un titre ne laisse pas un mot seul sur sa derniere ligne. */
-h3{font-size:var(--t-h3);line-height:var(--lh-21);font-family:var(--font-eclat);font-weight:var(--w-bold);color:var(--encre);text-wrap:balance}
-h4{font-size:var(--t-h4);line-height:var(--lh-16);font-family:var(--font-corps);font-weight:var(--w-bold);color:var(--univers);text-wrap:balance}
-h5{font-size:var(--t-h5);line-height:var(--lh-16);font-family:var(--font-corps);font-weight:var(--w-light);color:var(--encre);text-transform:uppercase;letter-spacing:var(--lettrage-capitales);text-wrap:balance}
-h6{font-size:var(--t-h5);line-height:var(--lh-16);font-family:var(--font-lecture);font-weight:var(--w-light);color:var(--univers);font-style:italic;text-wrap:balance}
+h3{font-size:var(--t-h3);line-height:var(--lh-21);font-family:var(--font-h3);font-weight:var(--w-h3);color:var(--encre);text-wrap:balance}
+h4{font-size:var(--t-h4);line-height:var(--lh-16);font-family:var(--font-h4);font-weight:var(--w-h4);color:var(--univers);text-wrap:balance}
+h5{font-size:var(--t-h5);line-height:var(--lh-16);font-family:var(--font-h5);font-weight:var(--w-h5);color:var(--encre);text-transform:var(--casse-h5);letter-spacing:var(--lettrage-h5);text-wrap:balance}
+h6{font-size:var(--t-h6);line-height:var(--lh-16);font-family:var(--font-h6);font-weight:var(--w-h6);color:var(--univers);font-style:var(--style-h6);text-wrap:balance}
 @media(max-width:640px){h5{letter-spacing:var(--lettrage-capitales-petites)}}
 @media(min-width:1025px){
   h1{line-height:var(--lh-51)}
@@ -429,7 +428,7 @@ html.au-clavier :where(.corps,.bloc,.lecture-longue,p,li,dd) a:not([class]):focu
    mot de 16 il ne restait qu'une tache verte.
    La CIBLE, elle, ne suit pas — un calque invisible la tient au plancher de
    44 px, sinon la regle des cibles tombe des que le logotype maigrit. */
-.toggle{--pastille-d:calc(2 * var(--t-chrome-titre))}
+.toggle{--pastille-d:calc(2 * var(--t-chrome-titre));--pastille-mot:var(--t-chrome-titre)}
 .toggle::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:100%;min-width:var(--cible-min);height:var(--cible-min)}
 /* Depliee, la pastille est plus large que le plancher de cible et porte des
    commandes propres : le calque n'a plus rien a agrandir, et s'il subsistait
@@ -442,12 +441,25 @@ html.au-clavier :where(.corps,.bloc,.lecture-longue,p,li,dd) a:not([class]):focu
    n'existe pas — le disque doit rester un disque. */
 .toggle.ouvert{padding-left:var(--esp-3)}
 .toggle.ouvert{max-width:300px;transition:max-width var(--mvt-parcours) var(--courbe-entree),padding-left var(--mvt-parcours) var(--courbe-entree)}
-.toggle .mot{width:var(--pastille-d);height:var(--pastille-d);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-eclat);font-weight:700;font-size:var(--t-chrome-titre);color:var(--blanc);line-height:1}
+.toggle .mot{width:var(--pastille-d);height:var(--pastille-d);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-eclat);font-weight:700;font-size:var(--pastille-mot);color:var(--blanc);line-height:1}
 .toggle .reste{display:flex;align-items:center;gap:var(--esp-2);padding-right:var(--esp-3);flex-shrink:0}
 .reste .sub{font-size:var(--t-label);color:var(--blanc);font-style:italic}
 .switch{width:42px;height:22px;border-radius:var(--rayon-pilule);background:rgba(var(--blanc-casse-rgb),.20);border:1px solid rgba(var(--blanc-casse-rgb),.3);position:relative;cursor:pointer;flex-shrink:0}
 .switch .knob{position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:var(--blanc);transition:left var(--mvt-etat) var(--courbe-etat)}
 .reste .nu{font-family:var(--font-eclat);font-weight:700;font-size:var(--t-body);color:var(--blanc)}
+/* Le mot d'une pastille-porte : la ou l'app montre son interrupteur, la porte
+   dit sa destination, d'une seule ligne qui ne se coupe pas. */
+/* LA PORTE DIT UNE PHRASE, pas un logotype suivi d'une legende. Le mot qui
+   suit prend la fonte, la graisse, le barreau et l'interligne du logotype : a
+   metriques egales, les deux boites se centrent au meme axe dans une pilule de
+   hauteur fixe. Un barreau different les decalerait l'un par rapport a l'autre
+   sans qu'aucune regle ne le dise.
+   Le disque n'est carre que ferme : ouvert, sa boite se reduit a son texte et
+   ne laisse plus que l'espace d'un mot — le carre garderait de chaque cote une
+   demi-marge que l'oeil lit comme une coupure entre deux choses. */
+.toggle[data-porte] .porte-mot{font-family:var(--font-eclat);font-weight:var(--w-bold);font-size:var(--pastille-mot);line-height:1;color:var(--blanc);white-space:nowrap}
+.toggle[data-porte] .reste{gap:0}
+.toggle[data-porte].ouvert .mot{width:auto;padding-right:.26em}
 .chrome-titre{font-family:var(--font-eclat);font-weight:700;font-size:var(--t-chrome-titre);color:var(--univers);letter-spacing:.01em}
 .chrome-droite{display:flex;align-items:center;gap:var(--esp-2)}
 .lang-btn{height:44px;min-width:44px;padding:0 var(--esp-1);border:none;background:none;color:var(--univers);font-family:var(--font-corps);font-weight:700;font-size:var(--t-sm);cursor:pointer}
@@ -1436,9 +1448,9 @@ html:where(:has(body.p-accueil)){background:var(--vert-nuit)}
    information a lui seul. */
 :where(body.p-paiement) .panneau[data-issue="sans-reponse"]::before{background:var(--statut-en-attente)}
 :where(body.p-paiement) .panneau[data-issue="regularisation"]::before{background:var(--terre-e2)}
-:where(body.p-paiement, body.p-payer) .panneau .titre-issue{font-size:var(--t-h2);line-height:var(--lh-28);font-weight:var(--w-a-h2);color:var(--encre);margin:0 0 var(--air-i3)}
+:where(body.p-paiement, body.p-payer) .panneau .titre-issue{font-size:var(--t-h2);line-height:var(--lh-28);font-weight:var(--w-bold);color:var(--encre);margin:0 0 var(--air-i3)}
 :where(body.p-paiement, body.p-payer) .panneau .dit{font-size:var(--t-body);line-height:var(--lh-16);font-weight:var(--w-a-corps);color:var(--encre);margin:0 auto var(--air-i4);max-width:34ch}
-:where(body.p-paiement, body.p-payer) .panneau .dit strong{font-weight:var(--w-a-h2)}
+:where(body.p-paiement, body.p-payer) .panneau .dit strong{font-weight:var(--w-bold)}
 /* Le code s'affiche PENDANT l'attente : c'est lui qui rend la fermeture de
    l'onglet sans consequence. */
 :where(body.p-paiement) .bloc-code{background:var(--gris-aplat);border-radius:var(--rayon-module);padding:var(--esp-4) var(--esp-3);margin:0 0 var(--air-i4)}
@@ -1461,11 +1473,11 @@ html:where(:has(body.p-accueil)){background:var(--vert-nuit)}
 :where(body.p-paiement) .canal .canal-dit{margin:0;font-size:var(--t-sm);line-height:var(--lh-14);color:var(--encre)}
 :where(body.p-paiement) .canal .adresse{display:block;margin-top:var(--air-i1);font-weight:var(--w-bold);overflow-wrap:anywhere}
 :where(body.p-paiement) .canal .consent{text-align:left;margin:var(--air-i3) 0 0;color:var(--encre)}
-:where(body.p-paiement) .canal-bouton{width:100%;min-height:var(--cible-min);margin-top:var(--air-i3);border:2px solid var(--vert-e2);border-radius:var(--rayon-pilule);background:var(--blanc);color:var(--vert-e2);font-family:var(--font-corps);font-weight:var(--w-a-h2);font-size:var(--t-body);line-height:var(--lh-16);padding:var(--esp-3) var(--esp-4);cursor:pointer}
+:where(body.p-paiement) .canal-bouton{width:100%;min-height:var(--cible-min);margin-top:var(--air-i3);border:2px solid var(--vert-e2);border-radius:var(--rayon-pilule);background:var(--blanc);color:var(--vert-e2);font-family:var(--font-corps);font-weight:var(--w-bold);font-size:var(--t-body);line-height:var(--lh-16);padding:var(--esp-3) var(--esp-4);cursor:pointer}
 :where(body.p-paiement) .canal-bouton[disabled]{opacity:.35;cursor:not-allowed}
 :where(body.p-paiement) .canal-issue{margin:var(--air-i3) 0 0;font-size:var(--t-sm);line-height:var(--lh-14);color:var(--encre)}
 /* Un seul bouton plein par ecran (DS 3.1) ; le secondaire est un lien. */
-:where(body.p-paiement, body.p-payer) .principal{width:100%;min-height:var(--cible-min);border:none;border-radius:var(--rayon-pilule);background:var(--vert-e2);color:var(--encre-bouton);font-family:var(--font-corps);font-weight:var(--w-a-h2);font-size:var(--t-body);line-height:var(--lh-16);padding:var(--esp-3) var(--esp-6);cursor:pointer}
+:where(body.p-paiement, body.p-payer) .principal{width:100%;min-height:var(--cible-min);border:none;border-radius:var(--rayon-pilule);background:var(--vert-e2);color:var(--encre-bouton);font-family:var(--font-corps);font-weight:var(--w-bold);font-size:var(--t-body);line-height:var(--lh-16);padding:var(--esp-3) var(--esp-6);cursor:pointer}
 :where(body.p-paiement, body.p-payer) .principal[disabled]{opacity:.35;cursor:not-allowed}
 :where(body.p-paiement, body.p-payer) .lien-second{display:inline-block;margin-top:var(--air-i3);color:var(--encre);font-size:var(--t-sm);line-height:var(--lh-14);font-weight:var(--w-bold)}
 
@@ -1500,7 +1512,7 @@ html:where(:has(body.p-accueil)){background:var(--vert-nuit)}
    chrome et les gestes restent a l'ecran. */
 :where(body.p-facture) .scene{width:var(--ecran-bande);max-width:var(--ecran-colonne);margin:0 auto;padding:var(--esp-8) 0}
 :where(body.p-facture) .panneau{position:relative;overflow:hidden;background:var(--blanc);border-radius:var(--rayon-carte);padding:var(--esp-8) var(--esp-6) var(--esp-6);box-shadow:var(--ombre-posee);text-align:center}
-:where(body.p-facture) .panneau .titre-issue{font-size:var(--t-h2);line-height:var(--lh-28);font-weight:var(--w-a-h2);color:var(--encre);margin:0 0 var(--air-i3)}
+:where(body.p-facture) .panneau .titre-issue{font-size:var(--t-h2);line-height:var(--lh-28);font-weight:var(--w-bold);color:var(--encre);margin:0 0 var(--air-i3)}
 :where(body.p-facture) .panneau .dit{font-size:var(--t-body);line-height:var(--lh-16);font-weight:var(--w-a-corps);color:var(--encre);margin:0 auto var(--air-i4);max-width:34ch}
 :where(body.p-facture) .essai{background:var(--creme);border-radius:var(--rayon-module);padding:var(--esp-4);margin:0 0 var(--air-i4);font-size:var(--t-sm);line-height:var(--lh-14);color:var(--encre)}
 /* La piece elle-meme suit le modele des factures normalisees du SFE en
@@ -1543,7 +1555,7 @@ html:where(:has(body.p-accueil)){background:var(--vert-nuit)}
 :where(body.p-facture) .lien-verif{display:inline-flex;align-items:center;min-height:var(--cible-min);margin-top:var(--air-i1);color:var(--encre);font-size:var(--t-sm);line-height:var(--lh-14);font-weight:var(--w-bold)}
 :where(body.p-facture) .erreur{margin:0 0 var(--air-i3)}
 :where(body.p-facture) a.consent-lien{display:flex;justify-content:center;align-items:center;min-height:var(--cible-min)}
-:where(body.p-facture) .principal{width:100%;min-height:var(--cible-min);border:none;border-radius:var(--rayon-pilule);background:var(--vert-e2);color:var(--encre-bouton);font-family:var(--font-corps);font-weight:var(--w-a-h2);font-size:var(--t-body);line-height:var(--lh-16);padding:var(--esp-3) var(--esp-6);cursor:pointer}
+:where(body.p-facture) .principal{width:100%;min-height:var(--cible-min);border:none;border-radius:var(--rayon-pilule);background:var(--vert-e2);color:var(--encre-bouton);font-family:var(--font-corps);font-weight:var(--w-bold);font-size:var(--t-body);line-height:var(--lh-16);padding:var(--esp-3) var(--esp-6);cursor:pointer}
 :where(body.p-facture) .principal[disabled]{opacity:.35;cursor:not-allowed}
 :where(body.p-facture) .lien-second{display:inline-flex;align-items:center;min-height:var(--cible-min);margin-top:var(--air-i2);color:var(--encre);font-size:var(--t-sm);line-height:var(--lh-14);font-weight:var(--w-bold)}
 @media print{
@@ -2206,7 +2218,8 @@ body.p-site #marque{cursor:pointer}
    une grille de trois colonnes taillee pour l'application ; la surface
    publique la passe en ligne souple et l'elargit a son rail. */
 @media(min-width:1024px){
-  body.p-site .chrome-titre,body.p-site #marque .mot{font-size:var(--t-16)}
+  body.p-site .chrome-titre{font-size:var(--t-16)}
+  body.p-site #marque{--pastille-mot:var(--t-16)}
   body.p-site .chrome-inner{display:flex;align-items:center;gap:var(--esp-4);width:min(92%,1200px)}
 }
 
