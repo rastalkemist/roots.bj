@@ -484,7 +484,12 @@ html.au-clavier :where(.corps,.bloc,.lecture-longue,p,li,dd) a:not([class]):focu
 .pied-politique a.courant{font-weight:var(--w-bold);color:var(--univers)}
 .pied-politique{margin-top:var(--air-i3);padding:var(--esp-3) var(--esp-1) var(--esp-1);border-top:1px solid var(--gris-service);display:flex;align-items:center;justify-content:center;gap:var(--esp-3)}
 .pied-politique a{font-size:var(--t-sm);color:var(--encre-discrete);text-decoration:underline;text-underline-offset:3px;display:flex;align-items:center;min-height:44px;padding:0 var(--esp-2)}
-.pied{width:var(--piste);max-width:var(--col);margin:var(--air-i4) auto 0;padding:calc(var(--air-barre) * 2) 0 0;border-top:1px solid var(--gris-service);display:flex;justify-content:center}
+/* LE PIED SE SEPARE PAR L'AIR, PAS PAR UN TRAIT. Les deux crans — un plein
+   au-dessus, un demi en remplissage — portent seuls la separation. Rendre le
+   trait ici le poserait sur toutes les surfaces qui montent ce pied, y compris
+   celles dont la rangee du dessus porte deja une limite : deux traits a un cran
+   d'ecart se lisent comme un defaut. */
+.pied{width:var(--piste);max-width:var(--col);margin:var(--air-i4) auto 0;padding:calc(var(--air-barre) * 2) 0 0;display:flex;justify-content:center}
 .pied a{font-size:var(--t-sm);color:var(--encre-discrete);text-decoration:underline;text-underline-offset:3px;display:flex;align-items:center;min-height:44px;padding:0 var(--esp-2)}
 /* La barre basse porte des verbes LEGENDES : une barre a etiquettes vaut
    80 px — le barreau au-dessus de l'icone seule — et le contenu rendu
@@ -1268,7 +1273,14 @@ html:where(:has(body.p-accueil)){background:var(--vert-nuit)}
 .rail-cmd.suiv svg.i{translate:1px .5px}
 .rail-cmd.prec svg.i{transform:rotate(180deg)}
 .rail-cmd[aria-disabled="true"]{opacity:.4;cursor:default}
-.rail-piste{display:flex;gap:var(--esp-3);overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;list-style:none;margin:0;padding:0}
+/* LA PISTE AIMANTE SUR LE DEBUT D'UNE CARTE. Sans aimant, elle s'arrete
+   n'importe ou et une carte coupee se lit comme une carte. Le repos se prend au
+   DEBUT — centrer une carte plus etroite que la piste amenerait ses deux bords
+   sous les commandes posees aux extremites. Les commandes avancent alors d'une
+   carte au lieu d'une fraction de piste : c'est le pas de l'aimant, pas un
+   reglage separe. */
+.rail-piste{display:flex;gap:var(--esp-3);overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none;list-style:none;margin:0;padding:0}
+.rail-piste > li{scroll-snap-align:start}
 .rail-piste::-webkit-scrollbar{display:none}
 /* Une bande de pastilles sans collage : meme grammaire que la bande de
    categories, sans sa position collee. Une seule definition, deux emplois. */
