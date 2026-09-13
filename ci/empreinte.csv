@@ -4,17 +4,17 @@
 # Produit par le generateur. NE PAS EDITER — toute retouche fait
 # refuser le depot, ce qui est exactement son role.
 jeton,rang,valeur
---air-colle,0,4.6px
+--air-colle,0,calc(var(--t-ll-corps) * 1.5 * 0.25)
 --air-i1,0,calc(var(--t-body) * 1.5 * 0.25)
 --air-i2,0,calc(var(--t-body) * 1.5 * 0.5)
 --air-i3,0,calc(var(--t-body) * 1.5 * 0.75)
 --air-i4,0,calc(var(--t-body) * 1.5 * 1)
 --air-i6,0,calc(var(--t-body) * 1.5 * 1.5)
---air-lie,0,9.19px
---air-rompu-h2,0,36.77px
---air-rompu-h3,0,27.58px
---air-separe,0,13.79px
---air-soude,0,0px
+--air-lie,0,calc(var(--t-ll-corps) * 1.5 * 0.5)
+--air-rompu-h2,0,calc(var(--t-ll-corps) * 1.5 * 2)
+--air-rompu-h3,0,calc(var(--t-ll-corps) * 1.5 * 1.5)
+--air-separe,0,calc(var(--t-ll-corps) * 1.5 * 0.75)
+--air-soude,0,calc(var(--t-ll-corps) * 1.5 * 0)
 --barre-h,0,72px
 --blanc,0,#FFFFFF
 --blanc-casse,0,#FDFBF6
@@ -171,8 +171,8 @@ jeton,rang,valeur
 --neutre-ardoise,0,var(--neutre-e2)
 --neutre-calcaire,0,var(--neutre-e5)
 --neutre-cendre,0,var(--neutre-e3)
---neutre-e1,0,#2B2B2B
---neutre-e1-rgb,0,43, 43, 43
+--neutre-e1,0,#070707
+--neutre-e1-rgb,0,7, 7, 7
 --neutre-e2,0,#4E4E4E
 --neutre-e2-rgb,0,78, 78, 78
 --neutre-e3,0,#737373
@@ -181,10 +181,10 @@ jeton,rang,valeur
 --neutre-e4-rgb,0,155, 155, 155
 --neutre-e5,0,#C5C5C5
 --neutre-e5-rgb,0,197, 197, 197
---neutre-fumee,0,var(--neutre-e1)
+--neutre-noir-roots,0,var(--neutre-e1)
 --neutre-poussiere,0,var(--neutre-e4)
---noir,0,#1A1A1A
---noir-rgb,0,26, 26, 26
+--noir,0,#070707
+--noir-rgb,0,7, 7, 7
 --ombre-ambiante,0,0 18px 44px rgba(var(--ombre-teinte), .14)
 --ombre-carte,0,var(--ombre-posee)
 --ombre-contact,0,0 2px 6px rgba(var(--ombre-teinte), .10)

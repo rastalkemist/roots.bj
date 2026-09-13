@@ -68,7 +68,7 @@
   --jaune-e4: #FFDE8B;      /* paille · L*=89.6 */
   --jaune-e5: #FFF0C9;      /* voile · L*=95.1 */
   /* rampe neutre — é1 → é5, clarté croissante */
-  --neutre-e1: #2B2B2B;     /* fumée · L*=17.5 */
+  --neutre-e1: #070707;     /* noir Roots · L*=1.9 */
   --neutre-e2: #4E4E4E;     /* ardoise · L*=33.2 */
   --neutre-e3: #737373;     /* cendre · L*=48.4 */
   --neutre-e4: #9B9B9B;     /* poussière · L*=64.0 */
@@ -76,7 +76,7 @@
 
   /* Neutres — hors rampe. Le gris 500 est le seul gris d'encre ; l'îlot est le
      seul gris de surface. */
-  --noir: #1A1A1A;          /* L*=9.3 */
+  --noir: #070707;          /* L*=1.9 */
   --gris-ilot: #E4E1DA;     /* L*=89.6 */
   --creme: #F8EDDA;         /* L*=94.1 */
   --blanc-casse: #FDFBF6;   /* L*=98.6 */
@@ -109,7 +109,7 @@
   --jaune-jaune-roots: var(--jaune-e3);
   --jaune-paille: var(--jaune-e4);
   --jaune-voile: var(--jaune-e5);
-  --neutre-fumee: var(--neutre-e1);
+  --neutre-noir-roots: var(--neutre-e1);
   --neutre-ardoise: var(--neutre-e2);
   --neutre-cendre: var(--neutre-e3);
   --neutre-poussiere: var(--neutre-e4);
@@ -147,12 +147,12 @@
   --jaune-e3-rgb: 255, 200, 64;
   --jaune-e4-rgb: 255, 222, 139;
   --jaune-e5-rgb: 255, 240, 201;
-  --neutre-e1-rgb: 43, 43, 43;
+  --neutre-e1-rgb: 7, 7, 7;
   --neutre-e2-rgb: 78, 78, 78;
   --neutre-e3-rgb: 115, 115, 115;
   --neutre-e4-rgb: 155, 155, 155;
   --neutre-e5-rgb: 197, 197, 197;
-  --noir-rgb: 26, 26, 26;
+  --noir-rgb: 7, 7, 7;
   --gris-ilot-rgb: 228, 225, 218;
   --creme-rgb: 248, 237, 218;
   --blanc-casse-rgb: 253, 251, 246;
@@ -496,13 +496,14 @@
    PORTÉE : l'air VERTICAL entre blocs empilés. Ni les gouttières entre
    éléments côte à côte, ni les remplissages de boîtes. */
 :root {
-  /* ÉDITORIAL — fractions de la ligne de lecture longue */
-  --air-soude: 0px;         /* 0 — la ligne vaut 18.38 px (corps 13 x 1.414) — terme et sa definition · chiffre et son libelle · citation et son texte */
-  --air-colle: 4.6px;       /* 1/4 de ligne — la ligne vaut 18.38 px (corps 13 x 1.414) — appartient a ce qui precede — items d'une liste · sous-liste · attribution d'une citatio */
-  --air-lie: 9.19px;        /* 1/2 ligne — la ligne vaut 18.38 px (corps 13 x 1.414) — suit immediatement — texte sous son titre · second titre sous le premier · aide et erreu */
-  --air-separe: 13.79px;    /* 3/4 de ligne — la ligne vaut 18.38 px (corps 13 x 1.414) — deux blocs de meme rang — deux paragraphes · deux couples de definition · apres une list */
-  --air-rompu-h2: 36.77px;  /* 2 lignes — la ligne vaut 18.38 px (corps 13 x 1.414) — on change de section — au-dessus d'un h2 · avant une mention legale */
-  --air-rompu-h3: 27.58px;  /* 1 ligne 1/2 — la ligne vaut 18.38 px (corps 13 x 1.414) — on change de section — au-dessus d'un h3 · autour d'une citation en bloc */
+  /* ÉDITORIAL — dérivation du corps de lecture longue, jamais une valeur
+     nue : il change au point de rupture, et son air change avec lui. */
+  --air-soude: calc(var(--t-ll-corps) * 1.5 * 0);   /* 0 — la ligne de lecture longue vaut le corps servi x 1.50 :  */
+  --air-colle: calc(var(--t-ll-corps) * 1.5 * 0.25);/* 1/4 de ligne — la ligne de lecture longue vaut le corps serv */
+  --air-lie: calc(var(--t-ll-corps) * 1.5 * 0.5);   /* 1/2 ligne — la ligne de lecture longue vaut le corps servi x */
+  --air-separe: calc(var(--t-ll-corps) * 1.5 * 0.75);/* 3/4 de ligne — la ligne de lecture longue vaut le corps serv */
+  --air-rompu-h2: calc(var(--t-ll-corps) * 1.5 * 2);/* 2 lignes — la ligne de lecture longue vaut le corps servi x  */
+  --air-rompu-h3: calc(var(--t-ll-corps) * 1.5 * 1.5);/* 1 ligne 1/2 — la ligne de lecture longue vaut le corps servi */
 
   /* INTERFACE — dérivation de l'échelle, jamais une valeur nue :
      la ligne d'interface est le corps par son interligne, et chaque
@@ -579,15 +580,15 @@
   --encre-e1: var(--blanc-casse); /* pire cas des trois familles sombres : 13.44 */
   --encre-e2: var(--blanc-casse); /* pire cas des trois familles sombres : 8.05 */
   --encre-e3: var(--blanc);       /* pire cas des trois familles sombres : 4.72 */
-  --encre-e4: var(--noir);        /* pire cas des trois familles sombres : 6.26 */
-  --encre-e5: var(--noir);        /* pire cas des trois familles sombres : 10.05 */
+  --encre-e4: var(--noir);        /* pire cas des trois familles sombres : 7.25 */
+  --encre-e5: var(--noir);        /* pire cas des trois familles sombres : 11.64 */
 
   /* LE JAUNE N'A PAS DE BASCULE — loi 3 de la pièce actée : « la famille
      jaune porte toujours le noir, jamais le blanc. Pas de bascule, pas de
      zone morte. » Sa rampe ne descend pas : de L*64 à L*95, quand les trois
      autres vont de L*18 à L*79. C'est la lumière qui casse la profondeur
      des autres — donc une seule encre, sur les cinq échelons. */
-  --encre-jaune: var(--noir);     /* pire cas des cinq échelons : 6.28 */
+  --encre-jaune: var(--noir);     /* pire cas des cinq échelons : 7.27 */
 }
 
 .a-vert-1 { background: var(--vert-e1); color: var(--blanc-casse); }
