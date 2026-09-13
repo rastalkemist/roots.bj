@@ -1401,9 +1401,9 @@ html:where(:has(body.p-accueil)){background:var(--vert-nuit)}
 :where(body.p-confidentialite) .lecture h4{font-family:var(--font-corps);font-weight:var(--w-ll-h4);margin:var(--air-separe) 0 var(--air-lie);color:var(--encre-ll-h4);text-wrap:balance}
 :where(body.p-confidentialite) .lecture h5{font-family:var(--font-corps);font-weight:var(--w-ll-h5);text-transform:var(--casse-ll-h5);letter-spacing:var(--lettrage-ll-h5);margin:var(--air-separe) 0 var(--air-lie);color:var(--encre-ll-h5)}
 :where(body.p-confidentialite) .lecture h6{font-family:var(--font-corps);font-weight:var(--w-ll-h6);font-style:var(--style-ll-h6);margin:var(--air-separe) 0 var(--air-lie);color:var(--encre-ll-h6)}
-:where(body.p-confidentialite) .lecture p{font-family:var(--font-lecture);font-weight:300;line-height:var(--lh-prose);color:var(--encre);margin:0 0 var(--air-separe);text-wrap:pretty}
+:where(body.p-confidentialite) .lecture p{font-family:var(--font-lecture);font-weight:300;line-height:var(--lh-lecture-ecran);color:var(--encre);margin:0 0 var(--air-separe);text-wrap:pretty}
 :where(body.p-confidentialite) .lecture ul{margin:0 0 var(--air-separe);padding-left:var(--esp-5)}
-:where(body.p-confidentialite) .lecture li{font-family:var(--font-lecture);font-weight:300;line-height:var(--lh-prose);color:var(--encre);margin:0 0 var(--air-lie);text-wrap:pretty}
+:where(body.p-confidentialite) .lecture li{font-family:var(--font-lecture);font-weight:300;line-height:var(--lh-lecture-ecran);color:var(--encre);margin:0 0 var(--air-lie);text-wrap:pretty}
 :where(body.p-confidentialite) .lecture li:last-child{margin-bottom:0}
 :where(body.p-confidentialite) .lecture strong{font-weight:700}
 :where(body.p-confidentialite) .lecture a{color:var(--univers);text-underline-offset:3px}
