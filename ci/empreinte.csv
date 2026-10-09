@@ -61,6 +61,11 @@ jeton,rang,valeur
 --encre-ll-h4,0,var(--vert-e3)
 --encre-ll-h5,0,var(--encre)
 --encre-ll-h6,0,var(--vert-e3)
+--encre-neutre-e1,0,var(--blanc-casse)
+--encre-neutre-e2,0,var(--blanc)
+--encre-neutre-e3,0,var(--noir)
+--encre-neutre-e4,0,var(--noir)
+--encre-neutre-e5,0,var(--noir)
 --encre-statut,0,var(--blanc)
 --encre-statut-jaune,0,var(--encre-jaune)
 --entete-h,0,68px
@@ -102,24 +107,23 @@ jeton,rang,valeur
 --gris-500-rgb,0,99, 94, 83
 --gris-aplat,0,var(--gris-ilot)
 --gris-filet,0,var(--gris-ilot)
---gris-ilot,0,#E4E1DA
---gris-ilot-rgb,0,228, 225, 218
+--gris-ilot,0,var(--neutre-e5)
 --gris-service,0,var(--gris-ilot)
---jaune-ambre,0,var(--jaune-e1)
---jaune-e1,0,#CF8F00
---jaune-e1-rgb,0,207, 143, 0
---jaune-e2,0,#FFB000
---jaune-e2-rgb,0,255, 176, 0
---jaune-e3,0,#FFC840
---jaune-e3-rgb,0,255, 200, 64
---jaune-e4,0,#FFDE8B
---jaune-e4-rgb,0,255, 222, 139
---jaune-e5,0,#FFF0C9
---jaune-e5-rgb,0,255, 240, 201
---jaune-jaune-pur,0,var(--jaune-e2)
---jaune-jaune-roots,0,var(--jaune-e3)
---jaune-paille,0,var(--jaune-e4)
---jaune-voile,0,var(--jaune-e5)
+--jaune-e1,0,#FFB000
+--jaune-e1-rgb,0,255, 176, 0
+--jaune-e2,0,#FFC840
+--jaune-e2-rgb,0,255, 200, 64
+--jaune-e3,0,#FFDE8B
+--jaune-e3-rgb,0,255, 222, 139
+--jaune-e4,0,#FFF0C9
+--jaune-e4-rgb,0,255, 240, 201
+--jaune-e5,0,#FFF7E6
+--jaune-e5-rgb,0,255, 247, 230
+--jaune-jaune-pur,0,var(--jaune-e1)
+--jaune-jaune-roots,0,var(--jaune-e2)
+--jaune-lait,0,var(--jaune-e5)
+--jaune-paille,0,var(--jaune-e3)
+--jaune-voile,0,var(--jaune-e4)
 --lettrage-bas-de-casse,0,normal
 --lettrage-capitales,0,0.07em
 --lettrage-capitales-petites,0,0.1em
@@ -168,21 +172,20 @@ jeton,rang,valeur
 --mvt-long,0,400ms
 --mvt-moyen,0,150ms
 --mvt-parcours,0,var(--mvt-long)
---neutre-ardoise,0,var(--neutre-e2)
---neutre-calcaire,0,var(--neutre-e5)
---neutre-cendre,0,var(--neutre-e3)
+--neutre-calcaire,0,var(--neutre-e4)
+--neutre-cendre,0,var(--neutre-e2)
 --neutre-e1,0,#070707
 --neutre-e1-rgb,0,7, 7, 7
---neutre-e2,0,#4E4E4E
---neutre-e2-rgb,0,78, 78, 78
---neutre-e3,0,#737373
---neutre-e3-rgb,0,115, 115, 115
---neutre-e4,0,#9B9B9B
---neutre-e4-rgb,0,155, 155, 155
---neutre-e5,0,#C5C5C5
---neutre-e5-rgb,0,197, 197, 197
+--neutre-e2,0,#737373
+--neutre-e2-rgb,0,115, 115, 115
+--neutre-e3,0,#9B9B9B
+--neutre-e3-rgb,0,155, 155, 155
+--neutre-e4,0,#C5C5C5
+--neutre-e4-rgb,0,197, 197, 197
+--neutre-e5,0,#E4E1DA
+--neutre-e5-rgb,0,228, 225, 218
 --neutre-noir-roots,0,var(--neutre-e1)
---neutre-poussiere,0,var(--neutre-e4)
+--neutre-poussiere,0,var(--neutre-e3)
 --noir,0,#070707
 --noir-rgb,0,7, 7, 7
 --ombre-ambiante,0,0 18px 44px rgba(var(--ombre-teinte), .14)
@@ -198,17 +201,18 @@ jeton,rang,valeur
 --rayon-module,0,16px
 --rayon-pilule,0,999px
 --rayon-tuile,0,0
---roots-jaune,0,var(--jaune-e3)
+--roots-jaune,0,var(--jaune-e2)
 --roots-noir,0,var(--noir)
 --roots-rouge,0,var(--rouge-e3)
 --roots-terracotta,0,var(--terre-e3)
 --roots-vert,0,var(--vert-e2)
---rouge-brique,0,var(--rouge-e2)
+--rouge-bordeaux,0,var(--rouge-e1)
+--rouge-bourgogne,0,var(--rouge-e2)
 --rouge-clair,0,var(--rouge-e4)
---rouge-e1,0,#5A0B0E
---rouge-e1-rgb,0,90, 11, 14
---rouge-e2,0,#9C1218
---rouge-e2-rgb,0,156, 18, 24
+--rouge-e1,0,#550012
+--rouge-e1-rgb,0,85, 0, 18
+--rouge-e2,0,#9B1524
+--rouge-e2-rgb,0,155, 21, 36
 --rouge-e3,0,#E31B23
 --rouge-e3-rgb,0,227, 27, 35
 --rouge-e4,0,#EF777B
@@ -218,11 +222,10 @@ jeton,rang,valeur
 --rouge-lavure,0,#FBEAE7
 --rouge-lavure-rgb,0,251, 234, 231
 --rouge-rose,0,var(--rouge-e5)
---rouge-sang,0,var(--rouge-e1)
 --rouge-unia,0,var(--rouge-e3)
 --statut-annule,0,var(--rouge-e3)
 --statut-confirme,0,var(--vert-e3)
---statut-en-attente,0,var(--jaune-e2)
+--statut-en-attente,0,var(--jaune-e1)
 --statut-en-preparation,0,var(--terre-e3)
 --statut-termine,0,var(--gris-500)
 --style-h6,0,italic
@@ -316,16 +319,16 @@ jeton,rang,valeur
 --terre-brique-cuite,0,var(--terre-e2)
 --terre-brune,0,var(--terre-e1)
 --terre-cacao,0,var(--terre-e1)
---terre-e1,0,#4F1D06
---terre-e1-rgb,0,79, 29, 6
---terre-e2,0,#8A3003
---terre-e2-rgb,0,138, 48, 3
---terre-e3,0,#C2500D
---terre-e3-rgb,0,194, 80, 13
---terre-e4,0,#EE7C41
---terre-e4-rgb,0,238, 124, 65
---terre-e5,0,#F0B99F
---terre-e5-rgb,0,240, 185, 159
+--terre-e1,0,#411B00
+--terre-e1-rgb,0,65, 27, 0
+--terre-e2,0,#7E3B04
+--terre-e2-rgb,0,126, 59, 4
+--terre-e3,0,#B7590C
+--terre-e3-rgb,0,183, 89, 12
+--terre-e4,0,#EC7E2E
+--terre-e4-rgb,0,236, 126, 46
+--terre-e5,0,#F7B790
+--terre-e5-rgb,0,247, 183, 144
 --terre-sable-rose,0,var(--terre-e5)
 --terre-terracotta,0,var(--terre-e3)
 --trait-icone,0,2
@@ -345,8 +348,8 @@ jeton,rang,valeur
 --univers-e4,0,var(--vert-e4)
 --univers-e5,0,var(--vert-e5)
 --vert-clair,0,var(--vert-e4)
---vert-e1,0,#0C321A
---vert-e1-rgb,0,12, 50, 26
+--vert-e1,0,#062C15
+--vert-e1-rgb,0,6, 44, 21
 --vert-e2,0,#005B22
 --vert-e2-rgb,0,0, 91, 34
 --vert-e3,0,#12853F

@@ -34,50 +34,50 @@
   --roots-vert: var(--vert-e2);
   --roots-rouge: var(--rouge-e3);
   --roots-terracotta: var(--terre-e3);
-  --roots-jaune: var(--jaune-e3);
+  --roots-jaune: var(--jaune-e2);
   --roots-noir: var(--noir);
   --terre-brune: var(--terre-e1);
   --gris-service: var(--gris-ilot);
+  --gris-ilot: var(--neutre-e5);
 }
 
 /* ---------- 1. LES QUATRE RAMPES ---------- */
 
 :root {
   /* rampe vert — é1 → é5, clarté croissante */
-  --vert-e1: #0C321A;       /* nuit · L*=17.6 */
+  --vert-e1: #062C15;       /* nuit · L*=14.9 */
   --vert-e2: #005B22;       /* Roots · L*=33.1 */
   --vert-e3: #12853F;       /* Garvey · L*=48.6 */
   --vert-e4: #14B34F;       /* clair · L*=64.1 */
   --vert-e5: #30E173;       /* vif · L*=79.5 */
   /* rampe rouge — é1 → é5, clarté croissante */
-  --rouge-e1: #5A0B0E;      /* sang · L*=17.7 */
-  --rouge-e2: #9C1218;      /* brique · L*=33.1 */
+  --rouge-e1: #550012;      /* bordeaux · L*=15.4 */
+  --rouge-e2: #9B1524;      /* bourgogne · L*=33.2 */
   --rouge-e3: #E31B23;      /* UNIA · L*=48.6 */
   --rouge-e4: #EF777B;      /* clair · L*=64.1 */
   --rouge-e5: #F6B4B7;      /* rosé · L*=79.4 */
   /* rampe terre — é1 → é5, clarté croissante */
-  --terre-e1: #4F1D06;      /* cacao · L*=18.2 */
-  --terre-e2: #8A3003;      /* brique cuite · L*=33.0 */
-  --terre-e3: #C2500D;      /* terracotta · L*=48.6 */
-  --terre-e4: #EE7C41;      /* argile · L*=64.1 */
-  --terre-e5: #F0B99F;      /* sable rosé · L*=79.5 */
+  --terre-e1: #411B00;      /* cacao · L*=15.0 */
+  --terre-e2: #7E3B04;      /* brique cuite · L*=33.1 */
+  --terre-e3: #B7590C;      /* terracotta · L*=48.6 */
+  --terre-e4: #EC7E2E;      /* argile · L*=64.1 */
+  --terre-e5: #F7B790;      /* sable rosé · L*=79.4 */
   /* rampe jaune — é1 → é5, clarté croissante */
-  --jaune-e1: #CF8F00;      /* ambre · L*=64.1 */
-  --jaune-e2: #FFB000;      /* jaune pur · L*=77.5 */
-  --jaune-e3: #FFC840;      /* Jaune Roots · L*=83.4 */
-  --jaune-e4: #FFDE8B;      /* paille · L*=89.6 */
-  --jaune-e5: #FFF0C9;      /* voile · L*=95.1 */
+  --jaune-e1: #FFB000;      /* jaune pur · L*=77.5 */
+  --jaune-e2: #FFC840;      /* Jaune Roots · L*=83.4 */
+  --jaune-e3: #FFDE8B;      /* paille · L*=89.6 */
+  --jaune-e4: #FFF0C9;      /* voile · L*=95.1 */
+  --jaune-e5: #FFF7E6;      /* lait · L*=97.4 */
   /* rampe neutre — é1 → é5, clarté croissante */
   --neutre-e1: #070707;     /* noir Roots · L*=1.9 */
-  --neutre-e2: #4E4E4E;     /* ardoise · L*=33.2 */
-  --neutre-e3: #737373;     /* cendre · L*=48.4 */
-  --neutre-e4: #9B9B9B;     /* poussière · L*=64.0 */
-  --neutre-e5: #C5C5C5;     /* calcaire · L*=79.5 */
+  --neutre-e2: #737373;     /* cendre · L*=48.4 */
+  --neutre-e3: #9B9B9B;     /* poussière · L*=64.0 */
+  --neutre-e4: #C5C5C5;     /* calcaire · L*=79.5 */
+  --neutre-e5: #E4E1DA;     /* îlot · L*=89.6 */
 
   /* Neutres — hors rampe. Le gris 500 est le seul gris d'encre ; l'îlot est le
      seul gris de surface. */
   --noir: #070707;          /* L*=1.9 */
-  --gris-ilot: #E4E1DA;     /* L*=89.6 */
   --creme: #F8EDDA;         /* L*=94.1 */
   --blanc-casse: #FDFBF6;   /* L*=98.6 */
   --blanc: #FFFFFF;         /* L*=100.0 */
@@ -94,8 +94,8 @@
   --vert-garvey: var(--vert-e3);
   --vert-clair: var(--vert-e4);
   --vert-vif: var(--vert-e5);
-  --rouge-sang: var(--rouge-e1);
-  --rouge-brique: var(--rouge-e2);
+  --rouge-bordeaux: var(--rouge-e1);
+  --rouge-bourgogne: var(--rouge-e2);
   --rouge-unia: var(--rouge-e3);
   --rouge-clair: var(--rouge-e4);
   --rouge-rose: var(--rouge-e5);
@@ -104,16 +104,16 @@
   --terre-terracotta: var(--terre-e3);
   --terre-argile: var(--terre-e4);
   --terre-sable-rose: var(--terre-e5);
-  --jaune-ambre: var(--jaune-e1);
-  --jaune-jaune-pur: var(--jaune-e2);
-  --jaune-jaune-roots: var(--jaune-e3);
-  --jaune-paille: var(--jaune-e4);
-  --jaune-voile: var(--jaune-e5);
+  --jaune-jaune-pur: var(--jaune-e1);
+  --jaune-jaune-roots: var(--jaune-e2);
+  --jaune-paille: var(--jaune-e3);
+  --jaune-voile: var(--jaune-e4);
+  --jaune-lait: var(--jaune-e5);
   --neutre-noir-roots: var(--neutre-e1);
-  --neutre-ardoise: var(--neutre-e2);
-  --neutre-cendre: var(--neutre-e3);
-  --neutre-poussiere: var(--neutre-e4);
-  --neutre-calcaire: var(--neutre-e5);
+  --neutre-cendre: var(--neutre-e2);
+  --neutre-poussiere: var(--neutre-e3);
+  --neutre-calcaire: var(--neutre-e4);
+  --neutre-îlot: var(--neutre-e5);
 
   /* Encre de texte sur fond clair, et sa version discrète. */
   --encre: var(--vert-e1);
@@ -127,33 +127,32 @@
      `rgba(var(--jeton-rgb), .06)` — jamais en trois nombres écrits à la main,
      et un contre-exemple ne se donne pas non plus en clair : une couleur citée
      dans un commentaire circule comme une couleur. */
-  --vert-e1-rgb: 12, 50, 26;
+  --vert-e1-rgb: 6, 44, 21;
   --vert-e2-rgb: 0, 91, 34;
   --vert-e3-rgb: 18, 133, 63;
   --vert-e4-rgb: 20, 179, 79;
   --vert-e5-rgb: 48, 225, 115;
-  --rouge-e1-rgb: 90, 11, 14;
-  --rouge-e2-rgb: 156, 18, 24;
+  --rouge-e1-rgb: 85, 0, 18;
+  --rouge-e2-rgb: 155, 21, 36;
   --rouge-e3-rgb: 227, 27, 35;
   --rouge-e4-rgb: 239, 119, 123;
   --rouge-e5-rgb: 246, 180, 183;
-  --terre-e1-rgb: 79, 29, 6;
-  --terre-e2-rgb: 138, 48, 3;
-  --terre-e3-rgb: 194, 80, 13;
-  --terre-e4-rgb: 238, 124, 65;
-  --terre-e5-rgb: 240, 185, 159;
-  --jaune-e1-rgb: 207, 143, 0;
-  --jaune-e2-rgb: 255, 176, 0;
-  --jaune-e3-rgb: 255, 200, 64;
-  --jaune-e4-rgb: 255, 222, 139;
-  --jaune-e5-rgb: 255, 240, 201;
+  --terre-e1-rgb: 65, 27, 0;
+  --terre-e2-rgb: 126, 59, 4;
+  --terre-e3-rgb: 183, 89, 12;
+  --terre-e4-rgb: 236, 126, 46;
+  --terre-e5-rgb: 247, 183, 144;
+  --jaune-e1-rgb: 255, 176, 0;
+  --jaune-e2-rgb: 255, 200, 64;
+  --jaune-e3-rgb: 255, 222, 139;
+  --jaune-e4-rgb: 255, 240, 201;
+  --jaune-e5-rgb: 255, 247, 230;
   --neutre-e1-rgb: 7, 7, 7;
-  --neutre-e2-rgb: 78, 78, 78;
-  --neutre-e3-rgb: 115, 115, 115;
-  --neutre-e4-rgb: 155, 155, 155;
-  --neutre-e5-rgb: 197, 197, 197;
+  --neutre-e2-rgb: 115, 115, 115;
+  --neutre-e3-rgb: 155, 155, 155;
+  --neutre-e4-rgb: 197, 197, 197;
+  --neutre-e5-rgb: 228, 225, 218;
   --noir-rgb: 7, 7, 7;
-  --gris-ilot-rgb: 228, 225, 218;
   --creme-rgb: 248, 237, 218;
   --blanc-casse-rgb: 253, 251, 246;
   --blanc-rgb: 255, 255, 255;
@@ -537,11 +536,11 @@
    ⚠ 4,72 passe le plancher AA de 0,22 point et n'atteint pas AAA. Un libellé de
    tuile est du texte courant au sens WCAG : il lui faut 4,5, pas 3,0. La marge
    est mince, et volontaire.
-   ⚠ Le jaune descend à l'échelon 2 : sa rampe n'a pas de bout sombre, et à
-   l'échelon 3 il est trop clair pour porter une pastille contre un papier clair.
+   ⚠ Le jaune descend à l'échelon 1 : sa rampe n'a pas de bout sombre, et à
+   l'échelon 2 il est trop clair pour porter une pastille contre un papier clair.
    Rappel SC 1.4.1 : la couleur n'est jamais le seul canal. Icône ou position. */
 :root {
-  --statut-en-attente: var(--jaune-e2);
+  --statut-en-attente: var(--jaune-e1);
   --statut-en-preparation: var(--terre-e3);
   --statut-confirme: var(--vert-e3);
   --statut-annule: var(--rouge-e3);
@@ -577,10 +576,10 @@
   /* Encre d'aplat — FONCTION DE L'ÉCHELON sur les TROIS FAMILLES
      SOMBRES : vert, rouge, terre cuite. Calculée, pas choisie, et le
      contrôle refuse d'écrire si une famille dévie. */
-  --encre-e1: var(--blanc-casse); /* pire cas des trois familles sombres : 13.44 */
-  --encre-e2: var(--blanc-casse); /* pire cas des trois familles sombres : 8.05 */
+  --encre-e1: var(--blanc-casse); /* pire cas des trois familles sombres : 14.56 */
+  --encre-e2: var(--blanc-casse); /* pire cas des trois familles sombres : 8.04 */
   --encre-e3: var(--blanc);       /* pire cas des trois familles sombres : 4.72 */
-  --encre-e4: var(--noir);        /* pire cas des trois familles sombres : 7.25 */
+  --encre-e4: var(--noir);        /* pire cas des trois familles sombres : 7.28 */
   --encre-e5: var(--noir);        /* pire cas des trois familles sombres : 11.64 */
 
   /* LE JAUNE N'A PAS DE BASCULE — loi 3 de la pièce actée : « la famille
@@ -588,7 +587,16 @@
      zone morte. » Sa rampe ne descend pas : de L*64 à L*95, quand les trois
      autres vont de L*18 à L*79. C'est la lumière qui casse la profondeur
      des autres — donc une seule encre, sur les cinq échelons. */
-  --encre-jaune: var(--noir);     /* pire cas des cinq échelons : 7.27 */
+  --encre-jaune: var(--noir);     /* pire cas des cinq échelons : 10.99 */
+
+  /* LA RAMPE NEUTRE PREND SON ENCRE ÉCHELON PAR ÉCHELON : elle traverse
+     la zone où l'encre de marque perd sa marge. Chaque encre est calculée
+     pour son aplat, et l'écriture refuse sous AA. */
+  --encre-neutre-e1: var(--blanc-casse);/* 19.48 */
+  --encre-neutre-e2: var(--blanc);/* 4.74 */
+  --encre-neutre-e3: var(--noir); /* 7.25 */
+  --encre-neutre-e4: var(--noir); /* 11.67 */
+  --encre-neutre-e5: var(--noir); /* 15.43 */
 }
 
 .a-vert-1 { background: var(--vert-e1); color: var(--blanc-casse); }
@@ -612,8 +620,8 @@
 .a-jaune-4 { background: var(--jaune-e4); color: var(--noir); }
 .a-jaune-5 { background: var(--jaune-e5); color: var(--noir); }
 .a-neutre-1 { background: var(--neutre-e1); color: var(--blanc-casse); }
-.a-neutre-2 { background: var(--neutre-e2); color: var(--blanc-casse); }
-.a-neutre-3 { background: var(--neutre-e3); color: var(--blanc); }
+.a-neutre-2 { background: var(--neutre-e2); color: var(--blanc); }
+.a-neutre-3 { background: var(--neutre-e3); color: var(--noir); }
 .a-neutre-4 { background: var(--neutre-e4); color: var(--noir); }
 .a-neutre-5 { background: var(--neutre-e5); color: var(--noir); }
 
@@ -886,7 +894,7 @@
 }
 .puce-statut--console .puce-icone { width: 18px; height: 18px; stroke-width: 2.5; }
 
-.puce-statut.en-attente { background: var(--jaune-e2); color: var(--encre-statut-jaune); }
+.puce-statut.en-attente { background: var(--jaune-e1); color: var(--encre-statut-jaune); }
 .puce-statut.en-preparation { background: var(--terre-e3); color: var(--encre-statut); }
 .puce-statut.confirme { background: var(--vert-e3); color: var(--encre-statut); }
 .puce-statut.annule { background: var(--rouge-e3); color: var(--encre-statut); }
@@ -990,7 +998,7 @@ body {
   --foyer-lisere: calc(var(--limite-ep) * 2);
 
   /* L'ETEINT — une paire, nommee, la meme dans les deux dialectes et dans les
-     trois univers. Elle se mesure une fois : 4,94. */
+     trois univers. Elle se mesure une fois : 3,63. */
   --eteint-fond: var(--neutre-e5);
   --eteint-encre: var(--neutre-e2);
 
@@ -1059,8 +1067,8 @@ body[data-surface="ambiante"] {
   .a-jaune-3:hover { background: var(--jaune-e4); color: var(--noir); }
   .a-jaune-4:hover { background: var(--jaune-e5); color: var(--noir); }
   .a-jaune-5:hover { background: var(--jaune-e4); color: var(--noir); }
-  .a-neutre-1:hover { background: var(--neutre-e2); color: var(--blanc-casse); }
-  .a-neutre-2:hover { background: var(--neutre-e3); color: var(--blanc); }
+  .a-neutre-1:hover { background: var(--neutre-e2); color: var(--blanc); }
+  .a-neutre-2:hover { background: var(--neutre-e3); color: var(--noir); }
   .a-neutre-3:hover { background: var(--neutre-e4); color: var(--noir); }
   .a-neutre-4:hover { background: var(--neutre-e5); color: var(--noir); }
   .a-neutre-5:hover { background: var(--neutre-e4); color: var(--noir); }
@@ -1257,13 +1265,13 @@ body[data-surface="ambiante"] {
 }
 
 /* Hors ligne — bandeau persistant, jamais modal, et il ne masque rien.
-   Le jaune de l'échelon 2 porte le noir : 9,50. C'est le meilleur contraste de statut
+   Le jaune de l'échelon 1 porte le noir : 9,50. C'est le meilleur contraste de statut
    du système, et c'est voulu — l'information la plus dégradante doit être la
    plus lisible. */
 .bandeau-hors-ligne {
   display: flex; align-items: center; gap: var(--esp-3);
   padding: var(--esp-2) var(--esp-4); min-height: var(--cible-plancher-aa);
-  background: var(--jaune-e2); color: var(--noir);
+  background: var(--jaune-e1); color: var(--noir);
   font-size: var(--t-14); font-weight: var(--w-bold);
 }
 
@@ -1379,7 +1387,7 @@ html.au-clavier .controle-choix input:focus-visible {
   background: var(--univers-e1);
 }
 .btn-b:active { background: var(--noir);
-                box-shadow: inset 0 0 0 var(--foyer-lisere) var(--neutre-e3); }
+                box-shadow: inset 0 0 0 var(--foyer-lisere) var(--neutre-e2); }
 .chip:active { background: var(--terre-e4); }
 .module-a:active, .puce-filtre:active { background: var(--univers-e4); }
 /* Le dialecte B est plat : il ne s'enfonce pas par une ombre, il descend d'un
