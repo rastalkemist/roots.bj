@@ -7,9 +7,10 @@
    film de la scène. La langue, la quête, la radio et les feuilles restent au
    tronc : le site les déplace, il ne les refait pas.
 
-   Exige : un corps portant p-site, un nav .site-noms, la scène d'accueil
-   portant le film, son affiche et sa commande, et le bac du tiroir que le
-   tronc ancre. */
+   Exige : un corps portant p-site, un nav .site-noms et le bac du tiroir que
+   le tronc ancre. La scène d'accueil, son film et sa commande ne sont exigés
+   que sur l'accueil : une page qui ne les porte pas pose `sur-fond` sur son
+   corps, et sa barre reste sur fond. */
 (function () {
   'use strict';
 
@@ -26,7 +27,13 @@
           titrePage: 'Roots Bénin - Terre-Mère, terre du futur',
           nomSite: 'Roots Bénin',
           descriptionPage: 'Terre-Mère, terre du futur',
-          porteMot: 'Roots · l’app pour NU' },
+          porteMot: 'Roots · l’app pour NU',
+          pages: {
+            projet: { titre: 'Roots — Le projet · Roots Bénin',
+                      description: 'Rapport d’activités 2024-2025 : de Kër Yawa à Roots Inc.' },
+            vision: { titre: 'Roots Fest — La vision · Roots Bénin',
+                      description: 'Feuille de route 2030 : Road to Roots Fest' }
+          } },
     en: { navConnecter: 'Connect', navVisiter: 'Visit', navDecouvrir: 'Discover',
           navRevenir: 'Return', navAPropos: 'About',
           apProjet: 'The project', apEquipe: 'The team', apCommunaute: 'The community',
@@ -35,7 +42,13 @@
           titrePage: 'Roots Benin - [re]connect with the Motherland',
           nomSite: 'Roots Benin',
           descriptionPage: '[re]connect with the Motherland',
-          porteMot: 'Roots · the NU app' }
+          porteMot: 'Roots · the NU app',
+          pages: {
+            projet: { titre: 'Roots — The project · Roots Benin',
+                      description: 'Activity report 2024-2025, in French' },
+            vision: { titre: 'Roots Fest — The vision · Roots Benin',
+                      description: 'Roadmap 2030: Road to Roots Fest, in French' }
+          } }
   };
   /* La langue se lit comme le tronc la lit : la clé si elle existe, sinon la
      langue du navigateur. Sans ce repli, la barre parlerait français pendant
@@ -48,6 +61,18 @@
   }
   /* Une fente porte la chaîne dans son titre ou dans son contenu, selon sa
      nature ; le poseur ne connaît que la chaîne. */
+  /* Une adresse se compare sans son extension : le serveur sert `projet.html`
+     à l'adresse `/projet`, et le lien porte l'adresse courte. */
+  function sansExtension(a) { return (a || '').split('/').pop().replace(/\.html$/, '') || 'index'; }
+  function ici() { return sansExtension(location.pathname); }
+
+  /* La ligne du menu qui mène à la page courante le dit. */
+  function marquerCourante() {
+    Array.prototype.forEach.call(document.querySelectorAll('#menuAPropos a.site-apropos-ligne'), function (a) {
+      if (sansExtension(a.getAttribute('href')) === ici()) a.setAttribute('aria-current', 'page');
+    });
+  }
+
   function poserFente(sel, mot) {
     if (!mot) return;
     var el = document.querySelector(sel);
@@ -64,13 +89,18 @@
        MEME chaîne. Une fente qui porterait sa propre version serait une
        seconde version : elles se posent donc toutes ici, en un seul endroit,
        depuis les deux clés du dictionnaire. */
-    poserFente('title', d.titrePage);
+    /* Une page autre que l'accueil se nomme par `data-page` sur le corps ;
+       sans entrée au dictionnaire, elle garde les mots de l'accueil. */
+    var page = d.pages && d.pages[document.body.getAttribute('data-page')];
+    var titre = page ? page.titre : d.titrePage;
+    var description = page ? page.description : d.descriptionPage;
+    poserFente('title', titre);
     /* Le nom du site au partage est le NOM, pas le titre : le titre porte
        l'accroche, le nom ne la porte pas. */
     poserFente('meta[property="og:site_name"]', d.nomSite);
-    poserFente('meta[property="og:title"]', d.titrePage);
-    poserFente('meta[name="description"]', d.descriptionPage);
-    poserFente('meta[property="og:description"]', d.descriptionPage);
+    poserFente('meta[property="og:title"]', titre);
+    poserFente('meta[name="description"]', description);
+    poserFente('meta[property="og:description"]', description);
     /* La pastille est une porte : le mot qu'elle montre suit la langue, et
        c'est le tronc qui le lit sur elle. */
     var porte = document.getElementById('marque');
@@ -310,12 +340,19 @@
       rang.appendChild(titreAp);
       var sous = document.createElement('div');
       sous.className = 'site-sous';
-      [['apProjet', 'Roots — ', 'roots'], ['apEquipe', 'Roots Café — ', 'cafe'],
-       ['apCommunaute', 'NU — ', 'nu'], ['apVision', 'Roots Network — ', 'reseau']].forEach(function (e) {
-        var l = document.createElement('span');
+      /* Une ligne qui a sa page est un lien ; les autres restent dormantes
+         et le disent. */
+      [['apProjet', 'Roots — ', 'roots', 'projet'], ['apEquipe', 'Roots Café — ', 'cafe', ''],
+       ['apCommunaute', 'NU — ', 'nu', ''], ['apVision', 'Roots Fest — ', 'reseau', 'vision']].forEach(function (e) {
+        var l = document.createElement(e[3] ? 'a' : 'span');
         l.className = 'site-apropos-ligne';
         l.dataset.maison = e[2];
-        l.setAttribute('aria-disabled', 'true');
+        if (e[3]) {
+          l.setAttribute('href', e[3]);
+          if (e[3] === ici()) l.setAttribute('aria-current', 'page');
+        } else {
+          l.setAttribute('aria-disabled', 'true');
+        }
         var maison = document.createElement('span');
         maison.className = 'tiret-mot';
         maison.textContent = e[1];
@@ -363,8 +400,10 @@
     var ankh = document.querySelector('.ankh-home');
     var titre = document.querySelector('.chrome-titre');
     if (!marque || !droite) return;
+    /* Sur l'accueil, le nom remonte en haut de page ; ailleurs, il y ramène. */
+    var accueil = !!document.getElementById('connecter');
     if (inner && ankh && titre) {
-      titre.setAttribute('href', '#haut');
+      titre.setAttribute('href', accueil ? '#haut' : 'index.html');
       inner.insertBefore(titre, ankh.nextSibling);
       /* Le nom a cote de l'ankh est celui de la maison, pas celui d'un
          univers ; le tronc le reecrit a ses redessins, la garde le repose. */
@@ -372,7 +411,7 @@
       new MutationObserver(function () {
         if (titre.textContent !== 'Roots') titre.textContent = MAISON;
       }).observe(titre, { childList: true, characterData: true, subtree: true });
-      titre.addEventListener('click', function (e) {
+      if (accueil) titre.addEventListener('click', function (e) {
         e.preventDefault();
         window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
       });
@@ -428,12 +467,31 @@
     if (!reduit && !econome) jouer();
   }
 
+  /* ---- LA PILULE DE QUÊTE HORS DE L'ACCUEIL. Le tronc fabrique, sur une page
+     de l'univers qui ne porte pas la quête, une pilule qui mène à l'écran qui
+     la porte. Sur ce site, cet écran est l'accueil : la pilule y mène, et
+     l'accueil l'ouvre à l'arrivée. Le tronc refabrique la pilule à ses
+     redessins ; la destination se repose à chaque fois. */
+  function menerALaQuete() {
+    if (document.getElementById('connecter')) return;
+    var barre = document.querySelector('.chrome-inner');
+    if (!barre) return;
+    function poser() {
+      var p = barre.querySelector('.fab[data-fabrique]');
+      if (p && p.getAttribute('href') !== 'index.html#quete') p.setAttribute('href', 'index.html#quete');
+    }
+    poser();
+    new MutationObserver(poser).observe(barre, { childList: true });
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     poserDits();
+    menerALaQuete();
     tenirRetourHaut();
   nettoyerAdresse();
   surveiller();
     tenirAPropos();
+    marquerCourante();
     poserMenu();
     poserBarre();
     poserFilm();

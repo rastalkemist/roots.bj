@@ -199,3 +199,27 @@ body.p-site #sections .tiroir-radio .languette-radio{order:1}
 .site-haut.vu{opacity:1}
 .site-haut svg{width:20px;height:20px;transform:rotate(-90deg)}
 .site-haut:hover{box-shadow:0 6px 20px rgba(var(--ombre-teinte),.28)}
+
+/* ---- LES PAGES À PROPOS. Une page présente un document et propose de le
+   télécharger : un titre, une phrase d'attaque, la porte du document — son
+   titre, l'unique bouton plein de l'écran, puis son format et son poids —,
+   ensuite ce que le document raconte. Les lignes du menu qui ont leur page
+   sont des liens ; elles gardent la forme des lignes dormantes. ---- */
+a.site-apropos-ligne{text-decoration:none}
+/* Une ligne qui mène quelque part est une cible : elle tient le plancher
+   tactile, et ses voisines dormantes gardent le même pas pour que la colonne
+   ne change pas de rythme. */
+.site-apropos-menu .site-apropos-ligne,.site-tiroir .site-sous .site-apropos-ligne{min-height:var(--cible-min)}
+.site-doc .chapo,.site-doc .lecture-longue,.site-doc-porte,.site-doc-contact{max-width:var(--col)}
+/* Le chapô est celui de la lecture longue : sa face, sa coupe, sa graisse, son
+   corps et son encre viennent de l'arbre éditorial, comme sur la politique de
+   confidentialité. */
+.site-doc .chapo{margin:0;font-family:var(--font-chiffres);font-style:var(--style-ll-chapo);font-weight:var(--w-ll-chapo);font-size:var(--t-ll-chapo);line-height:var(--lh-26);color:var(--encre-ll-chapo);text-wrap:balance}
+.site-doc-porte{display:flex;flex-direction:column;align-items:flex-start;gap:var(--air-i2);margin:var(--air-i4) 0 var(--air-i6)}
+.site-doc-titre{margin:0;font-weight:var(--w-bold);line-height:var(--lh-16)}
+.site-doc-meta{margin:0;font-size:var(--t-sm);line-height:var(--lh-14);color:var(--encre-discrete)}
+.site-doc h2{margin:var(--air-i6) 0 var(--air-i2)}
+.site-doc .lecture-longue p{margin:0 0 var(--air-separe)}
+.site-doc-reperes{margin:0;padding-inline-start:var(--esp-5)}
+.site-doc .lecture-longue li{margin:0 0 var(--air-colle)}
+.site-doc-contact{margin:var(--air-i6) 0 var(--air-i6);line-height:var(--lh-16)}
